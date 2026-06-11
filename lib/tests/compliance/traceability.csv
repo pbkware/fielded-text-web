@@ -1,0 +1,18 @@
+requirement_id,standard_clause,test_file,test_name,status,notes
+FT0.9-DECL-001,4.3.1,tests/compliance/declarations.compliance.test.ts,[FT0.9-DECL-001] parses standard signature with Version parameter,implemented,Signature and declaration detection
+FT0.9-DECL-002,4.3.2,tests/compliance/declarations.compliance.test.ts,[FT0.9-DECL-002] parses multiple signature parameters,implemented,Name/value parameter parsing
+FT0.9-DECL-003,4.3.3,tests/compliance/declarations.compliance.test.ts,[FT0.9-DECL-003] enforces Version as first declaration parameter,implemented,Asserts first parameter name must be Version
+FT0.9-DECL-004,4.3.4,tests/compliance/declarations.compliance.test.ts,[FT0.9-DECL-004] validates MetaEmbedded MetaFile MetaUrl priority rules,implemented,Asserts MetaEmbedded wins over MetaUrl when both present
+FT0.9-DECL-005,4.3.5,tests/compliance/declarations.compliance.test.ts,[FT0.9-DECL-005] accepts custom x- prefixed declaration parameters,implemented,x- and X- prefixed params stored and retrievable
+FT0.9-CSV-001,4.8,tests/compliance/core.compliance.test.ts,[FT0.9-CSV-001] reads simple CSV with a heading line,implemented,Basic record parsing
+FT0.9-QUOTE-001,4.10.7,tests/compliance/quoting.compliance.test.ts,[FT0.9-QUOTE-001] parses quoted field containing delimiter,implemented,Delimiter inside enclosing quotes parsed as value text
+FT0.9-QUOTE-002,4.10.7,tests/compliance/quoting.compliance.test.ts,[FT0.9-QUOTE-002] parses stuffed embedded quotes when enabled,implemented,Direct quoted parsing behavior
+FT0.9-QUOTE-003,5.1.6,tests/compliance/quoting.compliance.test.ts,[FT0.9-QUOTE-003] writer standard string quoting for embedded quote chars,implemented,Write output asserts doubled embedded quotes
+FT0.9-EOL-001,3.7.1.1,tests/compliance/eol.compliance.test.ts,[FT0.9-EOL-001] parses records with EndOfLineType=CrLf,implemented,CRLF configuration
+FT0.9-EOL-002,3.7.1.3,tests/compliance/eol.compliance.test.ts,[FT0.9-EOL-002] enforces LastLineEndedType behavior,implemented,Write output compared for Always vs Never behavior
+FT0.9-EOL-003,4.10.7,tests/compliance/eol.compliance.test.ts,[FT0.9-EOL-003] treats EOL chars as field text in quoted field when enabled,implemented,Read output preserves multiline text in quoted field
+FT0.9-TYPES-001,4.10.9,tests/compliance/types.compliance.test.ts,[FT0.9-TYPES-001] parses Boolean Integer Float Decimal values,implemented,Covers scalar numeric and boolean types
+FT0.9-TYPES-002,4.10.9|5.2.6,tests/compliance/types.compliance.test.ts,[FT0.9-TYPES-002] parses DateTime values with configured format,implemented,Date parse asserted with yyyy-MM-dd format in en-US culture
+FT0.9-ERR-001,4.4,tests/compliance/error-behavior.compliance.test.ts,[FT0.9-ERR-001] requires embedded meta section when MetaEmbedded present,implemented,Declared text with MetaEmbedded but no XML must throw
+FT0.9-ERR-002,4.8,tests/compliance/error-behavior.compliance.test.ts,[FT0.9-ERR-002] rejects extra trailing chars when IgnoreExtraChars=False,implemented,Behavior asserted as throw
+FT0.9-ERR-003,4.8,tests/compliance/error-behavior.compliance.test.ts,[FT0.9-ERR-003] allows incomplete records only when AllowIncompleteRecords=True,implemented,Dual-mode: strict throws; permissive passes

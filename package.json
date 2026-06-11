@@ -1,0 +1,25 @@
+{
+  "name": "@pbkware/fielded-text-web-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A library implementing the Fielded Text format in TypeScript.",
+  "license": "MIT",
+  "author": {
+    "name": "Paul Klink",
+    "email": "paul@klink.au",
+    "url": "https://paul.klink.au"
+  },
+  "workspaces": [
+    "lib",
+    "examples"
+  ],
+  "scripts": {
+    "build": "npm run --workspace=lib build",
+    "dist": "npm run --workspace=lib dist",
+    "lint": "npm run --workspace=lib lint",
+    "test": "npm run --workspace=lib test",
+    "clean": "npm run --workspaces --if-present clean",
+    "docs": "npm run --workspace=lib docs",
+    "examples": "npm run --workspace=examples examples:all"
+  }
+}

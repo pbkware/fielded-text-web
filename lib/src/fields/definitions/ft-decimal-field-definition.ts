@@ -1,0 +1,43 @@
+import { DotNetLocaleSettings, DotNetNumberStyles } from '@pbkware/dot-net-date-number-formatting';
+import { FtDecimalMetaField } from '../../meta/fields/ft-decimal-meta-field.js';
+import { FtDecimalFieldFormatter } from '../../serialization/formatting/ft-decimal-field-formatter.js';
+import { FtDataType } from '../../types/enums/ft-data-type.js';
+import { FtGenericFieldDefinition } from './ft-generic-field-definition.js';
+
+/**
+ * Field definition for decimal fields.
+ * @public
+ */
+export class FtDecimalFieldDefinition extends FtGenericFieldDefinition<number> {
+  static readonly AUTO_LEFT_PAD = true;
+
+  declare protected formatter: FtDecimalFieldFormatter;
+
+  constructor(index: number) {
+    const formatter = new FtDecimalFieldFormatter();
+    super(FtDataType.Decimal, 'number', formatter, FtDecimalFieldDefinition.AUTO_LEFT_PAD, index);
+  }
+
+  get format(): string {
+    return this.formatter.format;
+  }
+
+  get styles(): DotNetNumberStyles {
+    return this.formatter.styles;
+  }
+
+  override loadMeta(metaField: FtDecimalMetaField, myCulture: DotNetLocaleSettings | undefined, myMainHeadingIndex: number): void {
+    super.loadMeta(metaField, myCulture, myMainHeadingIndex);
+
+    this.formatter.format = metaField.format;
+    this.formatter.styles = metaField.styles;
+  }
+
+  getValueText(value: number): string {
+    return this.formatter.toText(value);
+  }
+
+  parseValueText(text: string): number {
+    return this.formatter.parse(text);
+  }
+}

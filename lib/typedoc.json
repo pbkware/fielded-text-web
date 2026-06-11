@@ -1,0 +1,29 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src"],
+  "name": "FieldedText TypeScript Library",
+  "entryPointStrategy": "expand",
+  "alwaysCreateEntryPointModule": false,
+  "exclude": ["./src/**/index.ts", "./src/meta-serialization/types/enums/meta-element-type-meta-serialization.ts"],
+  "includeVersion": true,
+  "out": "./docs",
+  "plugin": [],
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": true,
+  "router": "structure-dir",
+  "highlightLanguages": ["typescript", "xml", "bash", "json"],
+  "readme": "../README.md",
+  "projectDocuments": ["src-docs/guide/index.md", "src-docs/source/index.md"],
+  "cleanOutputDir": true,
+  "githubPages": true,
+  "hideGenerator": true,
+  "searchInComments": true,
+  "searchInDocuments": true,
+  "hostedBaseUrl": "https://pbkware.github.io/fielded-text-web/",
+  "navigationLinks": {
+    "GitHub": "https://github.com/pbkware/fielded-text-web",
+    "NPM": "https://www.npmjs.com/package/@pbkware/fielded-text-web"
+    // "Sponsors": "https://pbkware.github.io/fielded-text-web/Overview/Sponsors/",
+  }
+}

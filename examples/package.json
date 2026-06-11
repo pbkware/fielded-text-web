@@ -1,0 +1,42 @@
+{
+  "name": "examples",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Examples for library in package @pbkware/fielded-text-web",
+  "license": "MIT",
+  "author": {
+    "name": "Paul Klink",
+    "email": "paul@klink.au",
+    "url": "https://paul.klink.au"
+  },
+  "type": "module",
+  "scripts": {
+    "all": "npm run basic && npm run events && npm run sequences && npm run output",
+    "basic": "npm run basic-read-build-meta && npm run basic-read-load-meta && npm run basic-write && npm run count-records",
+    "events": "npm run read-events && npm run write-events",
+    "sequences": "npm run build-meta-with-sequences && npm run read-sequence && npm run read-sequence-ordinal && npm run write-sequence && npm run write-sequence-events && npm run sequences-with-readback",
+    "output": "npm run write-declared && npm run write-headings && npm run write-comments",
+    "basic-read-build-meta": "tsx basic-read-build-meta/index.ts",
+    "basic-read-load-meta": "tsx basic-read-load-meta/index.ts",
+    "basic-write": "tsx basic-write/index.ts",
+    "build-meta-with-sequences": "tsx build-meta-with-sequences/index.ts",
+    "count-records": "tsx count-records/index.ts",
+    "read-events": "tsx read-events/index.ts",
+    "read-sequence": "tsx read-sequence/index.ts",
+    "read-sequence-ordinal": "tsx read-sequence-ordinal/index.ts",
+    "sequences-with-readback": "tsx sequences-with-readback/index.ts",
+    "write-comments": "tsx write-comments/index.ts",
+    "write-declared": "tsx write-declared/index.ts",
+    "write-events": "tsx write-events/index.ts",
+    "write-headings": "tsx write-headings/index.ts",
+    "write-sequence": "tsx write-sequence/index.ts",
+    "write-sequence-events": "tsx write-sequence-events/index.ts",
+    "test": "tsx test/index.ts"
+  },
+  "dependencies": {
+    "@pbkware/fielded-text-web": "*"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
