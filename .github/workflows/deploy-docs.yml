@@ -30,7 +30,7 @@ jobs:
         run: npm run dist
 
       - name: Build docs
-        run: npm run docs:build
+        run: npm run docs
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
