@@ -1,8 +1,7 @@
 {
   "name": "@pbkware/fielded-text-web-workspace",
-  "version": "0.1.0",
   "private": true,
-  "description": "A library implementing the Fielded Text format in TypeScript.",
+  "description": "A parser/generator library based on Fielded Text.",
   "license": "MIT",
   "author": {
     "name": "Paul Klink",

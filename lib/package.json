@@ -1,8 +1,7 @@
 {
   "name": "@pbkware/fielded-text-web",
-  "version": "0.1.0",
-  "description": "A library implementing the Fielded Text format in TypeScript.",
-  "license": "MIT",
+  "version": "0.1.2",
+  "description": "A parser/generator library based on Fielded Text.",
   "type": "module",
   "sideEffects": false,
   "engines": {
@@ -17,7 +16,27 @@
   "files": [
     "dist/**/*",
     "src/**/*.ts",
-    "src/**/*.json"
+    "src/**/*.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "homepage": "https://pbkware.github.io/fielded-text-web/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pbkware/fielded-text-web.git",
+    "directory": "lib"
+  },
+  "contributors": [
+    "Paul Klink (https://paul.klink.au)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "fielded",
+    "text",
+    "csv",
+    "delimited",
+    "parser",
+    "format"
   ],
   "scripts": {
     "build": "tsc",
@@ -40,7 +59,10 @@
     "prettier": "npx prettier --write .",
     "docs": "typedoc",
     "docs:watch": "typedoc --watch",
-    "docs:serve": "vite --config ./vite.docs-dev.config.mjs --host"
+    "docs:serve": "vite --config ./vite.docs-dev.config.mjs --host",
+    "publish:pre": "cp ../README.md ./README.md && cp ../LICENSE ./LICENSE && npm run dist",
+    "publish:post": "rm ./README.md && rm ./LICENSE",
+    "publish": "npm run publish:pre && npm publish --access=public && npm run publish:post"
   },
   "dependencies": {
     "@pbkware/dot-net-date-number-formatting": "^0.3.0",

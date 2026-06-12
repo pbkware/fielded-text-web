@@ -8,6 +8,10 @@ lib/tests/compliance/artifacts
 lib/tests/compliance/fixtures/valid
 lib/*.tgz
 lib/node_modules/.vite/deps/
+lib/node_modules/.vite/vitest/
+lib/node_modules/.vite-temp/
+lib/README.md
+lib/LICENSE
 examples/test/index.ts
 /.env
 /.env.local
