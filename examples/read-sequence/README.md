@@ -1,6 +1,10 @@
+---
+title: Read Sequence
+---
+
 # Read Sequence Example
 
-This example demonstrates reading CSV files with sequences, where different records have different field structures based on field values.
+This [example](#code) demonstrates reading CSV files with sequences, where different records have different field structures based on field values.
 
 ## What It Does
 
@@ -42,7 +46,7 @@ npx tsx examples/read-sequence/index.ts
 
 ## Output
 
-```
+```text
 Reading pets with sequences:
 
 1: 1,Misty,45
@@ -62,9 +66,6 @@ Total records: 7
 - **Field Names**: Accessing fields by name works across all sequences
 - **Conditional Logic**: Application must check redirect field values to know which fields are present
 
-## Related Examples
+## Code
 
-- [build-meta-with-sequences](../build-meta-with-sequences/) - Create the metadata
-- [read-sequence-ordinal](../read-sequence-ordinal/) - Faster reading using ordinals
-- [write-sequence](../write-sequence/) - Write data with sequences
-- [sequences](../sequences/) - General sequence handling
+{@includeCode ./index.ts}

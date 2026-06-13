@@ -1,6 +1,10 @@
-# Sequences Example
+---
+title: Sequences with Readback
+---
 
-This example demonstrates **sequence redirects**, which allow different records to have different field structures based on field values.
+# Sequences with Readback Example
+
+This [example](#code) demonstrates **sequence redirects**, which allow different records to have different field structures based on field values.
 
 ## What it does
 
@@ -69,3 +73,7 @@ Total redirects triggered: 8
 - **Type-based layouts**: Client records vs Transaction records
 - **Conditional data**: Survey responses with follow-up questions
 - **Polymorphic data**: Different attributes based on entity type
+
+## Code
+
+{@includeCode ./index.ts}

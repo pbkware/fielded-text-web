@@ -1,6 +1,10 @@
+---
+title: Write Events
+---
+
 # Write Events Example
 
-This example demonstrates how to use event callbacks during writing to validate data, track progress, and compute statistics.
+This [example](#code) demonstrates how to use event callbacks during writing to validate data, track progress, and compute statistics.
 
 ## What it does
 
@@ -21,7 +25,7 @@ npx tsx examples/write-events/index.ts
 
 ## Expected output
 
-```
+```text
 Writing CSV with event callbacks:
 =================================
 
@@ -98,3 +102,7 @@ Events are useful for:
 - **Auditing**: Track changes and data flow
 - **Statistics**: Calculate aggregates during export
 - **Error detection**: Identify data issues early
+
+## Code
+
+{@includeCode ./index.ts}

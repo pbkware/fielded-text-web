@@ -1,6 +1,10 @@
+---
+title: Build Meta With Sequences
+---
+
 # Build Meta With Sequences Example
 
-This example demonstrates how to programmatically build metadata that uses sequences (repeating groups and conditional structures).
+This [example](#code) demonstrates how to programmatically build metadata that uses sequences (repeating groups and conditional structures).
 
 ## What It Does
 
@@ -47,8 +51,6 @@ npx tsx examples/build-meta-with-sequences/index.ts
 
 Generates and displays the XML metadata definition that can be saved to a `.ftm` file and used with readers/writers.
 
-## Related Examples
+## Code
 
-- [write-sequence](../write-sequence/) - Write data using this metadata
-- [read-sequence](../read-sequence/) - Read data with sequences
-- [sequences](../sequences/) - General sequence handling
+{@includeCode ./index.ts}

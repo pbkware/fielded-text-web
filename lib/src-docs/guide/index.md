@@ -7,6 +7,7 @@ children:
     # - ./writing.md
     # - ./sequences.md
     # - ./advanced.md
+    - ./examples/index.md
 ---
 
 Guides to assist with using the Fielded Text typescript library.

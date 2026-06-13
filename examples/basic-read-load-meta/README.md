@@ -1,6 +1,10 @@
+---
+title: Basic Read - Load Meta
+---
+
 # Basic Read with Load Meta Example
 
-This example demonstrates how to read a CSV file using metadata loaded from an XML string.
+This [example](#code) demonstrates how to read a CSV file using metadata loaded from an XML string.
 
 ## What it does
 
@@ -51,3 +55,7 @@ The `basic-read-build-meta` example builds metadata programmatically in code and
 - Interoperability with C# FieldedText library
 - Complex metadata that's easier to manage in XML
 - Better performance when accessing fields repeatedly (ordinal-based access is faster)
+
+## Code
+
+{@includeCode ./index.ts}

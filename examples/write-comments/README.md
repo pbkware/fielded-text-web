@@ -1,6 +1,10 @@
+---
+title: Write Comments
+---
+
 # Write Comments Example
 
-This example demonstrates how to add comment lines to fielded text output for documentation, metadata, and organization.
+This [example](#code) demonstrates how to add comment lines to fielded text output for documentation, metadata, and organization.
 
 ## What it does
 
@@ -17,7 +21,7 @@ npx tsx examples/write-comments/index.ts
 
 ## Expected output
 
-```
+```text
 Writing CSV with comments:
 =========================
 
@@ -95,3 +99,7 @@ Common comment characters by format:
 - **C-style**: `//` (single-line comments only)
 
 Set your comment character based on your file format and reader compatibility.
+
+## Code
+
+{@includeCode ./index.ts}

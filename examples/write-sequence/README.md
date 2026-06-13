@@ -1,6 +1,10 @@
+---
+title: Write Sequence
+---
+
 # Write Sequence Example
 
-This example demonstrates writing CSV files with sequences, where different records have different field structures.
+This [example](#code) demonstrates writing CSV files with sequences, where different records have different field structures.
 
 ## What It Does
 
@@ -84,9 +88,6 @@ Writing pets with sequences:
 Successfully wrote 7 records with different sequences
 ```
 
-## Related Examples
+## Code
 
-- [build-meta-with-sequences](../build-meta-with-sequences/) - Create the metadata
-- [read-sequence](../read-sequence/) - Read data with sequences
-- [write-sequence-events](../write-sequence-events/) - Easier writing with events
-- [sequences](../sequences/) - General sequence handling
+{@includeCode ./index.ts}

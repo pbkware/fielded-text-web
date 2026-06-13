@@ -1,6 +1,10 @@
+---
+title: Read Events
+---
+
 # Read Events Example
 
-This example demonstrates how to use event callbacks during reading to track progress, validate data, and compute statistics.
+This [example](#code) demonstrates how to use event callbacks during reading to track progress, validate data, and compute statistics.
 
 ## What it does
 
@@ -74,3 +78,7 @@ Events are useful for:
 - **Statistics**: Calculate aggregates without storing all records
 - **Logging**: Record parsing activity for debugging
 - **Conditional processing**: Handle different record types differently
+
+## Code
+
+{@includeCode ./index.ts}

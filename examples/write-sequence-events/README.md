@@ -1,10 +1,14 @@
+---
+title: Write Sequence with Events
+---
+
 # Write Sequence with Events Example
 
-This example demonstrates using **events** to simplify writing files with sequences. Events automatically handle sequence redirects, making the code much cleaner.
+This [example](#code) demonstrates using **events** to simplify writing files with sequences. Events automatically handle sequence redirects, making the code much cleaner.
 
 ## What It Does
 
-Writes the same pet data as [write-sequence](../write-sequence/), but uses an event-driven approach that's easier to work with when dealing with complex sequence structures.
+Writes the same pet data as `write-sequence` example, but uses an event-driven approach that's easier to work with when dealing with complex sequence structures.
 
 ## Key Concepts
 
@@ -53,7 +57,7 @@ while (!finished) {
 
 For a Dog record with training:
 
-```
+```text
 1. onFieldValueWriteReady(Type) → Set Type=2 → Dog Sequence invoked
 2. onFieldValueWriteReady(Name) → Set Name
 3. onFieldValueWriteReady(WalkDistance) → Set WalkDistance
@@ -72,7 +76,7 @@ npx tsx examples/write-sequence-events/index.ts
 
 ## Output
 
-```
+```text
 Writing pets with sequences using events:
 
 1,Misty,45
@@ -107,9 +111,6 @@ Advantages of using events:
 - One-off records with unique values
 - Direct mapping from objects to fields
 
-## Related Examples
+## Code
 
-- [write-sequence](../write-sequence/) - Manual approach for comparison
-- [write-events](../write-events/) - Events without sequences
-- [read-sequence](../read-sequence/) - Reading with sequences
-- [build-meta-with-sequences](../build-meta-with-sequences/) - Create the metadata
+{@includeCode ./index.ts}

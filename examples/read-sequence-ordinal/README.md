@@ -1,10 +1,14 @@
+---
+title: Read Sequence with Ordinals
+---
+
 # Read Sequence with Ordinals Example
 
-This example demonstrates using field ordinals (indices) for faster reading of large files with sequences.
+This [example](#code) demonstrates using field ordinals (indices) for faster reading of large files with sequences.
 
 ## What It Does
 
-Deserializes sequence metadata from an XML string and reads the same pet data as [read-sequence](../read-sequence/), but uses **ordinals** instead of field names for better performance.
+Deserializes sequence metadata from an XML string and reads the same pet data as `read-sequence` example, but uses **ordinals** instead of field names for better performance.
 
 ### What is an Ordinal?
 
@@ -95,8 +99,6 @@ do {
 } while (reader.nextResult());
 ```
 
-## Related Examples
+## Code
 
-- [read-sequence](../read-sequence/) - Same logic using field names
-- [build-meta-with-sequences](../build-meta-with-sequences/) - Create the metadata
-- [count-records](../count-records/) - Another performance optimization
+{@includeCode ./index.ts}

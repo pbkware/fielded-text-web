@@ -1,6 +1,10 @@
+---
+title: Basic Write
+---
+
 # Basic Write Example
 
-This example demonstrates how to write CSV data using the FieldedText library.
+This [example](#code) demonstrates how to write CSV data using the FieldedText library.
 
 ## What it does
 
@@ -42,3 +46,7 @@ Tool Set,0,79.50,False
 - **Quote stuffing**: Embedded quotes are duplicated (CSV standard)
 - **Number formatting**: Prices formatted to 2 decimal places
 - **Type safety**: Fields are strongly typed
+
+## Code
+
+{@includeCode ./index.ts}

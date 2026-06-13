@@ -1,6 +1,10 @@
+---
+title: Count Records
+---
+
 # Count Records Example
 
-This example demonstrates how to efficiently count records in a CSV file without reading the full data.
+This [example](#code) demonstrates how to efficiently count records in a CSV file without reading the full data.
 
 ## What It Does
 
@@ -46,7 +50,6 @@ while (reader.read()) {
 console.log(`Total records: ${reader.recordCount}`);
 ```
 
-## Related Examples
+## Code
 
-- [basic-read-build-meta](../basic-read-build-meta/) - Basic record reading
-- [read-events](../read-events/) - Processing with event hooks
+{@includeCode ./index.ts}

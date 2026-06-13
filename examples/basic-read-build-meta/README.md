@@ -1,6 +1,10 @@
+---
+title: Basic Read - Build Meta
+---
+
 # Basic Read Example - Build Meta in Code
 
-This example demonstrates how to read a CSV file using the FieldedText library by building the metadata programmatically in code.
+This [example](#code) demonstrates how to read a CSV file using the FieldedText library by building the metadata programmatically in code.
 
 ## What it does
 
@@ -39,3 +43,7 @@ Total records read: 4
 - **Sequences**: Define the order and grouping of fields
 - **FtReader**: High-level reader for parsing fielded text with `using` statement support
 - **Field Access**: Use `getFieldByName()` for convenient field access by name
+
+## Code
+
+{@includeCode ./index.ts}

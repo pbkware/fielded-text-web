@@ -12,7 +12,7 @@
   "excludeProtected": false,
   "excludeInternal": true,
   "router": "structure-dir",
-  "highlightLanguages": ["typescript", "xml", "bash", "json"],
+  "highlightLanguages": ["typescript", "xml", "bash", "json", "csv", "text"],
   "readme": "../README.md",
   "projectDocuments": ["src-docs/guide/index.md", "src-docs/source/index.md"],
   "cleanOutputDir": true,

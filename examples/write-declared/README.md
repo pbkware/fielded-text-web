@@ -1,6 +1,10 @@
+---
+title: Write Declared
+---
+
 # Write Declared Example
 
-This example demonstrates how to write fielded text with a declaration header that includes embedded metadata, loading the meta definition from an XML file.
+This [example](#code) demonstrates how to write fielded text with a declaration header that includes embedded metadata, loading the meta definition from an XML file.
 
 ## What it does
 
@@ -18,7 +22,7 @@ npx tsx examples/write-declared/index.ts
 
 ## Expected output
 
-```
+```text
 Writing declared fielded text:
 ==============================
 
@@ -57,3 +61,7 @@ This declares the file as FieldedText format version 1.1 with embedded meta.
 - **Interchange**: Files can be read without access to original meta files
 - **Version compatibility**: Readers can check format version before parsing
 - **Meta embedding**: Metadata can be embedded in the file for portability
+
+## Code
+
+{@includeCode ./index.ts}
