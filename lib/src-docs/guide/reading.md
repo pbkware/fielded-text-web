@@ -21,143 +21,145 @@ This guide covers reading fielded text files using the FieldedText TypeScript li
 
 ## Basic Reading
 
-The basic pattern for reading fielded text:
+The basic pattern for reading fielded text data is:
 
 ```typescript
-import { SerializationReader, FtMeta } from 'fielded-text-web';
+import { FtReader, FtXmlMetaSerialization } from "@pbkware/fielded-text-web";
 
-// 1. Create metadata (or load from file)
-const meta = buildMetadata(); // See Metadata Guide
+// CSV data to be read
+const csvData = `Name,Age
+John Doe,30
+Jane Smith,25`;
 
-// 2. Create reader
-const reader = new SerializationReader();
+// Meta describing the schema of the CSV data
+const xmlMeta = `<?xml version="1.0" encoding="utf-8"?>
+<FieldedText HeadingLineCount="1">
+  <Field Name="Name"/>
+  <Field Name="Age" DataType="Integer"/>
+</FieldedText>`;
 
-// 3. Load metadata
-reader.loadMeta(meta);
+// Load meta data from XML
+const metaReader = new FtXmlMetaSerialization();
+const meta = metaReader.deserialize(xmlMeta);
 
-// 4. Open data source
-reader.open(csvData);
+// Create a reader to read the CSV data
+const reader = new FtReader(meta, csvData);
 
-// 5. Read records in a loop
+// Read and log the data
 while (reader.read()) {
-  // Access field values
-  const name = reader.fieldList.get(0).asString;
-  const age = Number(reader.fieldList.get(1).asBigInt);
-  console.log(name, age);
+  console.log(
+    reader.fieldList.get(0).asString,
+    reader.fieldList.get(1).asBigInt,
+  );
 }
-
-// 6. Close reader
-reader.close();
 ```
 
-## Reading from Strings
+## The FtTextReader interface
 
-For in-memory data or small files:
+In the above Basic Reading example, we use {@link meta/ft-meta!FtReader FtReader} to read the data file. FtReader understands the structure of a Fielded Text file however it sources the data through a separate text reader. A text reader is a class which implements the {@link meta/ft-meta!FtTextReader FtTextReader} interface which reads one character at a time from the fielded text source.
 
 ```typescript
-const csvData = `Name,Age,City
-John Doe,30,Seattle
-Jane Smith,25,Portland`;
+export interface FtTextReader {
+  /**
+   * Reads the next character from the text reader and advances the character position by one character.
+   * @returns The character read as a number (charCode), or -1 if the end of the text has been reached.
+   */
+  read(): number;
+}
+```
 
-const reader = new SerializationReader();
+The library has a built-in {@link meta/ft-meta!FtStringReader FtStringReader} class which implements FtTextReader for strings. Below is the above Basic Reading example expanded to explicitly create a `FtStringReader` which reads the CSV data and the FtReader using that `FtStringReader`.
+
+```typescript
+import { FtReader, FtStringReader, FtXmlMetaSerialization } from "@pbkware/fielded-text-web";
+
+// CSV data to be read
+const csvData = `Name,Age
+John Doe,30
+Jane Smith,25`;
+
+// Meta describing the schema of the CSV data
+const xmlMeta = `<?xml version="1.0" encoding="utf-8"?>
+<FieldedText HeadingLineCount="1">
+  <Field Name="Name"/>
+  <Field Name="Age" DataType="Integer"/>
+</FieldedText>`;
+
+// Load meta data from XML
+const metaReader = new FtXmlMetaSerialization();
+const meta = metaReader.deserialize(xmlMeta);
+
+const textReader = new FtStringReader(csvData);
+
+// Create the serialization reader
+const reader = new FtReader();
+// Load the meta into the serialization reader
 reader.loadMeta(meta);
-reader.open(csvData);
+// Open the text reader
+// `true` indicates that header lines should be read immediately
+// and the reader will be positioned at the first data line
+reader.open(textReader, true); // true is default, but shown here for clarity
 
+// Read and log the data
 while (reader.read()) {
-  // Process records
+  console.log(
+    reader.fieldList.get(0).asString,
+    reader.fieldList.get(1).asBigInt,
+  );
 }
-
-reader.close();
 ```
 
-## Reading from Streams
+Custom `FtTextReader`s can be created to read other types of data sources however currently reading asynchronous data sources is not supported.
 
-For large files or browser environments, use Web Streams:
+## Reading Files
 
-```typescript
-// Create a ReadableStream
-const stream = new ReadableStream<string>({
-  async start(controller) {
-    controller.enqueue('Name,Age\n');
-    controller.enqueue('John,30\n');
-    controller.enqueue('Jane,25\n');
-    controller.close();
-  },
-});
-
-// Get reader
-const streamReader = stream.getReader();
-
-// Use with SerializationReader
-const reader = new SerializationReader();
-reader.loadMeta(meta);
-reader.openReader(streamReader);
-
-while (await reader.read()) {
-  console.log(reader.fieldList.get(0).asString);
-}
-
-reader.close();
-```
-
-## Reading from Node.js Files
-
-For Node.js file system access:
-
-```typescript
-import { FtNodeReader } from 'fielded-text-web';
-import { createReadStream } from 'node:fs';
-
-const fileStream = createReadStream('data.csv', { encoding: 'utf8' });
-
-const reader = new FtNodeReader();
-reader.loadMeta(meta);
-reader.openNodeStream(fileStream);
-
-while (await reader.read()) {
-  // Process records
-}
-
-reader.close();
-```
-
-### Reading Large Files
-
-For very large files, streaming is efficient:
-
-```typescript
-import { FtNodeReader } from 'fielded-text-web';
-import { createReadStream } from 'node:fs';
-
-const fileStream = createReadStream('huge-file.csv', {
-  encoding: 'utf8',
-  highWaterMark: 64 * 1024, // 64KB buffer
-});
-
-const reader = new FtNodeReader();
-reader.loadMeta(meta);
-reader.openNodeStream(fileStream);
-
-let recordCount = 0;
-let totalAmount = 0;
-
-while (await reader.read()) {
-  recordCount++;
-  totalAmount += reader.fieldList.get(2).asDecimal;
-
-  // Log progress
-  if (recordCount % 10000 === 0) {
-    console.log(`Processed ${recordCount} records...`);
-  }
-}
-
-console.log(`Total records: ${recordCount}`);
-console.log(`Total amount: ${totalAmount}`);
-
-reader.close();
-```
+Use the `fielded-text-node` npm package to read and write files using node.
 
 ## Accessing Field Values
+
+After a record has been read, the values of the fields in that record are then available in {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} (or its descendants - including {@link api/ft-reader!FtReader FtReader}). Two steps are required to read the field values:
+
+1. Locate the {@link fields/instances/ft-field!FtField field}(s)
+1. Getting the field value
+
+### Locating a field
+
+A record's fields are stored in {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader}.{@link serialization/ft-serialization-reader!FtSerializationReader.fieldList fieldList}. This {@link fields/instances/ft-field-list!FtFieldList class} contains all the field instances for this record.  The total number of fields is specified by the {@link fields/instances/ft-field-list!FtFieldList.count count} accessor.  Individual fields can be accessed either by:
+
+- index (or ordinal) - using the {@link fields/instances/ft-field-list!FtFieldList.get get(index: number)} function;
+- field name - using the {@link fields/instances/ft-field-list!FtFieldList.getByName getByName(name: string)} function;
+- field id - using the {@link fields/instances/ft-field-list!FtFieldList.indexOfId indexOfId(id: number)} and {@link fields/instances/ft-field-list!FtFieldList.get get(index: number)} functions;
+
+You can use the following {@link fields/instances/ft-field-list!FtFieldList FtFieldList} functions to get the index of a field: {@link fields/instances/ft-field-list!FtFieldList.indexOf indexOf(field: FtField)}, {@link fields/instances/ft-field-list!FtFieldList.indexOfName indexOfName(name: string)} and {@link fields/instances/ft-field-list!FtFieldList.indexOfId indexOfId(id: number)}. The index of a field will remain the same for records within the same `table` within the data. This is further discussed in [Tables](tables.md).
+
+{@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} has 3 convenience functions which also can be used to access a field:
+
+- {@link serialization/ft-serialization-reader!FtSerializationReader.getField getField(idx: number)} - get field by index
+- {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldByName getFieldByName(name: string)} - get field by name
+- {@link serialization/ft-serialization-reader!FtSerializationReader.getOrdinal getOrdinal(name: string)} - get index of field by name
+
+### Getting a field's value
+
+Once a {@link fields/instances/ft-field!FtField field} has been obtained, its value can be retrieved in several ways.
+
+- Checking if the field has a null value
+- Casting the {@link fields/instances/ft-field!FtField field} to its concrete descendant type and using this class's {@link fields/instances/ft-generic-field!FtGenericField.value value} accessor.
+- Using one of {@link fields/instances/ft-field!FtField FtField}'s asXXX (eg. {@link fields/instances/ft-field!FtField.asFloat asFloat}) accessors to coerce the field's value to a particular type.
+- Using {@link fields/instances/ft-field!FtField.loadedValueText loadedValueText} to get the text representing that field value in the data.
+
+These methods of getting a field's value are further discussed below:
+
+#### Field Null value
+
+#### Casting field to descendant representing data type
+
+#### Using asXXX accessors
+
+#### Using loadedValueText
+
+
+
+
 
 ### By Index
 
@@ -226,6 +228,16 @@ while (reader.read()) {
 ```
 
 When a field is null, nullable value accessors return JavaScript `null`.
+
+## Read record
+
+## Seek
+
+The {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} {@link serialization/ft-serialization-reader!FtSerializationReader.seek seek} and {@link serialization/ft-serialization-reader!FtSerializationReader.seekEnd seekEnd} functions allow you to move forward in the data by either a certain number of records (seek) or to the end of the data (seekEnd).  They are similar to the {@link serialization/ft-serialization-reader!FtSerializationReader.read read} function however they do not parse the fields in the record and, accordingly, move through the data a lot faster.
+
+While the seek functions do not parse fields or fire events related to fields, they still update record information in {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} and fire events related to lines and records. Accordingly, {@link serialization/ft-serialization-reader!FtSerializationReader.seekEnd seekEnd} is an ideal way to quickly count the number of records in fielded text data before actually parsing it.
+
+Note that the seek functions ignore table boundaries in data.
 
 ## Event Callbacks
 
