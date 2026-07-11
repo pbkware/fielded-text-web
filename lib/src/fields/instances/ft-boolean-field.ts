@@ -2,7 +2,6 @@ import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokatio
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
 import { FtBooleanStyles } from '../../types/enums/ft-boolean-styles.js';
 import { FtDataType } from '../../types/enums/ft-data-type.js';
-import { FtFieldNullError } from '../../types/errors/ft-field-null-error.js';
 import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtBooleanFieldDefinition } from '../definitions/ft-boolean-field-definition.js';
 import { FtField } from './ft-field.js';
@@ -39,32 +38,20 @@ export class FtBooleanField extends FtGenericField<boolean> {
     return field.dataType === FtDataType.Boolean;
   }
 
-  protected override getAsBoolean(): boolean {
-    if (this.isNull()) {
-      throw new FtFieldNullError(`Boolean field value is null: ${this.name}`);
+  override setValue(newValue: FtField.Value): number {
+    if (typeof newValue === 'boolean') {
+      return super.setValue(newValue);
     } else {
-      return this.value;
+      throw new FtFieldTypeError(`Invalid type (${typeof newValue}) for boolean field: ${this.name}`);
     }
+  }
+
+  protected override getAsBoolean(): boolean {
+    return this.getValue();
   }
 
   protected override setAsBoolean(newValue: boolean): void {
-    this.setValue(newValue);
-  }
-
-  protected setAsUnknown(newValue: unknown): void {
-    switch (typeof newValue) {
-      case 'boolean':
-        this.setValue(newValue);
-        break;
-      case 'object':
-        if (newValue === null) {
-          throw new FtFieldNullError(`Boolean field value is null: ${this.name}`);
-        } else {
-          throw new FtFieldTypeError(`Invalid unknown object for Boolean field: ${this.name}`);
-        }
-      default:
-        throw new FtFieldTypeError(`Invalid type (${typeof newValue}) for boolean field: ${this.name}`);
-    }
+    super.setValue(newValue);
   }
 
   protected isValueEqual(left: boolean, right: boolean): boolean {

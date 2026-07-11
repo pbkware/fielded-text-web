@@ -11,6 +11,7 @@ import { FtQuotedType } from '../../types/enums/ft-quoted-type.js';
 import { FtSequenceInvokationDelay } from '../../types/enums/ft-sequence-invokation-delay.js';
 import { FtSequenceRedirectType } from '../../types/enums/ft-sequence-redirect-type.js';
 import { FtTruncateType } from '../../types/enums/ft-truncate-type.js';
+import { FtFieldNullError } from '../../types/errors/ft-field-null-error.js';
 import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtUnreachableCaseError } from '../../types/errors/ft-internal-error.js';
 import { FtFieldDefinition } from '../definitions/ft-field-definition.js';
@@ -130,7 +131,7 @@ export abstract class FtField {
   }
 
   /**
-   * The formatted text of the field value as loaded from the data or via {@link FtField.loadValueText}.
+   * The formatted text of the field value as loaded from the data or via {@link (FtField:class).loadValueText}.
    */
   get valueText(): string {
     return this._valueText;
@@ -288,19 +289,23 @@ export abstract class FtField {
   }
 
   /**
-   * The field value as an unknown type.
+   * The field value as an unspecified type.
    *
    * When setting the value, the actual type must be compatible with the field's expected type.
    *
    * @throws FtTypeError if the value being set is not of the field's expected type.
    * @throws FtNullError if the field is `null`.
    */
-  get asUnknown(): unknown {
-    return this.getAsUnknown();
+  get value(): FtField.Value {
+    if (this.isNull()) {
+      throw new FtFieldNullError(`Field value is null: ${this.name}`);
+    } else {
+      return this.getValue();
+    }
   }
 
-  set asUnknown(value: unknown) {
-    this.setAsUnknown(value);
+  set value(value: FtField.Value) {
+    this.setValue(value);
   }
 
   /**
@@ -310,7 +315,11 @@ export abstract class FtField {
    * @throws FtNullError if the field is `null`.
    */
   get asString(): string {
-    return this.getAsString();
+    if (this.isNull()) {
+      throw new FtFieldNullError(`String field value is null: ${this.name}`);
+    } else {
+      return this.getAsString();
+    }
   }
 
   set asString(value: string) {
@@ -324,7 +333,11 @@ export abstract class FtField {
    * @throws FtNullError if the field is `null`.
    */
   get asBoolean(): boolean {
-    return this.getAsBoolean();
+    if (this.isNull()) {
+      throw new FtFieldNullError(`Boolean field value is null: ${this.name}`);
+    } else {
+      return this.getAsBoolean();
+    }
   }
 
   set asBoolean(value: boolean) {
@@ -334,11 +347,15 @@ export abstract class FtField {
   /**
    * The field value as an integer.
 
-   * @throws FtTypeError if the field is not of data type `BigInt`.
+   * @throws FtTypeError if the field is not of data type `Integer`.
    * @throws FtNullError if the field is `null`.
    */
   get asInteger(): number {
-    return this.getAsInteger();
+    if (this.isNull()) {
+      throw new FtFieldNullError(`Integer field value is null: ${this.name}`);
+    } else {
+      return this.getAsInteger();
+    }
   }
 
   set asInteger(value: number) {
@@ -352,7 +369,11 @@ export abstract class FtField {
    * @throws FtNullError if the field is `null`.
    */
   get asBigInt(): bigint {
-    return this.getAsBigInt();
+    if (this.isNull()) {
+      throw new FtFieldNullError(`Integer field value is null: ${this.name}`);
+    } else {
+      return this.getAsBigInt();
+    }
   }
 
   set asBigInt(value: bigint) {
@@ -366,7 +387,11 @@ export abstract class FtField {
    * @throws FtNullError if the field is `null`.
    */
   get asFloat(): number {
-    return this.getAsFloat();
+    if (this.isNull()) {
+      throw new FtFieldNullError(`Float field value is null: ${this.name}`);
+    } else {
+      return this.getAsFloat();
+    }
   }
 
   set asFloat(value: number) {
@@ -380,7 +405,11 @@ export abstract class FtField {
    * @throws FtNullError if the field is `null`.
    */
   get asDateTime(): Date {
-    return this.getAsDateTime();
+    if (this.isNull()) {
+      throw new FtFieldNullError(`DateTime field value is null: ${this.name}`);
+    } else {
+      return this.getAsDateTime();
+    }
   }
 
   set asDateTime(value: Date) {
@@ -394,7 +423,11 @@ export abstract class FtField {
    * @throws FtNullError if the field is `null`.
    */
   get asDecimal(): number {
-    return this.getAsDecimal();
+    if (this.isNull()) {
+      throw new FtFieldNullError(`Decimal field value is null: ${this.name}`);
+    } else {
+      return this.getAsDecimal();
+    }
   }
 
   set asDecimal(value: number) {
@@ -402,19 +435,19 @@ export abstract class FtField {
   }
 
   /**
-   * The field value as an unknown type or null.
+   * The field value as an unspecified type or null.
 
    * Use with caution, as this bypasses type safety. Ensure that the value being set is compatible with the field's expected type.
    */
-  get asNullableUnknown(): unknown {
-    return this.isNull() ? null : this.getAsUnknown();
+  get nullableValue(): FtField.Value | null {
+    return this.isNull() ? null : this.getValue();
   }
 
-  set asNullableUnknown(value: unknown) {
+  set nullableValue(value: FtField.Value | null) {
     if (value === null) {
       this.setNull();
     } else {
-      this.setAsUnknown(value);
+      this.setValue(value);
     }
   }
 
@@ -576,9 +609,9 @@ export abstract class FtField {
   /**
    * Loads the field headings from an array of strings.
    *
-   * The headings are loaded according to the field's heading constraint. See {@link FtField.loadHeading} for more information.
+   * The headings are loaded according to the field's heading constraint. See {@link (FtField:class).loadHeading} for more information.
    *
-   * @param value - An array of headings. The length of the array should be equal to {@link FtField.headingCount}. Extra headings are ignored and missing headings are set to empty strings.
+   * @param value - An array of headings. The length of the array should be equal to {@link (FtField:class).headingCount}. Extra headings are ignored and missing headings are set to empty strings.
    */
   loadHeadings(value: string[]): void {
     const valueCount = value.length;
@@ -821,17 +854,23 @@ export abstract class FtField {
    * Formats the field value to a string.
    *
    * The formatting includes data type formatting but not text formatting such as quoting, padding, truncating etc. This formatted string typically
-   * is identical to the string value in the field's {@link FtField.valueText} property (unless the field value has been modified after loading).
+   * is identical to the string value in the field's {@link (FtField:class).valueText} property (unless the field value has been modified after loading).
    */
   abstract formatValue(): string;
   protected abstract loadValueFromText(valueText: string): void;
 
-  protected abstract getAsUnknown(): unknown;
-  protected abstract setAsUnknown(newValue: unknown): void;
+  protected abstract getValue(): FtField.Value;
+  protected abstract setValue(newValue: FtField.Value): number;
 
   protected abstract getAsRedirectBoolean(): boolean;
   protected abstract getAsRedirectInteger(): bigint;
   protected abstract getAsRedirectFloat(): number;
   protected abstract getAsRedirectDateTime(): Date;
   protected abstract getAsRedirectDecimal(): number;
+}
+
+/** @public */
+export namespace FtField {
+  export type Value = string | boolean | number | bigint | Date;
+  export type NullableValue = Value | null;
 }

@@ -3,9 +3,10 @@ title: Guides
 children:
     - ./getting-started.md
     - ./meta-data.md
-    # - ./reading.md
+    - ./reading.md
     # - ./writing.md
     # - ./sequences.md
+    - ./tables.md
     # - ./advanced.md
     - ./examples/index.md
 ---

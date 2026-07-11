@@ -42,7 +42,7 @@ export class FtBooleanField extends FtGenericField<boolean> {
     // (undocumented)
     protected setAsBoolean(newValue: boolean): void;
     // (undocumented)
-    protected setAsUnknown(newValue: unknown): void;
+    setValue(newValue: FtField.Value): number;
     // (undocumented)
     get styles(): FtBooleanStyles;
     // (undocumented)
@@ -258,7 +258,7 @@ export class FtDateTimeField extends FtGenericField<Date> {
     // (undocumented)
     protected setAsDateTime(newValue: Date): void;
     // (undocumented)
-    protected setAsUnknown(newValue: unknown): void;
+    setValue(newValue: FtField.Value): number;
     // (undocumented)
     get styles(): number;
 }
@@ -362,7 +362,7 @@ export class FtDecimalField extends FtGenericField<number> {
     // (undocumented)
     protected setAsDecimal(newValue: number): void;
     // (undocumented)
-    protected setAsUnknown(newValue: unknown): void;
+    setValue(newValue: FtField.Value): number;
     // (undocumented)
     get styles(): number;
 }
@@ -675,8 +675,6 @@ export abstract class FtField {
     set asNullableInteger(value: number | null);
     get asNullableString(): string | null;
     set asNullableString(value: string | null);
-    get asNullableUnknown(): unknown;
-    set asNullableUnknown(value: unknown);
     // @internal (undocumented)
     get asRedirectBoolean(): boolean;
     // @internal (undocumented)
@@ -691,8 +689,6 @@ export abstract class FtField {
     get asRedirectString(): string;
     get asString(): string;
     set asString(value: string);
-    get asUnknown(): unknown;
-    set asUnknown(value: unknown);
     // @internal
     checkNullSequenceRedirect(): number;
     // (undocumented)
@@ -735,7 +731,7 @@ export abstract class FtField {
     // (undocumented)
     protected getAsString(): string;
     // (undocumented)
-    protected abstract getAsUnknown(): unknown;
+    protected abstract getValue(): FtField.Value;
     // (undocumented)
     get headingAlwaysWriteOptionalQuote(): boolean;
     // (undocumented)
@@ -789,6 +785,8 @@ export abstract class FtField {
     get name(): string;
     // (undocumented)
     static readonly NO_FIELDS_AFFECTED_INDEX = -1;
+    get nullableValue(): FtField.Value | null;
+    set nullableValue(value: FtField.Value | null);
     // (undocumented)
     protected onSequenceRedirect(sequence: FtSequence | undefined, delay: FtSequenceInvokationDelay): number;
     // (undocumented)
@@ -819,12 +817,14 @@ export abstract class FtField {
     protected setAsInteger(_newValue: number): void;
     // (undocumented)
     protected setAsString(_newValue: string): void;
-    // (undocumented)
-    protected abstract setAsUnknown(newValue: unknown): void;
     setNull(): number;
+    // (undocumented)
+    protected abstract setValue(newValue: FtField.Value): number;
     // (undocumented)
     get sidelined(): boolean;
     set sidelined(value: boolean);
+    get value(): FtField.Value;
+    set value(value: FtField.Value);
     // (undocumented)
     get valueAlwaysWriteOptionalQuote(): boolean;
     get valueAssigned(): boolean;
@@ -853,6 +853,14 @@ export abstract class FtField {
     get valueWritePrefixSpace(): boolean;
     // (undocumented)
     get width(): number;
+}
+
+// @public (undocumented)
+export namespace FtField {
+    // (undocumented)
+    export type NullableValue = Value | null;
+    // (undocumented)
+    export type Value = string | boolean | number | bigint | Date;
 }
 
 // @public
@@ -1002,7 +1010,7 @@ export class FtFloatField extends FtGenericField<number> {
     // (undocumented)
     protected setAsFloat(newValue: number): void;
     // (undocumented)
-    protected setAsUnknown(newValue: unknown): void;
+    setValue(newValue: FtField.Value): number;
     // (undocumented)
     get styles(): number;
 }
@@ -1072,7 +1080,7 @@ export class FtFloatMetaField extends FtGenericMetaField<number> {
 }
 
 // @public
-export abstract class FtGenericField<T extends string | number | boolean | bigint | Date> extends FtField {
+export abstract class FtGenericField<T extends FtField.Value> extends FtField {
     protected constructor(sequenceInvokation: FtSequenceInvokation, sequenceItem: FtSequenceItem, valueTextNullTrimmable: boolean, definition: FtGenericFieldDefinition<T>);
     // (undocumented)
     get definition_(): FtGenericFieldDefinition<T>;
@@ -1089,7 +1097,7 @@ export abstract class FtGenericField<T extends string | number | boolean | bigin
     // (undocumented)
     protected getAsRedirectInteger(): bigint;
     // (undocumented)
-    protected getAsUnknown(): unknown;
+    protected getValue(): T;
     protected abstract isValueEqual(left: T, right: T): boolean;
     // (undocumented)
     protected loadValueFromText(valueText: string): void;
@@ -1168,7 +1176,7 @@ export class FtIntegerField extends FtGenericField<bigint> {
     // (undocumented)
     protected setAsInteger(newValue: number): void;
     // (undocumented)
-    protected setAsUnknown(newValue: unknown): void;
+    setValue(newValue: FtField.Value): number;
     // (undocumented)
     get styles(): number;
 }
@@ -2615,8 +2623,8 @@ export class FtSerializationReader extends SerializationCore {
     get declared(): boolean;
     getField(idx: number): FtField;
     getFieldByName(name: string): FtField | undefined;
-    getFieldValue(idx: number): unknown;
-    getFieldValueByName(name: string): unknown;
+    getFieldValue(idx: number): FtField.Value | null;
+    getFieldValueByName(name: string): FtField.Value | null;
     // (undocumented)
     protected getFileMetaAsText(fileMetaReference: string): FtSerializationReader.FileMetaAsTextResult | string;
     // (undocumented)
@@ -2688,14 +2696,14 @@ export class FtSerializationWriter extends SerializationCore {
     setBoolean(idx: number, value: boolean | null): void;
     setDateTime(idx: number, value: Date | null): void;
     setDecimal(idx: number, value: number | null): void;
-    setFieldValue(idx: number, value: unknown): void;
-    setFieldValueByName(name: string, value: unknown): void;
+    setFieldValue(idx: number, value: FtField.Value): void;
+    setFieldValueByName(name: string, value: FtField.Value): void;
     setFloat(idx: number, value: number | null): void;
     setInteger(idx: number, value: number | bigint | null): void;
     setNull(idx: number): void;
     setNullByName(name: string): void;
     setString(idx: number, value: string | null): void;
-    setValues(values: unknown[]): void;
+    setValues(values: FtField.Value[]): void;
     write(): void;
     writeComment(comment: string, beforeCommentChars?: string): void;
     writeHeader(): void;
@@ -2713,7 +2721,7 @@ export class FtStringField extends FtGenericField<string> {
     // (undocumented)
     protected setAsString(newValue: string): void;
     // (undocumented)
-    protected setAsUnknown(newValue: unknown): void;
+    setValue(newValue: FtField.Value): number;
 }
 
 // @public

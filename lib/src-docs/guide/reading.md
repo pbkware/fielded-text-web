@@ -146,7 +146,7 @@ Once a {@link fields/instances/ft-field!FtField field} has been obtained, its va
 - Casting the {@link fields/instances/ft-field!FtField field} to its concrete descendant type and using this class's {@link fields/instances/ft-generic-field!FtGenericField.value value} accessor.
 - Using one of {@link fields/instances/ft-field!FtField FtField}'s asXXX where XXX is the data type (eg. {@link fields/instances/ft-field!FtField.asFloat asFloat}) to retrieve the value without have to cast to the descendant field.
 - Using one of {@link fields/instances/ft-field!FtField FtField}'s asNullableXXX where XXX is the data type to retrive the value or null.
-- Using {@link fields/instances/ft-field!FtField FtField}.{@link fields/instances/ft-field!FtField.asUnknown asUnknown} accessor to retrieve the value with type unknown.
+- Using {@link fields/instances/ft-field!FtField FtField}.{@link fields/instances/ft-field!FtField.value value} accessor to retrieve the value with unspecified type.
 - Using {@link fields/instances/ft-field!FtField.valueText valueText} to get the formatted text representing that field value in the data.
 - Using {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader}'s {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader.getFieldValue getFieldValue()} or {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldValueByName getFieldValueByName()} methods.
 
@@ -185,7 +185,7 @@ In the above code snippet, if a field is null, then without including the `isNul
 
 #### Using asNullableXXX accessors
 
-#### Using asUnknown accessor
+#### Using value accessor
 
 #### Using FtSerializationReader's getFieldValue() or getFieldValueByName() functions
 
@@ -525,10 +525,3 @@ while (reader.read()) {
   // Use field methods directly when possible
 }
 ```
-
-## Next Steps
-
-- **[Writing Guide](writing.md)** - Write fielded text files
-- **[Metadata Guide](metadata.md)** - Define field types and formats
-- **[Advanced Guide](advanced.md)** - Sequences, redirects, advanced topics
-- **Examples** - Practical reading examples

@@ -91,7 +91,7 @@ do {
     }
 
     // Use ordinals for fast access
-    const value = reader.fieldList.get(recOrdinals[i]).asUnknown;
+    const value = reader.fieldList.get(recOrdinals[i]).value;
   }
 
   // Reset ordinals when table changes

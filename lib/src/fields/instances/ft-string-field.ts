@@ -1,7 +1,6 @@
 import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
 import { FtDataType } from '../../types/enums/ft-data-type.js';
-import { FtFieldNullError } from '../../types/errors/ft-field-null-error.js';
 import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtStringFieldDefinition } from '../definitions/ft-string-field-definition.js';
 import { FtField } from './ft-field.js';
@@ -22,32 +21,20 @@ export class FtStringField extends FtGenericField<string> {
     return field.dataType === FtDataType.String;
   }
 
-  protected override getAsString(): string {
-    if (this.isNull()) {
-      throw new FtFieldNullError(`String field value is null: ${this.name}`);
+  override setValue(newValue: FtField.Value): number {
+    if (typeof newValue === 'string') {
+      return super.setValue(newValue);
     } else {
-      return this.value;
+      throw new FtFieldTypeError(`Invalid type (${typeof newValue}) for string field: ${this.name}`);
     }
+  }
+
+  protected override getAsString(): string {
+    return this.getValue();
   }
 
   protected override setAsString(newValue: string): void {
-    this.setValue(newValue);
-  }
-
-  protected setAsUnknown(newValue: unknown): void {
-    switch (typeof newValue) {
-      case 'string':
-        this.setValue(newValue);
-        break;
-      case 'object':
-        if (newValue === null) {
-          throw new FtFieldNullError(`String field value is null: ${this.name}`);
-        } else {
-          throw new FtFieldTypeError(`Invalid unknown object for String field: ${this.name}`);
-        }
-      default:
-        throw new FtFieldTypeError(`Invalid type (${typeof newValue}) for string field: ${this.name}`);
-    }
+    super.setValue(newValue);
   }
 
   protected isValueEqual(left: string, right: string): boolean {

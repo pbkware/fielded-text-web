@@ -131,7 +131,7 @@ do {
     // Access fields by ordinal (faster than by name)
     const values: unknown[] = [];
     for (const ordinal of recOrdinals) {
-      values.push(reader.fieldList.get(ordinal).asUnknown);
+      values.push(reader.fieldList.get(ordinal).value);
     }
 
     console.log(

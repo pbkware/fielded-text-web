@@ -142,8 +142,8 @@ export class FtSerializationWriter extends SerializationCore {
    *
    * @throws FtTypeError if the value being set is not of the field's expected type.
    */
-  setFieldValue(idx: number, value: unknown): void {
-    this.fieldList.get(idx).asNullableUnknown = value;
+  setFieldValue(idx: number, value: FtField.Value): void {
+    this.fieldList.get(idx).nullableValue = value;
   }
 
   /**
@@ -154,12 +154,12 @@ export class FtSerializationWriter extends SerializationCore {
    *
    * @throws FtTypeError if the value being set is not of the field's expected type.
    */
-  setFieldValueByName(name: string, value: unknown): void {
+  setFieldValueByName(name: string, value: FtField.Value): void {
     const field = this.fieldList.getByName(name);
     if (!field) {
       throw new Error(`Field not found: ${name}`);
     }
-    field.asNullableUnknown = value;
+    field.nullableValue = value;
   }
 
   /**
@@ -267,13 +267,13 @@ export class FtSerializationWriter extends SerializationCore {
    *
    * @throws FtTypeError if any of the values being set is not of the corresponding field's expected type.
    */
-  setValues(values: unknown[]): void {
+  setValues(values: FtField.Value[]): void {
     if (values.length > this.fieldCount) {
       throw new Error(`Values length ${values.length} exceeds field count ${this.fieldCount}`);
     }
 
     for (let i = 0; i < values.length; i++) {
-      this.fieldList.get(i).asNullableUnknown = values[i];
+      this.fieldList.get(i).nullableValue = values[i];
     }
   }
 

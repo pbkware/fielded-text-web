@@ -37,7 +37,7 @@ writer.onFieldValueWriteReady = (args) => {
   fieldCount++;
   const fieldIndex = writer.fieldList.indexOf(args.field);
   console.log(
-    `[Event] Field ${fieldIndex} (${args.field.name}) value ready: ${args.field.asUnknown}`,
+    `[Event] Field ${fieldIndex} (${args.field.name}) value ready: ${args.field.value}`,
   );
 
   // Validate data before writing

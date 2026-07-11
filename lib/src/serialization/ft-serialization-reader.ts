@@ -413,19 +413,19 @@ export class FtSerializationReader extends SerializationCore {
   /**
    * Get a field value by index. Returns `null` if the field value is null.
    */
-  getFieldValue(idx: number): unknown {
-    return this.fieldList.get(idx).asNullableUnknown;
+  getFieldValue(idx: number): FtField.Value | null {
+    return this.fieldList.get(idx).nullableValue;
   }
 
   /**
    * Get a field value by name. Returns `null` if the field value is null.
    */
-  getFieldValueByName(name: string): unknown {
+  getFieldValueByName(name: string): FtField.Value | null {
     const field = this.fieldList.getByName(name);
     if (!field) {
       throw new Error(`Field not found: ${name}`);
     }
-    return field.asNullableUnknown;
+    return field.nullableValue;
   }
 
   /**

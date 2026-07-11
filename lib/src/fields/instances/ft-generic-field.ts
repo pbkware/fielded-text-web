@@ -10,7 +10,7 @@ import { FtField } from './ft-field.js';
  * Provides type-safe value access and implements conversion methods.
  * @public
  */
-export abstract class FtGenericField<T extends string | number | boolean | bigint | Date> extends FtField {
+export abstract class FtGenericField<T extends FtField.Value> extends FtField {
   private _value!: T;
 
   protected constructor(
@@ -35,19 +35,23 @@ export abstract class FtGenericField<T extends string | number | boolean | bigin
     return super.definition_ as FtGenericFieldDefinition<T>;
   }
 
-  get value(): T {
-    return this.getValueOrThrowNull();
+  override get value(): T {
+    if (this.isNull()) {
+      throw new Error(`Attempt to get value from null field "${this.name}"`);
+    } else {
+      return this._value;
+    }
   }
 
-  set value(val: T) {
+  override set value(val: T) {
     this.setValue(val); // ignore fieldsAffectedFromIndex for direct value sets, as sequence redirects are not expected in this case
   }
 
-  get nullableValue(): T | null {
-    return this.isNull() ? null : this.value;
+  override get nullableValue(): T | null {
+    return this.isNull() ? null : this._value;
   }
 
-  set nullableValue(value: T | null) {
+  override set nullableValue(value: T | null) {
     if (value === null) {
       this.setNull();
     } else {
@@ -75,7 +79,7 @@ export abstract class FtGenericField<T extends string | number | boolean | bigin
     }
   }
 
-  protected getAsUnknown(): unknown {
+  protected getValue(): T {
     return this._value;
   }
 
@@ -122,13 +126,6 @@ export abstract class FtGenericField<T extends string | number | boolean | bigin
         }
       }
     }
-  }
-
-  private getValueOrThrowNull(): T {
-    if (this.isNull()) {
-      throw new Error(`Attempt to get value from null field "${this.name}"`);
-    }
-    return this._value;
   }
 
   private checkValueSequenceRedirect(): number {

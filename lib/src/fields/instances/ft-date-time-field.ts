@@ -1,7 +1,6 @@
 import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
 import { FtDataType } from '../../types/enums/ft-data-type.js';
-import { FtFieldNullError } from '../../types/errors/ft-field-null-error.js';
 import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtDateTimeFieldDefinition } from '../definitions/ft-date-time-field-definition.js';
 import { FtField } from './ft-field.js';
@@ -34,38 +33,30 @@ export class FtDateTimeField extends FtGenericField<Date> {
     return field.dataType === FtDataType.DateTime;
   }
 
-  protected override getAsDateTime(): Date {
-    if (this.isNull()) {
-      throw new FtFieldNullError(`DateTime field value is null: ${this.name}`);
-    } else {
-      return this.value;
-    }
-  }
-
-  protected override setAsDateTime(newValue: Date): void {
-    this.setValue(newValue);
-  }
-
-  protected setAsUnknown(newValue: unknown): void {
+  override setValue(newValue: FtField.Value): number {
     switch (typeof newValue) {
       case 'string':
       case 'number':
-        this.setValue(new Date(newValue));
+        return super.setValue(new Date(newValue));
         break;
       case 'object':
-        if (newValue === null) {
-          throw new FtFieldNullError(`DateTime field value is null: ${this.name}`);
+        if (newValue instanceof Date) {
+          return super.setValue(newValue);
         } else {
-          if (newValue instanceof Date) {
-            this.setValue(newValue);
-          } else {
-            throw new FtFieldTypeError(`Invalid unknown object for DateTime field: ${this.name}`);
-          }
+          throw new FtFieldTypeError(`Invalid object for DateTime field: ${this.name}`);
         }
         break;
       default:
         throw new FtFieldTypeError(`Invalid type (${typeof newValue}) for date-time field: ${this.name}`);
     }
+  }
+
+  protected override getAsDateTime(): Date {
+    return this.getValue();
+  }
+
+  protected override setAsDateTime(newValue: Date): void {
+    super.setValue(newValue);
   }
 
   protected isValueEqual(left: Date, right: Date): boolean {

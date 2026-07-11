@@ -3,6 +3,7 @@
 // Events automatically handle sequence redirects, making code cleaner
 
 import {
+  FtField,
   FtFieldValueReadyEventArgs,
   FtRecordFinishedEventArgs,
   FtStringWriter,
@@ -17,7 +18,7 @@ const GoldFishType = BigInt(3);
 
 // Data to write: [recordIndex][fieldId] = value
 // null values indicate fields not used for that record
-const values: unknown[][] = [
+const values: FtField.NullableValue[][] = [
   // TypeFieldId, NameFieldId, RunningSpeedFieldId, WalkDistanceFieldId, TrainingFieldId, TrainerFieldId, SessionCostFieldId, ColorFieldId, ChineseClassificationFieldId
   [CatType, "Misty", 45.0, null, null, null, null, null, null],
   [CatType, "Oscar", 35.0, null, null, null, null, null, null],
@@ -85,7 +86,7 @@ function handleFieldValueWriteReady(args: FtFieldValueReadyEventArgs): void {
     // Simply set the field value from our data array
     // The event fires for each field in the correct order,
     // automatically taking sequence redirects into account
-    field.asUnknown = values[recordIndex][id];
+    field.value = values[recordIndex][id];
   }
 }
 

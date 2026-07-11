@@ -184,7 +184,7 @@ describe('Field Instances', () => {
 
       field.value = 'hello';
       expect(field.asString).toBe('hello');
-      expect(field.asUnknown).toBe('hello');
+      expect(field.value).toBe('hello');
     });
   });
 
