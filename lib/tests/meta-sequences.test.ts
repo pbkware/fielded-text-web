@@ -247,9 +247,9 @@ describe('Meta Sequence Classes', () => {
       expect(found).toBe(seq);
     });
 
-    it('should throw when getting non-existent sequence by name', () => {
+    it('should return undefined if non-existent sequence by name', () => {
       const list = new FtMetaSequenceList();
-      expect(() => list.getByName('Missing')).toThrow();
+      expect(list.getByName('Missing')).toBe(undefined);
     });
 
     it('should find root sequence', () => {

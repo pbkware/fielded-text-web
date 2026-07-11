@@ -9,7 +9,7 @@ import {
   FtReader,
 } from "@pbkware/fielded-text-web";
 
-// Sample CSV data - matches C# BasicExample.csv
+// Sample CSV data
 const csvData = `"Pet Name","Age","Color","Date Received","Price","Needs Walking","Type"
 "","(Years)","","","(Dollars)","",""
 Rover,4.5,Brown,12 Feb 2004,80,True,Dog
@@ -79,7 +79,7 @@ let recordNumber = 0;
 while (reader.read()) {
   recordNumber++;
   const petName = reader.getFieldByName(petNameFieldName)?.asString;
-  const age = reader.getFieldByName(ageFieldName)?.asFloat;
+  const age = reader.getFieldByName(ageFieldName)?.asNullableFloat; // Use asNullableFloat to handle null values
   const color = reader.getFieldByName(colorFieldName)?.asString;
   const dateReceived = reader.getFieldByName(dateReceivedFieldName)?.asDateTime;
   const price = reader.getFieldByName(priceFieldName)?.asDecimal;

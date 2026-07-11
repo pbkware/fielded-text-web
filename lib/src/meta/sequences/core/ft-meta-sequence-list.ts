@@ -18,12 +18,13 @@ export class FtMetaSequenceList {
     return this._list[index];
   }
 
-  getByName(name: string): FtMetaSequence {
+  getByName(name: string): FtMetaSequence | undefined {
     const index = this.indexOfName(name);
     if (index < 0) {
-      throw new Error(`Meta sequence not found: ${name}`);
+      return undefined;
+    } else {
+      return this._list[index];
     }
-    return this._list[index];
   }
 
   set(value: readonly FtMetaSequence[]): void {

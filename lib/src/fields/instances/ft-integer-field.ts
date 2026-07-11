@@ -1,6 +1,10 @@
+import { FtDataType } from '../../index.js';
 import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
+import { FtFieldNullError } from '../../types/errors/ft-field-null-error.js';
+import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtIntegerFieldDefinition } from '../definitions/ft-integer-field-definition.js';
+import { FtField } from './ft-field.js';
 import { FtGenericField } from './ft-generic-field.js';
 
 /**
@@ -26,15 +30,50 @@ export class FtIntegerField extends FtGenericField<bigint> {
     return this.definition.styles;
   }
 
-  get nullableValue(): bigint | null {
-    return this.isNull() ? null : this.value;
+  static cast(field: FtField): field is FtIntegerField {
+    return field.dataType === FtDataType.Integer;
   }
 
-  set nullableValue(value: bigint | null) {
-    if (value === null) {
-      this.setNull();
+  protected override getAsBigInt(): bigint {
+    if (this.isNull()) {
+      throw new FtFieldNullError(`BigInt field value is null: ${this.name}`);
     } else {
-      this.value = value;
+      return this.value;
+    }
+  }
+
+  protected override setAsBigInt(newValue: bigint): void {
+    this.setValue(newValue);
+  }
+
+  protected override getAsInteger(): number {
+    if (this.isNull()) {
+      throw new FtFieldNullError(`BigInt field value is null: ${this.name}`);
+    } else {
+      return Number(this.value);
+    }
+  }
+
+  protected override setAsInteger(newValue: number): void {
+    this.setValue(BigInt(newValue));
+  }
+
+  protected setAsUnknown(newValue: unknown): void {
+    switch (typeof newValue) {
+      case 'bigint':
+        this.setValue(newValue);
+        break;
+      case 'number':
+        this.setValue(BigInt(newValue));
+        break;
+      case 'object':
+        if (newValue === null) {
+          throw new FtFieldNullError(`Integer field value is null: ${this.name}`);
+        } else {
+          throw new FtFieldTypeError(`Invalid unknown object for Integer field: ${this.name}`);
+        }
+      default:
+        throw new FtFieldTypeError(`Invalid type (${typeof newValue}) for integer field: ${this.name}`);
     }
   }
 

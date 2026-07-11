@@ -16,7 +16,7 @@ export class FtStringFieldDefinition extends FtGenericFieldDefinition<string> {
     super(FtDataType.String, 'string', formatter, FtStringFieldDefinition.AUTO_LEFT_PAD, index);
   }
 
-  getValueText(value: string): string {
+  formatValue(value: string): string {
     return this.formatter.toText(value);
   }
 

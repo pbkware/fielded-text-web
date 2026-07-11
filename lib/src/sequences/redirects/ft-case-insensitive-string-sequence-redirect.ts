@@ -13,6 +13,7 @@ export class FtCaseInsensitiveStringSequenceRedirect extends FtSequenceRedirect 
   static readonly TYPE = FtSequenceRedirectType.CaseInsensitiveString;
 
   private _value = '';
+  private _lowerCaseValue = '';
 
   constructor(index: number) {
     super(index, FtCaseInsensitiveStringSequenceRedirect.TYPE);
@@ -27,7 +28,7 @@ export class FtCaseInsensitiveStringSequenceRedirect extends FtSequenceRedirect 
       return false;
     }
     try {
-      return field.asRedirectString.toLowerCase() === this._value.toLowerCase();
+      return field.asRedirectString.toLowerCase() === this._lowerCaseValue;
     } catch {
       return false;
     }
@@ -42,5 +43,6 @@ export class FtCaseInsensitiveStringSequenceRedirect extends FtSequenceRedirect 
     super.loadMeta(metaSequenceRedirect, metaSequenceList, sequenceList);
 
     this._value = metaSequenceRedirect.value;
+    this._lowerCaseValue = this._value.toLowerCase();
   }
 }

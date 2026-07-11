@@ -7,8 +7,8 @@ import { FtMetaReferenceType } from '../types/enums/ft-meta-reference-type.js';
 import { FtMetaSerializationFormat } from '../types/enums/ft-meta-serialization-format.js';
 import { FtReadRecordResult } from '../types/enums/ft-read-record-result.js';
 import { FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
+import { FtSerializationErrorCode } from '../types/errors/ft-serialization-error-code.js';
 import { FtSerializationError } from '../types/errors/ft-serialization-error.js';
-import { FtSerializationException } from '../types/errors/ft-serialization-exception.js';
 import { CharReader } from './char-reader.js';
 import { DeclarationParser } from './declaration-parser.js';
 import { EmbeddedMetaParser } from './embedded-meta-parser.js';
@@ -411,21 +411,21 @@ export class FtSerializationReader extends SerializationCore {
   }
 
   /**
-   * Get a field value by index.
+   * Get a field value by index. Returns `null` if the field value is null.
    */
   getFieldValue(idx: number): unknown {
-    return this.fieldList.get(idx).asObject;
+    return this.fieldList.get(idx).asNullableUnknown;
   }
 
   /**
-   * Get a field value by name.
+   * Get a field value by name. Returns `null` if the field value is null.
    */
   getFieldValueByName(name: string): unknown {
     const field = this.fieldList.getByName(name);
     if (!field) {
       throw new Error(`Field not found: ${name}`);
     }
-    return field.asObject;
+    return field.asNullableUnknown;
   }
 
   /**
@@ -483,8 +483,8 @@ export class FtSerializationReader extends SerializationCore {
   protected getFileMetaAsText(fileMetaReference: string): FtSerializationReader.FileMetaAsTextResult | string {
     // Descendants can override this method. Clients can subscribe to onRequireFileMetaAsText event
     if (!this.onRequireFileMetaAsText) {
-      throw new FtSerializationException(
-        FtSerializationError.MetaReferenceFileNoHandler,
+      throw new FtSerializationError(
+        FtSerializationErrorCode.MetaReferenceFileNoHandler,
         'Meta reference is file but no handler provided to retrieve file content',
       );
     } else {
@@ -495,8 +495,8 @@ export class FtSerializationReader extends SerializationCore {
   protected getUrlMetaAsText(urlMetaReference: string): FtSerializationReader.FileMetaAsTextResult | string {
     // Descendants can override this method. Clients can subscribe to onRequireUrlMetaAsText event
     if (!this.onRequireUrlMetaAsText) {
-      throw new FtSerializationException(
-        FtSerializationError.MetaReferenceUrlNoHandler,
+      throw new FtSerializationError(
+        FtSerializationErrorCode.MetaReferenceUrlNoHandler,
         'Meta reference is URL but no handler provided to retrieve URL content',
       );
     } else {
@@ -609,7 +609,7 @@ export class FtSerializationReader extends SerializationCore {
               // Must be a heading line
               this._lineType = FtLineType.Heading;
               if (this._metaEmbedded && !this._embeddedMetaRead) {
-                throw new FtSerializationException(FtSerializationError.EmbeddedMetaNotFound, 'Embedded meta line not blank or comment');
+                throw new FtSerializationError(FtSerializationErrorCode.EmbeddedMetaNotFound, 'Embedded meta line not blank or comment');
               } else {
                 if (!(this.headingLineCount > 0 && !this._headingLinesRead)) {
                   throw new Error('Unexpected heading line state');
@@ -637,7 +637,7 @@ export class FtSerializationReader extends SerializationCore {
               this._recordParser.parseChar(aChar);
             } else {
               if (!this.ignoreBlankLines) {
-                throw new FtSerializationException(FtSerializationError.RecordNotEnoughFields, 'Blank records not allowed');
+                throw new FtSerializationError(FtSerializationErrorCode.RecordNotEnoughFields, 'Blank records not allowed');
               }
             }
           }
@@ -722,7 +722,7 @@ export class FtSerializationReader extends SerializationCore {
         this.finishLastLine();
 
         if (this.lastLineEndedType === FtLastLineEndedType.Always) {
-          throw new FtSerializationException(FtSerializationError.LastLineEndedError, 'Always ended but in line');
+          throw new FtSerializationError(FtSerializationErrorCode.LastLineEndedError, 'Always ended but in line');
         } else {
           this._lineParser.exitLine();
           result = true;
@@ -732,17 +732,17 @@ export class FtSerializationReader extends SerializationCore {
           result = false;
         } else {
           if (!this.ignoreBlankLines) {
-            throw new FtSerializationException(FtSerializationError.LastLineEndedError, 'Never ended but out of line');
+            throw new FtSerializationError(FtSerializationErrorCode.LastLineEndedError, 'Never ended but out of line');
           } else {
             // Since last line cannot be ended, there is another ignored blank line
 
             // Throw exception if blank line not allowed
             switch (this._lineType) {
               case FtLineType.Signature:
-                throw new FtSerializationException(FtSerializationError.IncompleteDeclaration, 'Declaration missing second line');
+                throw new FtSerializationError(FtSerializationErrorCode.IncompleteDeclaration, 'Declaration missing second line');
               case FtLineType.Heading:
                 if (!this._headingLinesRead) {
-                  throw new FtSerializationException(FtSerializationError.InsufficientHeadingLines, '');
+                  throw new FtSerializationError(FtSerializationErrorCode.InsufficientHeadingLines, '');
                 }
                 break;
             }
@@ -779,7 +779,7 @@ export class FtSerializationReader extends SerializationCore {
       case FtLineType.Comment:
         if (!this._headerRead) {
           if (this._metaEmbedded && !this._embeddedMetaRead) {
-            throw new FtSerializationException(FtSerializationError.EmbeddedMetaNotFound, 'End of file encountered');
+            throw new FtSerializationError(FtSerializationErrorCode.EmbeddedMetaNotFound, 'End of file encountered');
           }
         }
         break;
@@ -788,7 +788,7 @@ export class FtSerializationReader extends SerializationCore {
         if (this._embeddedMetaParser.ready) {
           this.finishEmbeddedMeta();
         } else {
-          throw new FtSerializationException(FtSerializationError.IncompleteEmbeddedMeta, 'End of file encountered');
+          throw new FtSerializationError(FtSerializationErrorCode.IncompleteEmbeddedMeta, 'End of file encountered');
         }
         break;
 
@@ -916,13 +916,13 @@ export class FtSerializationReader extends SerializationCore {
   private checkCompleteness(): void {
     if (!this._headerRead) {
       if (this._declared && !this._declarationRead) {
-        throw new FtSerializationException(FtSerializationError.IncompleteDeclaration, '');
+        throw new FtSerializationError(FtSerializationErrorCode.IncompleteDeclaration, '');
       } else {
         if (this._metaEmbedded && !this._embeddedMetaRead) {
-          throw new FtSerializationException(FtSerializationError.IncompleteEmbeddedMeta, '');
+          throw new FtSerializationError(FtSerializationErrorCode.IncompleteEmbeddedMeta, '');
         } else {
           if (this.headingLineCount > 0 && !this._headingLinesRead) {
-            throw new FtSerializationException(FtSerializationError.InsufficientHeadingLines, this._headingLineReadCount.toString());
+            throw new FtSerializationError(FtSerializationErrorCode.InsufficientHeadingLines, this._headingLineReadCount.toString());
           }
         }
       }

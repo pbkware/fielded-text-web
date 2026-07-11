@@ -48,7 +48,7 @@ reader.onFieldValueReadReady = (args: FtFieldValueReadyEventArgs) => {
   fieldCount++;
   const fieldIndex = reader.fieldList.indexOf(args.field);
   console.log(
-    `[Event] Field ${fieldIndex} (${args.field.name}) value ready: ${args.field.asString}`,
+    `[Event] Field ${fieldIndex} (${args.field.name}) value ready: ${args.field.asUnknown}`,
   );
 
   // Calculate running total

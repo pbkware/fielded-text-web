@@ -58,7 +58,7 @@ while (reader.read()) {
   recordNumber++;
 
   const petName = reader.fieldList.get(petNameFieldOrdinal).asString;
-  const age = reader.fieldList.get(ageFieldOrdinal).asFloat;
+  const age = reader.fieldList.get(ageFieldOrdinal).asNullableFloat; // Use asNullableFloat to handle null values
   const color = reader.fieldList.get(colorFieldOrdinal).asString;
   const dateReceived = reader.fieldList.get(
     dateReceivedFieldOrdinal,

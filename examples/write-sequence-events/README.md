@@ -34,7 +34,7 @@ writer.write();
 ```typescript
 // Events fire for each field automatically
 writer.onFieldValueWriteReady = (args) => {
-  args.field.asObject = values[args.recordIndex][args.field.id];
+  args.field.asUnknown = values[args.recordIndex][args.field.id];
 };
 
 while (!finished) {

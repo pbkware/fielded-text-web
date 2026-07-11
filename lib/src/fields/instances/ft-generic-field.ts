@@ -1,6 +1,7 @@
 import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
 import { FtSequenceRedirectType } from '../../types/enums/ft-sequence-redirect-type.js';
+import { FtAssertError } from '../../types/errors/ft-internal-error.js';
 import { FtGenericFieldDefinition } from '../definitions/ft-generic-field-definition.js';
 import { FtField } from './ft-field.js';
 
@@ -9,7 +10,7 @@ import { FtField } from './ft-field.js';
  * Provides type-safe value access and implements conversion methods.
  * @public
  */
-export abstract class FtGenericField<T> extends FtField {
+export abstract class FtGenericField<T extends string | number | boolean | bigint | Date> extends FtField {
   private _value!: T;
 
   protected constructor(
@@ -22,11 +23,11 @@ export abstract class FtGenericField<T> extends FtField {
 
     // Verify the sequenceItem's definition matches the provided definition
     if (sequenceItem.fieldDefinition !== definition) {
-      throw new Error('SequenceItem definition must match provided definition');
-    }
-
-    if (definition.constant && !definition.null) {
-      this._value = definition.value;
+      throw new FtAssertError('FGC60112', `${definition.metaName}, ${sequenceItem.fieldDefinition?.metaName}`);
+    } else {
+      if (definition.constant && !definition.null) {
+        this._value = definition.value;
+      }
     }
   }
 
@@ -42,94 +43,40 @@ export abstract class FtGenericField<T> extends FtField {
     this.setValue(val); // ignore fieldsAffectedFromIndex for direct value sets, as sequence redirects are not expected in this case
   }
 
+  get nullableValue(): T | null {
+    return this.isNull() ? null : this.value;
+  }
+
+  set nullableValue(value: T | null) {
+    if (value === null) {
+      this.setNull();
+    } else {
+      this.setValue(value);
+    }
+  }
+
   setValue(val: T): number {
     if (this.constant) {
       throw new Error(`Cannot set constant field "${this.name}"`);
     } else {
       this.clearNonConstantNull();
       this._value = val;
-      this.valueAssigned = true;
+      this._valueAssigned = true;
       return this.checkValueSequenceRedirect(); // returns fieldsAffectedFromIndex
     }
   }
 
-  protected getAsNonNullValueText(): string {
+  formatValue(): string {
     try {
-      return this.definition_.getValueText(this._value);
+      return this.definition_.formatValue(this._value);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       throw new Error(`Failed to convert field "${this.name}" to text: ${message}`, { cause: error });
     }
   }
 
-  protected getAsNonNullObject(): unknown {
+  protected getAsUnknown(): unknown {
     return this._value;
-  }
-
-  protected getAsNonNullString(): string {
-    return String(this._value);
-  }
-
-  protected getAsBoolean(): boolean {
-    return Boolean(this._value);
-  }
-
-  protected getAsInteger(): number {
-    return Number(this._value);
-  }
-
-  protected getAsBigInt(): bigint {
-    if (typeof this._value === 'bigint') {
-      return this._value;
-    }
-    return BigInt(Number(this._value));
-  }
-
-  protected getAsFloat(): number {
-    return Number(this._value);
-  }
-
-  protected getAsDateTime(): Date {
-    if (this._value instanceof Date) {
-      return this._value;
-    }
-    return new Date(Number(this._value));
-  }
-
-  protected getAsDecimal(): number {
-    return Number(this._value);
-  }
-
-  protected setAsNonNullObject(newValue: unknown): void {
-    this.value = newValue as T;
-  }
-
-  protected setAsNonNullString(newValue: string): void {
-    this.value = newValue as unknown as T;
-  }
-
-  protected setAsBoolean(newValue: boolean): void {
-    this.value = newValue as unknown as T;
-  }
-
-  protected setAsInteger(newValue: number): void {
-    this.value = newValue as unknown as T;
-  }
-
-  protected setAsBigInt(newValue: bigint): void {
-    this.value = newValue as unknown as T;
-  }
-
-  protected setAsFloat(newValue: number): void {
-    this.value = newValue as unknown as T;
-  }
-
-  protected setAsDateTime(newValue: Date): void {
-    this.value = newValue as unknown as T;
-  }
-
-  protected setAsDecimal(newValue: number): void {
-    this.value = newValue as unknown as T;
   }
 
   protected getAsRedirectBoolean(): boolean {
@@ -158,11 +105,11 @@ export abstract class FtGenericField<T> extends FtField {
     return Number(this._value);
   }
 
-  protected loadNonNullValue(valueText: string): void {
+  protected override loadValueFromText(valueText: string): void {
     if (!this.constant) {
       this.clearNonConstantNull();
       this._value = this.definition_.parseValueText(valueText);
-      this.valueAssigned = true;
+      this._valueAssigned = true;
       this.checkValueSequenceRedirect(); // ignore fieldsAffectedFromIndex for value loads, as sequence redirects are not expected in this case
     } else {
       if (this.isNull()) {

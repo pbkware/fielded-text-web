@@ -39,7 +39,7 @@ export class FtBooleanFieldDefinition extends FtGenericFieldDefinition<boolean> 
     this.formatter.styles = metaField.styles;
   }
 
-  getValueText(value: boolean): string {
+  formatValue(value: boolean): string {
     return this.formatter.toText(value);
   }
 

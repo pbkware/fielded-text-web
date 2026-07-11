@@ -144,90 +144,54 @@ Once a {@link fields/instances/ft-field!FtField field} has been obtained, its va
 
 - Checking if the field has a null value
 - Casting the {@link fields/instances/ft-field!FtField field} to its concrete descendant type and using this class's {@link fields/instances/ft-generic-field!FtGenericField.value value} accessor.
-- Using one of {@link fields/instances/ft-field!FtField FtField}'s asXXX (eg. {@link fields/instances/ft-field!FtField.asFloat asFloat}) accessors to coerce the field's value to a particular type.
-- Using {@link fields/instances/ft-field!FtField.loadedValueText loadedValueText} to get the text representing that field value in the data.
+- Using one of {@link fields/instances/ft-field!FtField FtField}'s asXXX where XXX is the data type (eg. {@link fields/instances/ft-field!FtField.asFloat asFloat}) to retrieve the value without have to cast to the descendant field.
+- Using one of {@link fields/instances/ft-field!FtField FtField}'s asNullableXXX where XXX is the data type to retrive the value or null.
+- Using {@link fields/instances/ft-field!FtField FtField}.{@link fields/instances/ft-field!FtField.asUnknown asUnknown} accessor to retrieve the value with type unknown.
+- Using {@link fields/instances/ft-field!FtField.valueText valueText} to get the formatted text representing that field value in the data.
+- Using {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader}'s {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader.getFieldValue getFieldValue()} or {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldValueByName getFieldValueByName()} methods.
 
 These methods of getting a field's value are further discussed below:
 
 #### Field Null value
 
-#### Casting field to descendant representing data type
+Records in Fielded Text files can possibly have fields with no value.  For example, in the example data below, the record for "Jane Smith" is missing a value for the "Age" field.
 
-#### Using asXXX accessors
-
-#### Using loadedValueText
-
-
-
-
-
-### By Index
-
-```typescript
-while (reader.read()) {
-  const name = reader.fieldList.get(0).asString;
-  const age = Number(reader.fieldList.get(1).asBigInt);
-  const active = reader.fieldList.get(2).asBoolean;
-}
+```text
+Name,Age,Studying
+John Doe,30,true
+Jane Smith,,false
 ```
 
-### By Name
-
-```typescript
-// Find field index by name
-function getFieldIndex(meta: FtMeta, name: string): number {
-  return meta.fieldList.items.findIndex((f) => f.name === name);
-}
-
-const nameIndex = getFieldIndex(meta, 'CustomerName');
-const ageIndex = getFieldIndex(meta, 'Age');
-
-while (reader.read()) {
-  const name = reader.fieldList.get(nameIndex).asString;
-  const age = Number(reader.fieldList.get(ageIndex).asBigInt);
-}
-```
-
-### Type-Safe Access
-
-```typescript
-// Create a typed record interface
-interface CustomerRecord {
-  name: string;
-  age: number;
-  active: boolean;
-}
-
-function readCustomerRecord(reader: SerializationReader): CustomerRecord {
-  return {
-    name: reader.fieldList.get(0).asString,
-    age: Number(reader.fieldList.get(1).asBigInt),
-    active: reader.fieldList.get(2).asBoolean,
-  };
-}
-
-while (reader.read()) {
-  const customer = readCustomerRecord(reader);
-  console.log(customer.name, customer.age, customer.active);
-}
-```
-
-### Null Handling
+Field Text flags that such fields (in these records) have a `null` value.  You can check whether a field's value is null by using the {@link fields/instances/ft-field!FtField field}.{@link fields/instances/ft-field!FtField.isNull isNull()} method.
 
 ```typescript
 while (reader.read()) {
-  const field = reader.fieldList.get(0);
+  const field = reader.fieldList.get(1);
 
   if (field.isNull()) {
     console.log('Field is null');
   } else {
-    const value = field.asString;
+    const value = field.asBigInt;
     console.log('Field value:', value);
   }
 }
 ```
 
+In the above code snippet, if a field is null, then without including the `isNull()` check first, `field.asBigInt` throw a `FtFieldNullError`. Note that {@link fields/instances/ft-field!FtField field} has various`asNullableXXX` accessors which return the value or null.
+
+#### Casting field to descendant representing data type
+
+#### Using asXXX accessors
+
+#### Using asNullableXXX accessors
+
+#### Using asUnknown accessor
+
+#### Using FtSerializationReader's getFieldValue() or getFieldValueByName() functions
+
 When a field is null, nullable value accessors return JavaScript `null`.
+
+#### Using valueText
 
 ## Read record
 

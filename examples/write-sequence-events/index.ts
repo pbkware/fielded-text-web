@@ -85,7 +85,7 @@ function handleFieldValueWriteReady(args: FtFieldValueReadyEventArgs): void {
     // Simply set the field value from our data array
     // The event fires for each field in the correct order,
     // automatically taking sequence redirects into account
-    field.asObject = values[recordIndex][id];
+    field.asUnknown = values[recordIndex][id];
   }
 }
 

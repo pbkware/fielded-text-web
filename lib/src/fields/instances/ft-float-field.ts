@@ -1,6 +1,10 @@
 import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
+import { FtDataType } from '../../types/enums/ft-data-type.js';
+import { FtFieldNullError } from '../../types/errors/ft-field-null-error.js';
+import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtFloatFieldDefinition } from '../definitions/ft-float-field-definition.js';
+import { FtField } from './ft-field.js';
 import { FtGenericField } from './ft-generic-field.js';
 
 /**
@@ -26,15 +30,35 @@ export class FtFloatField extends FtGenericField<number> {
     return this.definition.styles;
   }
 
-  get nullableValue(): number | null {
-    return this.isNull() ? null : this.value;
+  static cast(field: FtField): field is FtFloatField {
+    return field.dataType === FtDataType.Float;
   }
 
-  set nullableValue(value: number | null) {
-    if (value === null) {
-      this.setNull();
+  protected override getAsFloat(): number {
+    if (this.isNull()) {
+      throw new FtFieldNullError(`Float field value is null: ${this.name}`);
     } else {
-      this.value = value;
+      return this.value;
+    }
+  }
+
+  protected override setAsFloat(newValue: number): void {
+    this.setValue(newValue);
+  }
+
+  protected setAsUnknown(newValue: unknown): void {
+    switch (typeof newValue) {
+      case 'number':
+        this.setValue(newValue);
+        break;
+      case 'object':
+        if (newValue === null) {
+          throw new FtFieldNullError(`Float field value is null: ${this.name}`);
+        } else {
+          throw new FtFieldTypeError(`Invalid unknown object for Float field: ${this.name}`);
+        }
+      default:
+        throw new FtFieldTypeError(`Invalid type (${typeof newValue}) for float field: ${this.name}`);
     }
   }
 

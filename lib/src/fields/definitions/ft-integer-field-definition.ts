@@ -34,7 +34,7 @@ export class FtIntegerFieldDefinition extends FtGenericFieldDefinition<bigint> {
     this.formatter.styles = metaField.styles;
   }
 
-  getValueText(value: bigint): string {
+  formatValue(value: bigint): string {
     return this.formatter.toText(value);
   }
 

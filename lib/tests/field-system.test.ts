@@ -31,7 +31,7 @@ describe('Field Definitions', () => {
 
     it('should format and parse string values', () => {
       const def = new FtStringFieldDefinition(0);
-      const text = def['getValueText']('test');
+      const text = def['formatValue']('test');
       expect(text).toBe('test');
       const parsed = def['parseValueText']('hello');
       expect(parsed).toBe('hello');
@@ -56,8 +56,8 @@ describe('Field Definitions', () => {
 
     it('should format and parse boolean values', () => {
       const def = new FtBooleanFieldDefinition(0);
-      expect(def['getValueText'](true)).toBe('True');
-      expect(def['getValueText'](false)).toBe('False');
+      expect(def['formatValue'](true)).toBe('True');
+      expect(def['formatValue'](false)).toBe('False');
       expect(def['parseValueText']('True')).toBe(true);
       expect(def['parseValueText']('False')).toBe(false);
     });
@@ -75,7 +75,7 @@ describe('Field Definitions', () => {
     it('should format and parse integer values', () => {
       const def = new FtIntegerFieldDefinition(0);
       const value = BigInt(12345);
-      const text = def['getValueText'](value);
+      const text = def['formatValue'](value);
       expect(text).toMatch(/12345/);
       const parsed = def['parseValueText']('67890');
       expect(parsed).toBe(BigInt(67890));
@@ -94,7 +94,7 @@ describe('Field Definitions', () => {
     it('should format and parse float values', () => {
       const def = new FtFloatFieldDefinition(0);
       const value = 123.45;
-      const text = def['getValueText'](value);
+      const text = def['formatValue'](value);
       expect(text).toMatch(/123\.45/);
       const parsed = def['parseValueText']('678.90');
       expect(parsed).toBeCloseTo(678.9);
@@ -113,7 +113,7 @@ describe('Field Definitions', () => {
     it('should format and parse decimal values', () => {
       const def = new FtDecimalFieldDefinition(0);
       const value = 123.456;
-      const text = def['getValueText'](value);
+      const text = def['formatValue'](value);
       expect(text).toMatch(/123\.456/);
       const parsed = def['parseValueText']('678.901');
       expect(parsed).toBeCloseTo(678.901);
@@ -132,7 +132,7 @@ describe('Field Definitions', () => {
     it('should format and parse datetime values', () => {
       const def = new FtDateTimeFieldDefinition(0);
       const value = new Date(2024, 0, 1, 12, 30, 45);
-      const text = def['getValueText'](value);
+      const text = def['formatValue'](value);
       expect(text.length).toBeGreaterThan(0);
       // Parsing will depend on format - just check it doesn't throw
       const parsed = def['parseValueText'](text);
@@ -184,7 +184,7 @@ describe('Field Instances', () => {
 
       field.value = 'hello';
       expect(field.asString).toBe('hello');
-      expect(field.asObject).toBe('hello');
+      expect(field.asUnknown).toBe('hello');
     });
   });
 
@@ -326,9 +326,9 @@ describe('Field System Integration', () => {
     const item = invokation.sequence.itemList.get(0);
     const field = new FtStringField(invokation, item, def);
 
-    expect(field.valueAssigned_).toBe(false);
+    expect(field.valueAssigned).toBe(false);
     field.value = 'test';
-    expect(field.valueAssigned_).toBe(true);
+    expect(field.valueAssigned).toBe(true);
   });
 
   it('should provide field definition properties', () => {

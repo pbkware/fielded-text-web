@@ -135,8 +135,10 @@ export { FtDateTimeStylesMetaSerialization } from './meta-serialization/styles/f
 export { FtNumberStylesMetaSerialization } from './meta-serialization/styles/ft-number-styles-meta-serialization.js';
 
 // Serialization errors and exceptions
+export { FtFieldNullError as FtNullError } from './types/errors/ft-field-null-error.js';
+export { FtFieldTypeError as FtTypeError } from './types/errors/ft-field-type-error.js';
+export { FtSerializationErrorCode } from './types/errors/ft-serialization-error-code.js';
 export { FtSerializationError } from './types/errors/ft-serialization-error.js';
-export { FtSerializationException } from './types/errors/ft-serialization-exception.js';
 
 // Serialization reader
 export { FtDeclaredParameterRec, FtDeclaredParameters } from './serialization/ft-declared-parameters.js';

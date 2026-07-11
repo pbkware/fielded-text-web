@@ -33,7 +33,7 @@ export class FtDecimalFieldDefinition extends FtGenericFieldDefinition<number> {
     this.formatter.styles = metaField.styles;
   }
 
-  getValueText(value: number): string {
+  formatValue(value: number): string {
     return this.formatter.toText(value);
   }
 

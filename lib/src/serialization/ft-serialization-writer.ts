@@ -1,15 +1,8 @@
 import { FtWriterSettings } from '../api/ft-writer-settings.js';
 import { FtFieldDefinition } from '../fields/definitions/ft-field-definition.js';
-import { FtBooleanField } from '../fields/instances/ft-boolean-field.js';
-import { FtDateTimeField } from '../fields/instances/ft-date-time-field.js';
-import { FtDecimalField } from '../fields/instances/ft-decimal-field.js';
 import { FtField } from '../fields/instances/ft-field.js';
-import { FtFloatField } from '../fields/instances/ft-float-field.js';
-import { FtIntegerField } from '../fields/instances/ft-integer-field.js';
-import { FtStringField } from '../fields/instances/ft-string-field.js';
 import { FtXmlMetaSerialization } from '../meta-serialization/format/ft-xml-meta-serialization.js';
 import { FtMeta } from '../meta/ft-meta.js';
-import { FtDataType } from '../types/enums/ft-data-type.js';
 import { FtEndOfLineAutoWriteType } from '../types/enums/ft-end-of-line-auto-write-type.js';
 import { FtEndOfLineType } from '../types/enums/ft-end-of-line-type.js';
 import { FtLastLineEndedType } from '../types/enums/ft-last-line-ended-type.js';
@@ -19,8 +12,8 @@ import { FtPadCharType } from '../types/enums/ft-pad-char-type.js';
 import { FtQuotedType } from '../types/enums/ft-quoted-type.js';
 import { FtTruncateType } from '../types/enums/ft-truncate-type.js';
 import { FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
+import { FtSerializationErrorCode } from '../types/errors/ft-serialization-error-code.js';
 import { FtSerializationError } from '../types/errors/ft-serialization-error.js';
-import { FtSerializationException } from '../types/errors/ft-serialization-exception.js';
 import { FtDeclaredParametersFormatter } from './formatting/ft-declared-parameters-formatter.js';
 import { FtDeclaredParameters } from './ft-declared-parameters.js';
 import { FtTextWriter } from './ft-text-writer.js';
@@ -100,7 +93,7 @@ export class FtSerializationWriter extends SerializationCore {
    */
   writeHeader(): void {
     if (this._headerWritten) {
-      throw new FtSerializationException(FtSerializationError.HeaderAlreadyWritten, 'Header already written');
+      throw new FtSerializationError(FtSerializationErrorCode.HeaderAlreadyWritten, 'Header already written');
     }
 
     if (this._settings?.declared) {
@@ -142,98 +135,137 @@ export class FtSerializationWriter extends SerializationCore {
   }
 
   /**
-   * Set a field value by index.
+   * Set a field value by index. Accepts `null` to set the field to null.
+   *
+   * @param idx - The 0-based index of the field to set.
+   * @param value - The value to set for the field. Can be `null` to set the field to null.
+   *
+   * @throws FtTypeError if the value being set is not of the field's expected type.
    */
   setFieldValue(idx: number, value: unknown): void {
-    this.fieldList.get(idx).asObject = value;
+    this.fieldList.get(idx).asNullableUnknown = value;
   }
 
   /**
    * Set a field value by name.
+   *
+   * @param name - The name of the field to set.
+   * @param value - The value to set for the field. Can be `null` to set the field to null.
+   *
+   * @throws FtTypeError if the value being set is not of the field's expected type.
    */
   setFieldValueByName(name: string, value: unknown): void {
     const field = this.fieldList.getByName(name);
     if (!field) {
       throw new Error(`Field not found: ${name}`);
     }
-    field.asObject = value;
+    field.asNullableUnknown = value;
   }
 
   /**
    * Set a field to null.
+   *
+   * @param idx - The 0-based index of the field to set.
    */
   setNull(idx: number): void {
     this.fieldList.get(idx).setNull();
   }
 
   /**
-   * Set a boolean field.
+   * Set a field to null.
+   *
+   * @param name - The name of the field to set.
    */
-  setBoolean(idx: number, value: boolean): void {
-    const field = this.fieldList.get(idx);
-    if (field.dataType !== FtDataType.Boolean) {
-      throw new Error(`Invalid cast: field ${idx} is not boolean`);
+  setNullByName(name: string): void {
+    const field = this.fieldList.getByName(name);
+    if (!field) {
+      throw new Error(`Field not found: ${name}`);
     }
-    (field as FtBooleanField).value = value;
+    field.setNull();
   }
 
   /**
-   * Set a date/time field.
+   * Set a boolean field.
+   *
+   * @param idx - The 0-based index of the field to set.
+   * @param value - The value to set for the field. Can be `null` to set the field to null.
    */
-  setDateTime(idx: number, value: Date): void {
+  setBoolean(idx: number, value: boolean | null): void {
     const field = this.fieldList.get(idx);
-    if (field.dataType !== FtDataType.DateTime) {
-      throw new Error(`Invalid cast: field ${idx} is not datetime`);
-    }
-    (field as FtDateTimeField).value = value;
+    field.asNullableBoolean = value;
+  }
+
+  /**
+   * Set a DateTime field's value.
+   *
+   * @param idx - The 0-based index of the field to set.
+   * @param value - The value to set for the field. Can be `null` to set the field to null.
+   */
+  setDateTime(idx: number, value: Date | null): void {
+    const field = this.fieldList.get(idx);
+    field.asNullableDateTime = value;
   }
 
   /**
    * Set a decimal field.
+   *
+   * @param idx - The 0-based index of the field to set.
+   * @param value - The value to set for the field. Can be `null` to set the field to null.
    */
-  setDecimal(idx: number, value: number): void {
+  setDecimal(idx: number, value: number | null): void {
     const field = this.fieldList.get(idx);
-    if (field.dataType !== FtDataType.Decimal) {
-      throw new Error(`Invalid cast: field ${idx} is not decimal`);
-    }
-    (field as FtDecimalField).value = value;
+    field.asNullableDecimal = value;
   }
 
   /**
    * Set a float field.
+   *
+   * @param idx - The 0-based index of the field to set.
+   * @param value - The value to set for the field. Can be `null` to set the field to null.
    */
-  setFloat(idx: number, value: number): void {
+  setFloat(idx: number, value: number | null): void {
     const field = this.fieldList.get(idx);
-    if (field.dataType !== FtDataType.Float) {
-      throw new Error(`Invalid cast: field ${idx} is not float`);
-    }
-    (field as FtFloatField).value = value;
+    field.asNullableFloat = value;
   }
 
   /**
    * Set an integer field.
+   *
+   * @param idx - The 0-based index of the field to set.
+   * @param value - The value to set for the field. Can be `null` to set the field to null.
    */
-  setInteger(idx: number, value: number | bigint): void {
+  setInteger(idx: number, value: number | bigint | null): void {
     const field = this.fieldList.get(idx);
-    if (field.dataType !== FtDataType.Integer) {
-      throw new Error(`Invalid cast: field ${idx} is not integer`);
+    switch (typeof value) {
+      case 'bigint':
+        field.asBigInt = value;
+        break;
+      case 'number':
+        field.asInteger = value;
+        break;
+      default:
+        field.setNull();
+        break;
     }
-    (field as FtIntegerField).value = typeof value === 'bigint' ? value : BigInt(value);
   }
 
   /**
    * Set a string field.
+   *
+   * @param idx - The 0-based index of the field to set.
+   * @param value - The value to set for the field. Can be `null` to set the field to null.
    */
-  setString(idx: number, value: string): void {
+  setString(idx: number, value: string | null): void {
     const field = this.fieldList.get(idx);
-    if (field.dataType !== FtDataType.String) {
-      throw new Error(`Invalid cast: field ${idx} is not string`);
-    }
-    (field as FtStringField).value = value;
+    field.asNullableString = value;
   }
 
   /**
    * Set multiple field values.
+   *
+   * @param values - An array of values to set for the fields. The length of the array must not exceed the number of fields. Array elements can be null to set the corresponding field to null.
+   *
+   * @throws FtTypeError if any of the values being set is not of the corresponding field's expected type.
    */
   setValues(values: unknown[]): void {
     if (values.length > this.fieldCount) {
@@ -241,7 +273,7 @@ export class FtSerializationWriter extends SerializationCore {
     }
 
     for (let i = 0; i < values.length; i++) {
-      this.fieldList.get(i).asObject = values[i];
+      this.fieldList.get(i).asNullableUnknown = values[i];
     }
   }
 
@@ -532,7 +564,7 @@ export class FtSerializationWriter extends SerializationCore {
       if (field.isNull()) {
         this._writer?.write(field.definition.fixedWidthNullValueText);
       } else {
-        const valueText = field.getValueText();
+        const valueText = field.formatValue();
         const rawText = this.encodeFixedWidthValueText(valueText, field);
         this._writer?.write(rawText);
       }
@@ -540,7 +572,7 @@ export class FtSerializationWriter extends SerializationCore {
       if (field.isNull()) {
         this._writer?.write('');
       } else {
-        const valueText = field.getValueText();
+        const valueText = field.formatValue();
 
         let fieldQuoted: boolean;
         switch (field.valueQuotedType) {
@@ -578,7 +610,7 @@ export class FtSerializationWriter extends SerializationCore {
       }
     }
 
-    if (!field.constant && !field.isValueAssigned()) {
+    if (!field.constant && !field.valueAssigned) {
       // Field was not assigned a value, check null sequence redirects
       if (!field.isNull()) {
         throw new Error('Field value not assigned');
@@ -752,7 +784,7 @@ export class FtSerializationWriter extends SerializationCore {
       case FtTruncateType.NullChar:
         return nullChar.repeat(definition.width);
       case FtTruncateType.Exception:
-        throw new FtSerializationException(FtSerializationError.FieldTruncated, `Text truncation: ${text}`);
+        throw new FtSerializationError(FtSerializationErrorCode.FieldTruncated, `Text truncation: ${text}`);
       default:
         throw new FtUnreachableCaseError('SWCTTT22117', truncateType);
     }

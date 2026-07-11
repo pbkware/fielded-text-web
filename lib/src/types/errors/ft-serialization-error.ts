@@ -1,53 +1,91 @@
-/**
- * Enumeration of serialization error codes.
- * @public
- */
-export const FtSerializationError = {
-  Abort: 'Abort',
-  DeclarationParameterNameIsZeroLength: 'DeclarationParameterNameIsZeroLength',
-  DeclaredParameterNameContainsSeparator: 'DeclaredParameterNameContainsSeparator',
-  DeclarationParameterNameNotTerminated: 'DeclarationParameterNameNotTerminated',
-  DeclarationParameterMissingValue: 'DeclarationParameterMissingValue',
-  DeclarationParameterValueNotQuoted: 'DeclarationParameterValueNotQuoted',
-  DeclarationParameterValueNotTerminated: 'DeclarationParameterValueNotTerminated',
-  DeclarationParametersMissingVersion: 'DeclarationParametersMissingVersion',
-  DeclarationParameterVersionIsNotFirst: 'DeclarationParameterVersionIsNotFirst',
-  DeclarationParameterInvalidVersion: 'DeclarationParameterInvalidVersion',
-  EmbeddedMetaNotFound: 'EmbeddedMetaNotFound',
-  IncompleteEmbeddedMeta: 'IncompleteEmbeddedMeta',
-  HeadingLineNotEnoughFields: 'HeadingLineNotEnoughFields',
-  RecordNotEnoughFields: 'RecordNotEnoughFields',
-  HeadingLineTooManyFields: 'HeadingLineTooManyFields',
-  RecordTooManyFields: 'RecordTooManyFields',
-  HeadingQuotedFieldMissingEndQuoteChar: 'HeadingQuotedFieldMissingEndQuoteChar',
-  ValueQuotedFieldMissingEndQuoteChar: 'ValueQuotedFieldMissingEndQuoteChar',
-  HeadingNonWhiteSpaceCharBeforeQuotesOpened: 'HeadingNonWhiteSpaceCharBeforeQuotesOpened',
-  ValueNonWhiteSpaceCharBeforeQuotesOpened: 'ValueNonWhiteSpaceCharBeforeQuotesOpened',
-  HeadingNonWhiteSpaceCharAfterQuotesClosed: 'HeadingNonWhiteSpaceCharAfterQuotesClosed',
-  ValueNonWhiteSpaceCharAfterQuotesClosed: 'ValueNonWhiteSpaceCharAfterQuotesClosed',
-  HeadingWidthNotReached: 'HeadingWidthNotReached',
-  ValueWidthNotReached: 'ValueWidthNotReached',
-  HeadingWidthExceeded: 'HeadingWidthExceeded',
-  ValueWidthExceeded: 'ValueWidthExceeded',
-  FieldValueToText: 'FieldValueToText',
-  FieldTruncated: 'FieldTruncated',
-  FieldConstantValueMismatch: 'FieldConstantValueMismatch',
-  FieldConstNameHeadingMismatch: 'FieldConstNameHeadingMismatch',
-  FieldTextParse: 'FieldTextParse',
-  MoreThanOneRootSequence: 'MoreThanOneRootSequence',
-  HeaderAlreadyWritten: 'HeaderAlreadyWritten',
-  LastLineEndedError: 'LastLineEndedError',
-  IncompleteDeclaration: 'IncompleteDeclaration',
-  InsufficientHeadingLines: 'InsufficientHeadingLines',
-  InvalidMeta: 'InvalidMeta',
-  LoadMetaFromText: 'LoadMetaFromText',
-  MetaReferenceFileNoHandler: 'MetaReferenceFileNoHandler',
-  LoadMetaFromFile: 'LoadMetaFromFile',
-  MetaReferenceUrlNoHandler: 'MetaReferenceUrlNoHandler',
-  LoadMetaFromUrl: 'LoadMetaFromUrl',
-} as const;
+import { FtField } from '../../fields/instances/ft-field.js';
+import { FtSerializationErrorCode } from './ft-serialization-error-code.js';
 
 /**
+ * Exception thrown during fielded text serialization/deserialization.
  * @public
  */
-export type FtSerializationError = (typeof FtSerializationError)[keyof typeof FtSerializationError];
+export class FtSerializationError extends Error {
+  private readonly _error: FtSerializationErrorCode;
+  private readonly _fieldName: string | undefined;
+  private readonly _fieldIndex: number;
+  private readonly _sequenceName: string | undefined;
+  private readonly _sequenceItemIndex: number;
+
+  constructor(
+    errorCode: FtSerializationErrorCode,
+    fieldOrMessage: FtField | string | undefined,
+    messageOrInner?: string | Error,
+    innerException?: Error,
+  ) {
+    let message: string;
+    let field: FtField | undefined = undefined;
+    let inner: Error | undefined = undefined;
+
+    // Overload resolution
+    if (typeof fieldOrMessage === 'string') {
+      // (error, message) or (error, message, innerException)
+      message = fieldOrMessage;
+      if (messageOrInner instanceof Error) {
+        inner = messageOrInner;
+      }
+    } else {
+      // (error, field, message) or (error, field, innerException) or (error, field, message, innerException)
+      field = fieldOrMessage;
+      if (typeof messageOrInner === 'string') {
+        message = messageOrInner;
+        inner = innerException;
+      } else if (messageOrInner instanceof Error) {
+        message = messageOrInner.message;
+        inner = messageOrInner;
+      } else {
+        message = '';
+      }
+    }
+
+    const errorName = FtSerializationErrorCode[errorCode];
+    const fullMessage = errorName + (message ? ': ' + message : '');
+    super(fullMessage);
+
+    this.name = 'FtSerializationError';
+    this._error = errorCode;
+
+    if (field === undefined) {
+      this._fieldName = undefined;
+      this._fieldIndex = -1;
+      this._sequenceName = undefined;
+      this._sequenceItemIndex = -1;
+    } else {
+      this._fieldName = field.name;
+      this._fieldIndex = field.index;
+      const sequence = field.sequence;
+      this._sequenceName = sequence.name;
+      const sequenceItem = field.sequenceItem;
+      this._sequenceItemIndex = sequenceItem.index;
+    }
+
+    if (inner) {
+      this.cause = inner;
+    }
+  }
+
+  get error(): FtSerializationErrorCode {
+    return this._error;
+  }
+
+  get fieldName(): string | undefined {
+    return this._fieldName;
+  }
+
+  get fieldIndex(): number {
+    return this._fieldIndex;
+  }
+
+  get sequenceName(): string | undefined {
+    return this._sequenceName;
+  }
+
+  get sequenceItemIndex(): number {
+    return this._sequenceItemIndex;
+  }
+}

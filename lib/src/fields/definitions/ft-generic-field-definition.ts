@@ -38,7 +38,7 @@ export abstract class FtGenericFieldDefinition<T> extends FtFieldDefinition {
    * @param value - The value to convert
    * @returns The text representation
    */
-  abstract getValueText(value: T): string;
+  abstract formatValue(value: T): string;
 
   /**
    * Parse text into a typed value.

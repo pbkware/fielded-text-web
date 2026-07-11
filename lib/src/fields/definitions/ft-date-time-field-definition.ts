@@ -42,7 +42,7 @@ export class FtDateTimeFieldDefinition extends FtGenericFieldDefinition<Date> {
     this._constantValue = dateTimeMetaField.value;
   }
 
-  getValueText(value: Date): string {
+  formatValue(value: Date): string {
     return this.formatter.toText(value);
   }
 

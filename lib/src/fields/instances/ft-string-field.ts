@@ -1,6 +1,10 @@
 import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
+import { FtDataType } from '../../types/enums/ft-data-type.js';
+import { FtFieldNullError } from '../../types/errors/ft-field-null-error.js';
+import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtStringFieldDefinition } from '../definitions/ft-string-field-definition.js';
+import { FtField } from './ft-field.js';
 import { FtGenericField } from './ft-generic-field.js';
 
 /**
@@ -14,23 +18,35 @@ export class FtStringField extends FtGenericField<string> {
     super(sequenceInvokation, sequenceItem, FtStringField.VALUE_TEXT_NULL_TRIMMABLE, definition);
   }
 
-  get nullableValue(): string | null {
-    return this.isNull() ? null : this.value;
+  static cast(field: FtField): field is FtStringField {
+    return field.dataType === FtDataType.String;
   }
 
-  set nullableValue(value: string | null) {
-    if (value === null) {
-      this.setNull();
+  protected override getAsString(): string {
+    if (this.isNull()) {
+      throw new FtFieldNullError(`String field value is null: ${this.name}`);
     } else {
-      this.value = value;
+      return this.value;
     }
   }
 
-  override setValue(value: string | null): number {
-    if (value === null) {
-      return this.setNull(); // returns fieldsAffectedFromIndex
-    } else {
-      return super.setValue(value); // returns fieldsAffectedFromIndex
+  protected override setAsString(newValue: string): void {
+    this.setValue(newValue);
+  }
+
+  protected setAsUnknown(newValue: unknown): void {
+    switch (typeof newValue) {
+      case 'string':
+        this.setValue(newValue);
+        break;
+      case 'object':
+        if (newValue === null) {
+          throw new FtFieldNullError(`String field value is null: ${this.name}`);
+        } else {
+          throw new FtFieldTypeError(`Invalid unknown object for String field: ${this.name}`);
+        }
+      default:
+        throw new FtFieldTypeError(`Invalid type (${typeof newValue}) for string field: ${this.name}`);
     }
   }
 

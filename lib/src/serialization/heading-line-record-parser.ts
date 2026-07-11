@@ -1,7 +1,7 @@
 import { FtField } from '../fields/instances/ft-field.js';
 import { FtAssertError, FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
+import { FtSerializationErrorCode } from '../types/errors/ft-serialization-error-code.js';
 import { FtSerializationError } from '../types/errors/ft-serialization-error.js';
-import { FtSerializationException } from '../types/errors/ft-serialization-exception.js';
 import { CharReader } from './char-reader.js';
 import { DelimitedFieldParser } from './delimited-field-parser.js';
 import { FixedWidthFieldParser } from './fixed-width-field-parser.js';
@@ -109,11 +109,11 @@ export class HeadingLineRecordParser {
         if (this._fieldCount < this._core.fieldList.count) {
           this.enterField(this._core.fieldList.get(this._fieldCount));
         } else {
-          const error = this._headingLines ? FtSerializationError.HeadingLineTooManyFields : FtSerializationError.RecordTooManyFields;
+          const error = this._headingLines ? FtSerializationErrorCode.HeadingLineTooManyFields : FtSerializationErrorCode.RecordTooManyFields;
           const message = this._headingLines
             ? `Heading line has too many fields. Expected ${this._core.fieldList.count}`
             : `Record has too many fields. Expected ${this._core.fieldList.count}`;
-          throw new FtSerializationException(error, message);
+          throw new FtSerializationError(error, message);
         }
         this.parseChar(aChar);
         break;
@@ -206,11 +206,11 @@ export class HeadingLineRecordParser {
 
     if (this._fieldCount < this._core.fieldList.count) {
       if (!this._core.allowIncompleteRecords) {
-        const error = this._headingLines ? FtSerializationError.HeadingLineNotEnoughFields : FtSerializationError.RecordNotEnoughFields;
+        const error = this._headingLines ? FtSerializationErrorCode.HeadingLineNotEnoughFields : FtSerializationErrorCode.RecordNotEnoughFields;
         const message = this._headingLines
           ? `Heading line has not enough fields. Got ${this._fieldCount}, expected ${this._core.fieldList.count}`
           : `Record has not enough fields. Got ${this._fieldCount}, expected ${this._core.fieldList.count}`;
-        throw new FtSerializationException(error, message);
+        throw new FtSerializationError(error, message);
       } else {
         for (let i = this._fieldCount; i < this._core.fieldList.count; i++) {
           const field = this._core.fieldList.get(i);

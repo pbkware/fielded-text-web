@@ -1,6 +1,10 @@
 import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
+import { FtDataType } from '../../types/enums/ft-data-type.js';
+import { FtFieldNullError } from '../../types/errors/ft-field-null-error.js';
+import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtDecimalFieldDefinition } from '../definitions/ft-decimal-field-definition.js';
+import { FtField } from './ft-field.js';
 import { FtGenericField } from './ft-generic-field.js';
 
 /**
@@ -26,15 +30,35 @@ export class FtDecimalField extends FtGenericField<number> {
     return this.definition.styles;
   }
 
-  get nullableValue(): number | null {
-    return this.isNull() ? null : this.value;
+  static cast(field: FtField): field is FtDecimalField {
+    return field.dataType === FtDataType.Decimal;
   }
 
-  set nullableValue(value: number | null) {
-    if (value === null) {
-      this.setNull();
+  protected override getAsDecimal(): number {
+    if (this.isNull()) {
+      throw new FtFieldNullError(`Decimal field value is null: ${this.name}`);
     } else {
-      this.value = value;
+      return this.value;
+    }
+  }
+
+  protected override setAsDecimal(newValue: number): void {
+    this.setValue(newValue);
+  }
+
+  protected setAsUnknown(newValue: unknown): void {
+    switch (typeof newValue) {
+      case 'number':
+        this.setValue(newValue);
+        break;
+      case 'object':
+        if (newValue === null) {
+          throw new FtFieldNullError(`Decimal field value is null: ${this.name}`);
+        } else {
+          throw new FtFieldTypeError(`Invalid unknown object for Decimal field: ${this.name}`);
+        }
+      default:
+        throw new FtFieldTypeError(`Invalid type (${typeof newValue}) for decimal field: ${this.name}`);
     }
   }
 
