@@ -46,6 +46,10 @@ while (reader.read()) {
 npm install @pbkware/fielded-text-web
 ```
 
+## Breaking Changes
+
+See [Change Log](https://pbkware.github.io/fielded-text-web/Change_Log/) for any breaking changes.
+
 ## More information
 
 - **[Guides](https://pbkware.github.io/fielded-text-web/Guides/)**

@@ -131,7 +131,7 @@ export abstract class FtField {
   }
 
   /**
-   * The formatted text of the field value as loaded from the data or via {@link (FtField:class).loadValueText}.
+   * The formatted text of the field value as loaded from the data or via {@link loadValueText}.
    */
   get valueText(): string {
     return this._valueText;
@@ -609,9 +609,9 @@ export abstract class FtField {
   /**
    * Loads the field headings from an array of strings.
    *
-   * The headings are loaded according to the field's heading constraint. See {@link (FtField:class).loadHeading} for more information.
+   * The headings are loaded according to the field's heading constraint. See {@link loadHeading} for more information.
    *
-   * @param value - An array of headings. The length of the array should be equal to {@link (FtField:class).headingCount}. Extra headings are ignored and missing headings are set to empty strings.
+   * @param value - An array of headings. The length of the array should be equal to {@link headingCount}. Extra headings are ignored and missing headings are set to empty strings.
    */
   loadHeadings(value: string[]): void {
     const valueCount = value.length;
@@ -854,7 +854,7 @@ export abstract class FtField {
    * Formats the field value to a string.
    *
    * The formatting includes data type formatting but not text formatting such as quoting, padding, truncating etc. This formatted string typically
-   * is identical to the string value in the field's {@link (FtField:class).valueText} property (unless the field value has been modified after loading).
+   * is identical to the string value in the field's {@link valueText} property (unless the field value has been modified after loading).
    */
   abstract formatValue(): string;
   protected abstract loadValueFromText(valueText: string): void;

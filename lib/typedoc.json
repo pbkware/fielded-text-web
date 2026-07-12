@@ -21,6 +21,7 @@
   "searchInComments": true,
   "searchInDocuments": true,
   "hostedBaseUrl": "https://pbkware.github.io/fielded-text-web/",
+  "useTsLinkResolution": false,
   "navigationLinks": {
     "GitHub": "https://github.com/pbkware/fielded-text-web",
     "NPM": "https://www.npmjs.com/package/@pbkware/fielded-text-web"
