@@ -15,6 +15,7 @@
   "highlightLanguages": ["typescript", "xml", "bash", "json", "csv", "text"],
   "readme": "../README.md",
   "projectDocuments": ["src-docs/guide/index.md", "src-docs/source/index.md"],
+  "favicon": "src-docs/favicon.svg",
   "cleanOutputDir": true,
   "githubPages": true,
   "hideGenerator": true,
