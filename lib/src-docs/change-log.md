@@ -13,5 +13,7 @@ title: Change Log
   * `FtField.getValueText()` has been renamed to `FtField.formatValue()`.
   * `FtField.asValueText` getter has been replaced with `FtField.formatValue()` and setter has been replaced with `FtField.loadValueText()`.
   * Readonly accessor `FtField.loadedValueText` has been renamed to `FtField.valueText`.
+  * `FtSerializationReader.getFieldValue()` and `FtSerializationReader.getFieldValueByName()` now throw an exception if a field's value is null. Use the new methods below for previous behaviour.
+  * Add `FtSerializationReader.getFieldNullableValue()` and `FtSerializationReader.getFieldNullableValueByName()` which return `null` if a field's value is null.
 
 * Added `Reading` and `Tables` documentation.

@@ -303,7 +303,7 @@
       "default": {
         "logLevel": "error"
         // "addToApiReportFile": false
-      }
+      },
 
       // "ae-missing-release-tag": {
       //   "logLevel": "none",
@@ -343,10 +343,10 @@
       //   "logLevel": "none",
       //   "addToApiReportFile": true
       // },
-      // "ae-unresolved-link": {
-      //   "logLevel": "none",
-      //   "addToApiReportFile": true
-      // }
+      "ae-unresolved-link": {
+        "logLevel": "none",
+        "addToApiReportFile": false
+      }
     },
 
     /**

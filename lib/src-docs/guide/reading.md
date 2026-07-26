@@ -9,15 +9,13 @@ This guide covers reading fielded text files using the FieldedText TypeScript li
 ## Table of Contents
 
 - [Basic Reading](#basic-reading)
-- [Reading from Strings](#reading-from-strings)
-- [Reading from Streams](#reading-from-streams)
-- [Reading from Node.js Files](#reading-from-nodejs-files)
+- [FtTextReader interface](#the-fttextreader-interface)
+- [Reading Files](#reading-files)
+- [Reading Records](#reading-records)
+- [Seeking Records](#seeking-records)
 - [Accessing Field Values](#accessing-field-values)
 - [Event Callbacks](#event-callbacks)
-- [Heading Lines](#heading-lines)
-- [Comment Lines](#comment-lines)
-- [Error Handling](#error-handling)
-- [Performance Tips](#performance-tips)
+- [Reading Headings](#reading-headings)
 
 ## Basic Reading
 
@@ -56,7 +54,7 @@ while (reader.read()) {
 
 ## The FtTextReader interface
 
-In the above Basic Reading example, we use {@link meta/ft-meta!FtReader FtReader} to read the data file. FtReader understands the structure of a Fielded Text file however it sources the data through a separate text reader. A text reader is a class which implements the {@link meta/ft-meta!FtTextReader FtTextReader} interface which reads one character at a time from the fielded text source.
+In the above Basic Reading example, we use {@link api/ft-reader!FtReader FtReader} to read the data file. FtReader understands the structure of a Fielded Text file however it sources the data through a separate text reader. A text reader is a class which implements the {@link serialization/ft-text-reader!FtTextReader FtTextReader} interface which reads one character at a time from the fielded text source.
 
 ```typescript
 export interface FtTextReader {
@@ -68,7 +66,7 @@ export interface FtTextReader {
 }
 ```
 
-The library has a built-in {@link meta/ft-meta!FtStringReader FtStringReader} class which implements FtTextReader for strings. Below is the above Basic Reading example expanded to explicitly create a `FtStringReader` which reads the CSV data and the FtReader using that `FtStringReader`.
+The library has a built-in {@link serialization/ft-text-reader!FtStringReader FtStringReader} class which implements FtTextReader for strings. Below is the above Basic Reading example expanded to explicitly create a `FtStringReader` which reads the CSV data and the FtReader using that `FtStringReader`.
 
 ```typescript
 import { FtReader, FtStringReader, FtXmlMetaSerialization } from "@pbkware/fielded-text-web";
@@ -115,6 +113,29 @@ Custom `FtTextReader`s can be created to read other types of data sources howeve
 
 Use the `fielded-text-node` npm package to read and write files using node.
 
+## Reading records
+
+{@link serialization/ft-serialization-reader!FtSerializationReader.read FtSerializationReader.read()} will read the next record in the data and load its fields. It will return `true` if a record was successfully read. It will return `false` if:
+
+1. there are no more records in the data, or
+1. {@link serialization/ft-serialization-reader!FtSerializationReader.autoNextTable autoNextTable} is false and the next record in the data is in a different table.
+
+By default, {@link serialization/ft-serialization-reader!FtSerializationReader.autoNextTable autoNextTable} is false, so `read()` will normally read to the end of the data.  The use of tables is further discussed in [Tables](./tables.md)
+
+Whenever `read()` is called, it will skip over any headers or comments in the data. The {@link serialization/ft-serialization-reader!FtSerializationReader.readHeader FtSerializationReader.readHeader()} method can be used to read heading information prior to reading and records. See [Reading Headings](#reading-headings) below for more information.
+
+{@link serialization/ft-serialization-reader!FtSerializationReader.readRecord FtSerializationReader.readRecord()} is an alternative to `read()`. Like `read()`, it reads the next record however it ignores {@link serialization/ft-serialization-reader!FtSerializationReader.autoNextTable autoNextTable} and returns the enumerator {@link types/enums/ft-read-record-result!FtReadRecordResult:var FtReadRecordResult}. This enumerator indicators whether the record read was in the same table or a new table, or whether there were no more records to be read (at end of data). This is further discussed in [Tables](./tables.md).
+
+Note that reading a record is not the same as reading a line of text from the data. It is possible for a record to span multiple lines if it contains new line character(s) within a field.
+
+## Seeking records
+
+The {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} {@link serialization/ft-serialization-reader!FtSerializationReader.seek seek} and {@link serialization/ft-serialization-reader!FtSerializationReader.seekEnd seekEnd} functions allow you to move forward in the data by either a certain number of records (seek) or to the end of the data (seekEnd).  They are similar to the {@link serialization/ft-serialization-reader!FtSerializationReader.read read} function however they do not parse the fields in the record and, accordingly, move through the data a lot faster.
+
+While the seek functions do not parse fields or fire events related to fields, they still update record information in {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} and fire events related to lines and records. Accordingly, {@link serialization/ft-serialization-reader!FtSerializationReader.seekEnd seekEnd} is an ideal way to quickly count the number of records in fielded text data before actually parsing it.
+
+Note that the seek functions ignore table boundaries in data.
+
 ## Accessing Field Values
 
 After a record has been read, the values of the fields in that record are then available in {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} (or its descendants - including {@link api/ft-reader!FtReader FtReader}). Two steps are required to read the field values:
@@ -142,13 +163,13 @@ You can use the following {@link fields/instances/ft-field-list!FtFieldList FtFi
 
 Once a {@link fields/instances/ft-field!FtField field} has been obtained, its value can be retrieved in several ways.
 
-- Checking if the field has a null value
-- Casting the {@link fields/instances/ft-field!FtField field} to its concrete descendant type and using this class's {@link fields/instances/ft-generic-field!FtGenericField.value value} accessor.
-- Using one of {@link fields/instances/ft-field!FtField FtField}'s asXXX where XXX is the data type (eg. {@link fields/instances/ft-field!FtField.asFloat asFloat}) to retrieve the value without have to cast to the descendant field.
-- Using one of {@link fields/instances/ft-field!FtField FtField}'s asNullableXXX where XXX is the data type to retrive the value or null.
-- Using {@link fields/instances/ft-field!FtField FtField}.{@link fields/instances/ft-field!FtField.value value} accessor to retrieve the value with unspecified type.
-- Using {@link fields/instances/ft-field!FtField.valueText valueText} to get the formatted text representing that field value in the data.
-- Using {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader}'s {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader.getFieldValue getFieldValue()} or {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldValueByName getFieldValueByName()} methods.
+- [Checking](#field-null-value) if the field has a null value
+- [Using](#using-asxxx-accessors) one of {@link fields/instances/ft-field!FtField FtField}'s asXXX where XXX is the {@link types/enums/ft-data-type!FtDataType data type} (eg. {@link fields/instances/ft-field!FtField.asFloat asFloat}) to retrieve the value without have to cast to the descendant field.
+- [Using](#using-asnullablexxx-accessors) one of {@link fields/instances/ft-field!FtField FtField}'s asNullableXXX where XXX is the data type to retrive the value or null.
+- [Using](#using-value-or-nullablevalue-accessor) {@link fields/instances/ft-field!FtField FtField}.{@link fields/instances/ft-field!FtField.value value} or {@link fields/instances/ft-field!FtField FtField}.{@link fields/instances/ft-field!FtField.nullableValue nullableValue} accessor to retrieve the value with unspecified type.
+- [Casting](#casting-field-to-descendant-representing-data-type) the {@link fields/instances/ft-field!FtField field} to its concrete descendant type and using this class's {@link fields/instances/ft-generic-field!FtGenericField.value value} accessor.
+- [Using](#using-ftserializationreaders-getfieldxxx-methods) {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader}'s getFieldXXX() methods.
+- [Using](#using-valuetext) {@link fields/instances/ft-field!FtField.valueText valueText} to get the formatted text representing that field value in the data.
 
 These methods of getting a field's value are further discussed below:
 
@@ -179,29 +200,54 @@ while (reader.read()) {
 
 In the above code snippet, if a field is null, then without including the `isNull()` check first, `field.asBigInt` throw a `FtFieldNullError`. Note that {@link fields/instances/ft-field!FtField field} has various`asNullableXXX` accessors which return the value or null.
 
-#### Casting field to descendant representing data type
-
 #### Using asXXX accessors
+
+Fielded Text supports 6 different field {@link types/enums/ft-data-type!FtDataType data types}. For each data type, FtField has an asXXX accessor where XXX is the name of the data type. This accessor will return the field's value with the corresponding type. If the value is of a different type, a {@link types/errors/ft-field-type-error!FtFieldTypeError FtFieldTypeError} is thrown.
+
+- String - {@link fields/instances/ft-field!FtField.asString asString}
+- Boolean - {@link fields/instances/ft-field!FtField.asBoolean asBoolean}
+- Integer - {@link fields/instances/ft-field!FtField.asInteger asInteger}
+- Float - {@link fields/instances/ft-field!FtField.asFloat asFloat}
+- Decimal - {@link fields/instances/ft-field!FtField.asDecimal asDecimal}
+- DateTime - {@link fields/instances/ft-field!FtField.asDateTime asDateTime}
+
+If a field's value is `null`, then a {@link types/errors/ft-field-null-error!FtFieldNullError FtFieldNullError} exception will be thrown.
 
 #### Using asNullableXXX accessors
 
-#### Using value accessor
+Same as asXXX accessors however returns `null` if the field value is null.
 
-#### Using FtSerializationReader's getFieldValue() or getFieldValueByName() functions
+#### Using value or nullableValue accessor
 
-When a field is null, nullable value accessors return JavaScript `null`.
+{@link fields/instances/ft-field!FtField} has a {@link fields/instances/ft-field!FtField.value value} accessor which will the value for any data type field however with the generic/union {@link fields/instances/ft-field!FtField.Value} type.  {@link fields/instances/ft-field!FtField.nullableValue nullableValue} is similar to {@link fields/instances/ft-field!FtField.value value} however it returns `null` instead of throwing an exception if the field's value is null.
+
+#### Casting field to descendant representing data type
+
+{@link fields/instances/ft-field!FtField FtField} is actually an abstract class with a descendant class for each {@link types/enums/ft-data-type!FtDataType data type}. The descendands are:
+
+- String - {@link fields/instances/ft-string-field!FtStringField FtStringField}
+- Boolean - {@link fields/instances/ft-boolean-field!FtBooleanField FtBooleanField}
+- Integer - {@link fields/instances/ft-integer-field!FtIntegerField FtIntegerField}
+- Float - {@link fields/instances/ft-float-field!FtFloatField FtFloatField}
+- Decimal - {@link fields/instances/ft-decimal-field!FtDecimalField FtDecimalField}
+- DateTime - {@link fields/instances/ft-date-time-field!FtDateTimeField FtDateTimeField}
+
+These descendant classes override the {@link fields/instances/ft-generic-field!FtGenericField.value value} accessor so that it returns a fields value with its actual type.  Each of these descendant field classes have a static type guard `cast` function (eg. {@link fields/instances/ft-string-field!FtStringField.cast FtStringField.cast()}) which can be used to attempt to cast {@link fields/instances/ft-field!FtField FtField} to that descendent.
+
+#### Using FtSerializationReader's getFieldXXX() methods
+
+{@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} has 4 methods which can be used to retrieve a field's value:
+
+1. {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldValue getFieldValue(idx: number)}
+1. {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldNullableValue getFieldNullableValue(idx: number)}
+1. {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldValueByName getFieldValueByName(name: string)}
+1. {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldNullableValueByName getFieldNullableValueByName(name: string)}
+
+These functions respectively get a field's value by using the field's {@link fields/instances/ft-field!FtField.value value} or {@link fields/instances/ft-field!FtField.nullableValue nullableValue} accessor. They retrieve the field as described in [Locating a field](#locating-a-field) above.
 
 #### Using valueText
 
-## Read record
-
-## Seek
-
-The {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} {@link serialization/ft-serialization-reader!FtSerializationReader.seek seek} and {@link serialization/ft-serialization-reader!FtSerializationReader.seekEnd seekEnd} functions allow you to move forward in the data by either a certain number of records (seek) or to the end of the data (seekEnd).  They are similar to the {@link serialization/ft-serialization-reader!FtSerializationReader.read read} function however they do not parse the fields in the record and, accordingly, move through the data a lot faster.
-
-While the seek functions do not parse fields or fire events related to fields, they still update record information in {@link serialization/ft-serialization-reader!FtSerializationReader FtSerializationReader} and fire events related to lines and records. Accordingly, {@link serialization/ft-serialization-reader!FtSerializationReader.seekEnd seekEnd} is an ideal way to quickly count the number of records in fielded text data before actually parsing it.
-
-Note that the seek functions ignore table boundaries in data.
+It is also possible to get a field's value as its formatted text representation in the data. This text representation may not be identical to how the field is actually represented in the data, as it does not include quoting and escaped character encoding.
 
 ## Event Callbacks
 
@@ -286,242 +332,60 @@ while (reader.read()) {
 console.log(`Total records: ${recordCount}, Total fields: ${fieldCount}`);
 ```
 
-## Heading Lines
+## Reading Headings
 
-### Automatic Heading Parsing
+The headings in the data can be read after the header in the data has been parsed. This can be done in the following ways:
 
-When `headingLineCount > 0`, heading lines are automatically read and validated:
+1. Open the data with {@link serialization/ft-serialization-reader!FtSerializationReader.open FtSerializationReader.open()} with the `immediatelyReadHeader` parameter either not specified or true. The reader will immediately parse the header and load fields associated with headings into`FtSerializationReader` with their heading values.
+1. Open the data with {@link serialization/ft-serialization-reader!FtSerializationReader.open FtSerializationReader.open()} with the `immediatelyReadHeader` parameter set to false. Then calling {@link serialization/ft-serialization-reader!FtSerializationReader.readHeader FtSerializationReader.readHeader()}. `readHeader()` will parse the header and load fields associated with headings into`FtSerializationReader` with their heading values.
+1. Call {@link serialization/ft-serialization-reader!FtSerializationReader.read FtSerializationReader.read()} at least once. When the first record is read, the header will also be parsed and heading information will be available in fields. Note that the fields associated with headings and fields associated with the first record may differ if sequence redirection is used. In this case not all headings may be available with this method.
 
-```typescript
-const meta = new FtMeta();
-meta.delimiterChar = ',';
-meta.headingLineCount = 1; // One heading line
+### Accessing Field Heading values
 
-// Define expected headings
-field1.headings = ['Name'];
-field2.headings = ['Age'];
-field3.headings = ['City'];
+If the meta specifies that the data [contains headings](./meta-data.md#headings) (headingLineCount > 0), then the {@link fields/instances/ft-field!FtField FtField}.{@link fields/instances/ft-field!FtField.headings headings} array property will be of length `headingLineCount`. Each element of the array will contain the heading in corresponding heading line for that field in the data.
 
-// Reader will validate headings match
-reader.loadMeta(meta);
-reader.open(csvData);
+```ts
+import {
+  FtReader,
+  FtStringReader,
+  FtXmlMetaSerialization,
+} from "@pbkware/fielded-text-web";
 
-// Heading lines are skipped; read() returns first data record
-while (reader.read()) {
-  // Process data records
+// CSV data with 3 heading lines
+const csvData = `Inventory,Inventory,Pricing
+Product,Quantity,Unit Price
+Name,Count,USD
+Widget,10,$19.99`;
+
+// Meta describing the schema of the CSV data - includes 3 heading lines"
+const xmlMeta = `<?xml version="1.0" encoding="utf-8"?>
+<FieldedText HeadingLineCount="3">
+  <Field Name="Product" />
+  <Field DataType="Integer" Name="Quantity" />
+  <Field DataType="Decimal" Name="Price" Format="C2" />
+</FieldedText>`;
+
+// Load meta data from XML
+const metaReader = new FtXmlMetaSerialization();
+const meta = metaReader.deserialize(xmlMeta);
+
+const textReader = new FtStringReader(csvData);
+
+// Create the serialization reader
+const reader = new FtReader(meta);
+// Open the text reader
+// `true` indicates that header lines should be read immediately
+reader.open(textReader, true); // true is default, but shown here for clarity
+
+// Read and log the headings
+const fields = reader.fieldList;
+for (let i = 0; i < fields.count; i++) {
+  const field = fields.get(i);
+  const headings = field.headings; // array contains the headings for this field, in order from top to bottom
+  console.log(`Field ${field.name} headings: ${headings.join(", ")}`);
 }
-```
-
-### Multiple Heading Lines
-
-```typescript
-meta.headingLineCount = 3; // Three heading lines
-meta.mainHeadingLineIndex = 1; // Use second line for matching
-
-field.headings = [
-  'Primary', // Line 0
-  'Secondary', // Line 1 (main)
-  'Tertiary', // Line 2
-];
 ```
 
 ### Heading Validation
 
-```typescript
-// Strict heading matching
-meta.headingConstraint = FtHeadingConstraint.AllConstant;
-
-// Headings must match exactly; reader throws error if mismatch
-```
-
-## Comment Lines
-
-Skip comment lines by setting `lineCommentChar`:
-
-```typescript
-const meta = new FtMeta();
-meta.delimiterChar = ',';
-meta.lineCommentChar = '#'; // Lines starting with # are comments
-
-const csvData = `# This is a comment
-Name,Age
-# Another comment
-John,30
-Jane,25`;
-
-reader.loadMeta(meta);
-reader.open(csvData);
-
-while (reader.read()) {
-  // Comments are automatically skipped
-}
-```
-
-## Error Handling
-
-### Try-Catch
-
-```typescript
-try {
-  reader.loadMeta(meta);
-  reader.open(csvData);
-
-  while (reader.read()) {
-    // Process
-  }
-
-  reader.close();
-} catch (error) {
-  console.error('Error reading file:', error);
-  reader.close(); // Always close on error
-}
-```
-
-### Field Parsing Errors
-
-```typescript
-while (reader.read()) {
-  try {
-    const age = Number(reader.fieldList.get(1).asBigInt);
-
-    if (isNaN(age)) {
-      console.warn('Invalid age value');
-      continue;
-    }
-
-    // Process valid record
-  } catch (error) {
-    console.error('Error parsing record:', error);
-    // Skip this record, continue to next
-  }
-}
-```
-
-### Validation
-
-```typescript
-function validateRecord(reader: SerializationReader): boolean {
-  // Check required fields are not null
-  if (reader.fieldList.get(0).isNull()) {
-    console.warn('Name field is null');
-    return false;
-  }
-
-  // Check value ranges
-  const age = Number(reader.fieldList.get(1).asBigInt);
-  if (age < 0 || age > 150) {
-    console.warn('Age out of range');
-    return false;
-  }
-
-  return true;
-}
-
-while (reader.read()) {
-  if (!validateRecord(reader)) {
-    continue; // Skip invalid record
-  }
-
-  // Process valid record
-}
-```
-
-## Performance Tips
-
-### 1. Reuse Metadata
-
-```typescript
-// Load metadata once
-const meta = loadMetadataFromFile('schema.json');
-
-// Reuse for multiple files
-function processFile(filePath: string, meta: FtMeta) {
-  const reader = new FtNodeReader();
-  reader.loadMeta(meta); // Same metadata instance
-  // ... read file
-}
-
-processFile('file1.csv', meta);
-processFile('file2.csv', meta);
-processFile('file3.csv', meta);
-```
-
-### 2. Avoid Event Callbacks if Not Needed
-
-Event callbacks add overhead. If you don't need them, don't set them:
-
-```typescript
-// Faster (no events)
-while (reader.read()) {
-  const value = reader.fieldList.get(0).asString;
-}
-
-// Slower (events)
-reader.onFieldValueReady = (args) => {
-  /* ... */
-};
-while (reader.read()) {
-  const value = reader.fieldList.get(0).asString;
-}
-```
-
-### 3. Use Streaming for Large Files
-
-Always use streaming for large files:
-
-```typescript
-// Good - streaming
-const stream = createReadStream('huge.csv');
-const reader = new FtNodeReader();
-reader.openNodeStream(stream);
-
-// Bad - loading entire file into memory
-const content = await readFile('huge.csv', 'utf8');
-reader.open(content);
-```
-
-### 4. Batch Processing
-
-Process records in batches for better performance:
-
-```typescript
-const BATCH_SIZE = 1000;
-let batch: CustomerRecord[] = [];
-
-while (await reader.read()) {
-  batch.push({
-    name: reader.fieldList.get(0).asString,
-    age: Number(reader.fieldList.get(1).asBigInt),
-  });
-
-  if (batch.length >= BATCH_SIZE) {
-    await processBatch(batch);
-    batch = [];
-  }
-}
-
-// Process remaining records
-if (batch.length > 0) {
-  await processBatch(batch);
-}
-
-async function processBatch(records: CustomerRecord[]) {
-  // Bulk insert to database, etc.
-}
-```
-
-### 5. Minimize Type Conversions
-
-```typescript
-// Slower - converting on every access
-while (reader.read()) {
-  const age = Number(reader.fieldList.get(1).asBigInt); // Conversion
-  const price = reader.fieldList.get(2).asDecimal; // No conversion
-}
-
-// Faster - access raw values when possible
-while (reader.read()) {
-  const ageField = reader.fieldList.get(1);
-  // Use field methods directly when possible
-}
-```
+When the header is parsed, the headings will also be validated against the {@link types/enums/ft-heading-constraint!FtHeadingConstraint:var heading constraints} specified by the meta. This may cause an exception to be thrown if the headings in the data do not match the headings specified in the meta, or it may dynamically change the field names to be the value of the field's main heading line.

@@ -293,8 +293,7 @@ export abstract class FtField {
    *
    * When setting the value, the actual type must be compatible with the field's expected type.
    *
-   * @throws FtTypeError if the value being set is not of the field's expected type.
-   * @throws FtNullError if the field is `null`.
+   * @throws FtFieldNullError if the field is `null`.
    */
   get value(): FtField.Value {
     if (this.isNull()) {
@@ -311,8 +310,8 @@ export abstract class FtField {
   /**
    * The field value as a string.
    *
-   * @throws FtTypeError if the field is not of data type `String`.
-   * @throws FtNullError if the field is `null`.
+   * @throws FtFieldTypeError if the field is not of data type `String`.
+   * @throws FtFieldNullError if the field is `null`.
    */
   get asString(): string {
     if (this.isNull()) {
@@ -329,8 +328,8 @@ export abstract class FtField {
   /**
    * The field value as a boolean.
    *
-   * @throws FtTypeError if the field is not of data type `Boolean`.
-   * @throws FtNullError if the field is `null`.
+   * @throws FtFieldTypeError if the field is not of data type `Boolean`.
+   * @throws FtFieldNullError if the field is `null`.
    */
   get asBoolean(): boolean {
     if (this.isNull()) {
@@ -347,8 +346,8 @@ export abstract class FtField {
   /**
    * The field value as an integer.
 
-   * @throws FtTypeError if the field is not of data type `Integer`.
-   * @throws FtNullError if the field is `null`.
+   * @throws FtFieldTypeError if the field is not of data type `Integer`.
+   * @throws FtFieldNullError if the field is `null`.
    */
   get asInteger(): number {
     if (this.isNull()) {
@@ -365,8 +364,8 @@ export abstract class FtField {
   /**
    * The field value as a bigint.
    *
-   * @throws FtTypeError if the field is not of data type `BigInt`.
-   * @throws FtNullError if the field is `null`.
+   * @throws FtFieldTypeError if the field is not of data type `BigInt`.
+   * @throws FtFieldNullError if the field is `null`.
    */
   get asBigInt(): bigint {
     if (this.isNull()) {
@@ -383,8 +382,8 @@ export abstract class FtField {
   /**
    * The field value as a float.
    *
-   * @throws FtTypeError if the field is not of data type `Float`.
-   * @throws FtNullError if the field is `null`.
+   * @throws FtFieldTypeError if the field is not of data type `Float`.
+   * @throws FtFieldNullError if the field is `null`.
    */
   get asFloat(): number {
     if (this.isNull()) {
@@ -401,8 +400,8 @@ export abstract class FtField {
   /**
    * The field value as a DateTime.
    *
-   * @throws FtTypeError if the field is not of data type `DateTime`.
-   * @throws FtNullError if the field is `null`.
+   * @throws FtFieldTypeError if the field is not of data type `DateTime`.
+   * @throws FtFieldNullError if the field is `null`.
    */
   get asDateTime(): Date {
     if (this.isNull()) {
@@ -419,8 +418,8 @@ export abstract class FtField {
   /**
    * The field value as a number (decimal).
    *
-   * @throws FtTypeError if the field is not of data type `Decimal`.
-   * @throws FtNullError if the field is `null`.
+   * @throws FtFieldTypeError if the field is not of data type `Decimal`.
+   * @throws FtFieldNullError if the field is `null`.
    */
   get asDecimal(): number {
     if (this.isNull()) {
@@ -454,7 +453,7 @@ export abstract class FtField {
   /**
    * The field value as a string or null.
    *
-   * @throws FtTypeError if the field is not of data type `String`.
+   * @throws FtFieldTypeError if the field is not of data type `String`.
    */
   get asNullableString(): string | null {
     return this.isNull() ? null : this.getAsString();
@@ -471,7 +470,7 @@ export abstract class FtField {
   /**
    * The field value as a boolean or null.
    *
-   * @throws FtTypeError if the field is not of data type `Boolean`.
+   * @throws FtFieldTypeError if the field is not of data type `Boolean`.
    */
   get asNullableBoolean(): boolean | null {
     return this.isNull() ? null : this.getAsBoolean();
@@ -488,7 +487,7 @@ export abstract class FtField {
   /**
    * The field value as an integer or null.
    *
-   * @throws FtTypeError if the field is not of data type `BigInt`.
+   * @throws FtFieldTypeError if the field is not of data type `BigInt`.
    */
   get asNullableInteger(): number | null {
     return this.isNull() ? null : this.getAsInteger();
@@ -505,7 +504,7 @@ export abstract class FtField {
   /**
    * The field value as a bigint or null.
    *
-   * @throws FtTypeError if the field is not of data type `BigInt`.
+   * @throws FtFieldTypeError if the field is not of data type `BigInt`.
    */
   get asNullableBigInt(): bigint | null {
     return this.isNull() ? null : this.getAsBigInt();
@@ -522,7 +521,7 @@ export abstract class FtField {
   /**
    * The field value as a float or null.
    *
-   * @throws FtTypeError if the field is not of data type `Float`.
+   * @throws FtFieldTypeError if the field is not of data type `Float`.
    */
   get asNullableFloat(): number | null {
     return this.isNull() ? null : this.getAsFloat();
@@ -539,7 +538,7 @@ export abstract class FtField {
   /**
    * The field value as a Date or null.
    *
-   * @throws FtTypeError if the field is not of data type `DateTime`.
+   * @throws FtFieldTypeError if the field is not of data type `DateTime`.
    */
   get asNullableDateTime(): Date | null {
     return this.isNull() ? null : this.getAsDateTime();
@@ -556,7 +555,7 @@ export abstract class FtField {
   /**
    * The field value as a number (decimal) or null.
    *
-   * @throws FtTypeError if the field is not of data type `Decimal`.
+   * @throws FtFieldTypeError if the field is not of data type `Decimal`.
    */
   get asNullableDecimal(): number | null {
     return this.isNull() ? null : this.getAsDecimal();
