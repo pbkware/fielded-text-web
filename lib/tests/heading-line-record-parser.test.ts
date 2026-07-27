@@ -4,8 +4,9 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { FtMeta } from '../src/meta/ft-meta.js';
 import { CharReader } from '../src/serialization/char-reader.js';
 import { FtSerializationReader } from '../src/serialization/ft-serialization-reader.js';
-import { FtStringReader, FtTextReader } from '../src/serialization/ft-text-reader.js';
 import { HeadingLineRecordParser } from '../src/serialization/heading-line-record-parser.js';
+import { FtStringReader } from '../src/serialization/text-reader/ft-string-reader.js';
+import { FtTextReader } from '../src/serialization/text-reader/ft-text-reader.js';
 import { FtDataType } from '../src/types/enums/ft-data-type.js';
 
 describe('HeadingLineRecordParser', () => {
@@ -45,7 +46,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should parse simple heading line', () => {
-      charReader.setTextReader(new FtStringReader('Name,Age,Active\n'), true);
+      charReader.setTextReader(new FtStringReader('Name,Age,Active\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -59,7 +60,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should parse quoted headings', () => {
-      charReader.setTextReader(new FtStringReader('"Full Name","Age Code","Is Active"\n'), true);
+      charReader.setTextReader(new FtStringReader('"Full Name","Age Code","Is Active"\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -73,7 +74,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should handle headings with spaces', () => {
-      charReader.setTextReader(new FtStringReader('"First Name", "Last Name", "Email Address"\n'), true);
+      charReader.setTextReader(new FtStringReader('"First Name", "Last Name", "Email Address"\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -87,7 +88,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should parse headings with embedded commas in quotes', () => {
-      charReader.setTextReader(new FtStringReader('"Name, Full","Age","Active"\n'), true);
+      charReader.setTextReader(new FtStringReader('"Name, Full","Age","Active"\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -123,7 +124,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should parse fixed-width heading line', () => {
-      charReader.setTextReader(new FtStringReader('Name                Age  \n'), true);
+      charReader.setTextReader(new FtStringReader('Name                Age  \n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -138,7 +139,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should handle padded fixed-width headings', () => {
-      charReader.setTextReader(new FtStringReader('Name                    3\n'), true);
+      charReader.setTextReader(new FtStringReader('Name                    3\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -179,7 +180,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should parse mixed field types', () => {
-      charReader.setTextReader(new FtStringReader('ID   ,Name,Age\n'), true);
+      charReader.setTextReader(new FtStringReader('ID   ,Name,Age\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -210,7 +211,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should detect when EOL should be embedded in quoted field', () => {
-      charReader.setTextReader(new FtStringReader('"Multi\nLine"\n'), true);
+      charReader.setTextReader(new FtStringReader('"Multi\nLine"\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -226,7 +227,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should not embed EOL outside quotes', () => {
-      charReader.setTextReader(new FtStringReader('Simple\n'), true);
+      charReader.setTextReader(new FtStringReader('Simple\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -256,7 +257,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should track ignore extra chars position', () => {
-      charReader.setTextReader(new FtStringReader('Field1,ExtraData\n'), true);
+      charReader.setTextReader(new FtStringReader('Field1,ExtraData\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -289,7 +290,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should track active field during parsing', () => {
-      charReader.setTextReader(new FtStringReader('Name,Age\n'), true);
+      charReader.setTextReader(new FtStringReader('Name,Age\n'));
       parser.start(0);
 
       // Before any parsing
@@ -318,7 +319,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should provide access to active field', () => {
-      charReader.setTextReader(new FtStringReader('Name\n'), true);
+      charReader.setTextReader(new FtStringReader('Name\n'));
       parser.start(0);
 
       parser.parseChar('N');
@@ -369,7 +370,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should parse data line', () => {
-      charReader.setTextReader(new FtStringReader('John Doe,30\n'), true);
+      charReader.setTextReader(new FtStringReader('John Doe,30\n'));
       parser.start(0);
 
       let readValue = charReader.read();
@@ -383,7 +384,7 @@ describe('HeadingLineRecordParser', () => {
     });
 
     it('should parse quoted data values', () => {
-      charReader.setTextReader(new FtStringReader('"John Doe",30\n'), true);
+      charReader.setTextReader(new FtStringReader('"John Doe",30\n'));
       parser.start(0);
 
       let readValue = charReader.read();

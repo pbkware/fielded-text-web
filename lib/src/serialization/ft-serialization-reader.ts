@@ -13,10 +13,10 @@ import { CharReader } from './char-reader.js';
 import { DeclarationParser } from './declaration-parser.js';
 import { EmbeddedMetaParser } from './embedded-meta-parser.js';
 import { FtDeclaredParameters } from './ft-declared-parameters.js';
-import { FtTextReader } from './ft-text-reader.js';
 import { HeadingLineRecordParser } from './heading-line-record-parser.js';
 import { LineEndedType, LineParser } from './line-parser.js';
 import { SerializationCore } from './serialization-core.js';
+import { FtTextReader } from './text-reader/ft-text-reader.js';
 
 /**
  * Reader for fielded text streams. Coordinates all parsing components.

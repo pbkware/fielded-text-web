@@ -1,6 +1,7 @@
 import { FtMeta } from '../meta/ft-meta.js';
 import { FtSerializationReader } from '../serialization/ft-serialization-reader.js';
-import { FtStringReader, FtTextReader } from '../serialization/ft-text-reader.js';
+import { FtStringReader } from '../serialization/text-reader/ft-string-reader.js';
+import { FtTextReader } from '../serialization/text-reader/ft-text-reader.js';
 
 /**
  * High-level reader for fielded text files.

@@ -1,5 +1,5 @@
 import { FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
-import { FtTextReader } from './ft-text-reader.js';
+import { FtTextReader } from './text-reader/ft-text-reader.js';
 
 const State = {
   Read: 'Read',

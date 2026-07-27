@@ -2,14 +2,15 @@ import { describe, expect, it } from 'vitest';
 import { CharReader } from '../../src/serialization/char-reader.js';
 import { DeclarationParser } from '../../src/serialization/declaration-parser.js';
 import { FtDeclaredParameters } from '../../src/serialization/ft-declared-parameters.js';
-import { FtStringReader, FtTextReader } from '../../src/serialization/ft-text-reader.js';
+import { FtStringReader } from '../../src/serialization/text-reader/ft-string-reader.js';
+import { FtTextReader } from '../../src/serialization/text-reader/ft-text-reader.js';
 import { FtMetaReferenceType } from '../../src/types/enums/ft-meta-reference-type.js';
 
 describe('FTStd0.9 declaration compliance (provisional)', () => {
   it('[FT0.9-DECL-001] parses standard signature with Version parameter', () => {
     const text = '|!Fielded Text^| Version="1.1"';
     const charReader = new CharReader();
-    charReader.setTextReader(new FtStringReader(text), true);
+    charReader.setTextReader(new FtStringReader(text));
 
     const parameters = new FtDeclaredParameters();
     const parser = new DeclarationParser(charReader, parameters);
@@ -30,7 +31,7 @@ describe('FTStd0.9 declaration compliance (provisional)', () => {
   it('[FT0.9-DECL-002] parses multiple signature parameters', () => {
     const text = '|!Fielded Text^| Version="1.1" Culture="en-US" MainHeadingLine="0"';
     const charReader = new CharReader();
-    charReader.setTextReader(new FtStringReader(text), true);
+    charReader.setTextReader(new FtStringReader(text));
 
     const parameters = new FtDeclaredParameters();
     const parser = new DeclarationParser(charReader, parameters);
@@ -49,7 +50,7 @@ describe('FTStd0.9 declaration compliance (provisional)', () => {
     // Non-compliant: library should reject a signature where Version is not first.
     const text = '|!Fielded Text^| Culture="en-US" Version="1.1"';
     const charReader = new CharReader();
-    charReader.setTextReader(new FtStringReader(text), true);
+    charReader.setTextReader(new FtStringReader(text));
 
     const parameters = new FtDeclaredParameters();
     const parser = new DeclarationParser(charReader, parameters);
@@ -85,7 +86,7 @@ describe('FTStd0.9 declaration compliance (provisional)', () => {
     // The library must at minimum accept such parameters without error.
     const text = '|!Fielded Text^| Version="1.1" x-Producer="MyApp" X-Schema="v2"';
     const charReader = new CharReader();
-    charReader.setTextReader(new FtStringReader(text), true);
+    charReader.setTextReader(new FtStringReader(text));
 
     const parameters = new FtDeclaredParameters();
     const parser = new DeclarationParser(charReader, parameters);

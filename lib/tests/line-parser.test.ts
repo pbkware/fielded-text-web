@@ -2,8 +2,8 @@
 
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CharReader } from '../src/serialization/char-reader.js';
-import { FtStringReader } from '../src/serialization/ft-text-reader.js';
 import { LineEndedType, LineParser } from '../src/serialization/line-parser.js';
+import { FtStringReader } from '../src/serialization/text-reader/ft-string-reader.js';
 import { FtEndOfLineType } from '../src/types/enums/ft-end-of-line-type.js';
 
 describe('LineParser', () => {
@@ -50,7 +50,7 @@ describe('LineParser', () => {
     });
 
     it('should handle CRLF as single line ending', () => {
-      charReader.setTextReader(new FtStringReader('A\r\nB'), true);
+      charReader.setTextReader(new FtStringReader('A\r\nB'));
       parser.reset();
 
       // Use charReader.read() to advance position for peek() to work
@@ -101,7 +101,7 @@ describe('LineParser', () => {
     });
 
     it('should handle CRLF line endings', () => {
-      charReader.setTextReader(new FtStringReader('A\r\nB'), true);
+      charReader.setTextReader(new FtStringReader('A\r\nB'));
       parser = new LineParser(charReader, FtEndOfLineType.CrLf, ';');
       parser.reset();
 
@@ -139,7 +139,7 @@ describe('LineParser', () => {
 
   describe('Embedded end-of-line characters', () => {
     beforeEach(() => {
-      charReader.setTextReader(new FtStringReader('A\nB'), true);
+      charReader.setTextReader(new FtStringReader('A\nB'));
       parser = new LineParser(charReader, FtEndOfLineType.Auto, ';');
     });
 

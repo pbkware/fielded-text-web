@@ -143,7 +143,8 @@ export { FtSerializationError } from './types/errors/ft-serialization-error.js';
 // Serialization reader
 export { FtDeclaredParameterRec, FtDeclaredParameters } from './serialization/ft-declared-parameters.js';
 export { FtSerializationReader } from './serialization/ft-serialization-reader.js';
-export { FtStringReader, FtTextReader } from './serialization/ft-text-reader.js';
+export { FtStringReader } from './serialization/text-reader/ft-string-reader.js';
+export { FtTextReader } from './serialization/text-reader/ft-text-reader.js';
 
 // Serialization writer
 export { FtWriterSettings } from './api/ft-writer-settings.js';

@@ -4,7 +4,8 @@ import { assert, beforeEach, describe, expect, it } from 'vitest';
 import { CharReader } from '../src/serialization/char-reader.js';
 import { DeclarationParser } from '../src/serialization/declaration-parser.js';
 import { FtDeclaredParameters } from '../src/serialization/ft-declared-parameters.js';
-import { FtStringReader, FtTextReader } from '../src/serialization/ft-text-reader.js';
+import { FtStringReader } from '../src/serialization/text-reader/ft-string-reader.js';
+import { FtTextReader } from '../src/serialization/text-reader/ft-text-reader.js';
 
 describe('DeclarationParser', () => {
   let charReader: CharReader;
@@ -19,7 +20,7 @@ describe('DeclarationParser', () => {
   describe('Signature line parsing', () => {
     it('should parse modern signature with version parameter', () => {
       const text = '|!Fielded Text^| Version="1.1"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -36,7 +37,7 @@ describe('DeclarationParser', () => {
 
     it('should parse legacy signature', () => {
       const text = '|>Fielded Text<| Version="1.0"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.LegacySignature;
       parser.startLine();
@@ -51,7 +52,7 @@ describe('DeclarationParser', () => {
 
     it('should parse multiple parameters', () => {
       const text = '|!Fielded Text^| Version="1.1" Culture="en-US" MainHeadingLine="0"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -68,7 +69,7 @@ describe('DeclarationParser', () => {
 
     it('should handle parameter values with spaces', () => {
       const text = '|!Fielded Text^| Comment="This is a comment"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -83,7 +84,7 @@ describe('DeclarationParser', () => {
 
     it('should handle stuffed quotes in parameter values', () => {
       const text = '|!Fielded Text^| Comment="She said ""Hello"""';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -103,7 +104,7 @@ describe('DeclarationParser', () => {
   describe('MetaFile reference parsing', () => {
     it('should parse MetaFile parameter', () => {
       const text = '|!Fielded Text^| Version="1.1" MetaFile="myfile.ftm"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -118,7 +119,7 @@ describe('DeclarationParser', () => {
 
     it('should parse MetaUrl parameter', () => {
       const text = '|!Fielded Text^| MetaUrl="http://example.com/meta.ftm"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -133,7 +134,7 @@ describe('DeclarationParser', () => {
 
     it('should detect embedded meta', () => {
       const text = '|!Fielded Text^| MetaEmbedded="True"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -153,7 +154,7 @@ describe('DeclarationParser', () => {
   describe('Declaration2 line parsing', () => {
     it('should parse second declaration line', () => {
       const text = '#AdditionalParam="Value1"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -234,7 +235,7 @@ describe('DeclarationParser', () => {
   describe('Error handling', () => {
     it('should throw on zero-length parameter name', () => {
       const text = '|!Fielded Text^| ="value"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -248,7 +249,7 @@ describe('DeclarationParser', () => {
 
     it('should throw on unquoted parameter value', () => {
       const text = '|!Fielded Text^| Version=1.1';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -264,7 +265,7 @@ describe('DeclarationParser', () => {
   describe('Edge cases', () => {
     it('should handle empty parameter value', () => {
       const text = '|!Fielded Text^| Comment=""';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
@@ -279,7 +280,7 @@ describe('DeclarationParser', () => {
 
     it('should handle whitespace around equals sign', () => {
       const text = '|!Fielded Text^| Version = "1.1"';
-      charReader.setTextReader(new FtStringReader(text), true);
+      charReader.setTextReader(new FtStringReader(text));
       parser = new DeclarationParser(charReader, parameters);
       parser.signature = CharReader.Signature;
       parser.startLine();
