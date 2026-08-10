@@ -390,6 +390,37 @@ describe('FtXmlMetaSerialization', () => {
       expect(sequence.itemList.get(1).field?.name).toBe('Age');
     });
 
+    it('should ensure a single root sequence and make it first when deserializing', () => {
+      const xml = `<?xml version="1.0" encoding="utf-8"?>
+<FieldedText>
+  <Field Name="Data" DataType="String" />
+  <Sequence Name="NonRoot" Root="false">
+    <Item FieldIndex="0" />
+  </Sequence>
+  <Sequence Name="RootSecond" Root="true">
+    <Item FieldIndex="0" />
+  </Sequence>
+  <Sequence Name="AnotherRoot" Root="true">
+    <Item FieldIndex="0" />
+  </Sequence>
+</FieldedText>`;
+
+      const warnings: string[] = [];
+      const meta = FtXmlMetaSerialization.deserialize(xml, warnings);
+
+      expect(meta.sequenceList.count).toBe(3);
+      expect(meta.sequenceList.get(0).name).toBe('RootSecond');
+      expect(meta.sequenceList.get(0).root).toBe(true);
+      expect(meta.sequenceList.get(1).name).toBe('NonRoot');
+      expect(meta.sequenceList.get(1).root).toBe(false);
+      expect(meta.sequenceList.get(2).name).toBe('AnotherRoot');
+      expect(meta.sequenceList.get(2).root).toBe(false);
+
+      const rootCount = [meta.sequenceList.get(0), meta.sequenceList.get(1), meta.sequenceList.get(2)].filter((sequence) => sequence.root).length;
+      expect(rootCount).toBe(1);
+      expect(warnings.some((warning) => warning.includes('Multiple root sequences found'))).toBe(true);
+    });
+
     it('should handle boolean attributes correctly', () => {
       const xml = `<?xml version="1.0" encoding="utf-8"?>
 <FieldedText IgnoreBlankLines="true" StuffedEmbeddedQuotes="false">

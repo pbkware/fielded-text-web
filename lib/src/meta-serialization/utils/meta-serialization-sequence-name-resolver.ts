@@ -31,9 +31,20 @@ export class MetaSerializationSequenceNameResolver {
     const count = recs.length;
     const sequences = new Array<FtMetaSequence>(count);
 
+    let rootSequence: FtMetaSequence | undefined;
+
     for (let i = 0; i < count; i++) {
       const rec = recs[i];
-      sequences[i] = rec.sequence;
+      const sequence = rec.sequence;
+      if (sequence.root) {
+        if (rootSequence === undefined) {
+          rootSequence = sequence;
+        } else {
+          warnings.push(`Multiple root sequences found: ${rootSequence.name} and ${sequence.name}`);
+          sequence.root = false;
+        }
+      }
+      sequences[i] = sequence;
       const sequenceName = rec.name;
       if (sequenceName === undefined) {
         warnings.push(`Sequence with undefined name: ${JSON.stringify(rec.sequence)}`);
@@ -43,6 +54,18 @@ export class MetaSerializationSequenceNameResolver {
           warnings.push(`Duplicate sequence name: ${sequenceName}`);
         }
         this._recs.push(rec);
+      }
+    }
+
+    if (rootSequence === undefined) {
+      warnings.push(`No root sequence found. Setting the first sequence as root: ${sequences[0].name}`);
+      sequences[0].root = true;
+    } else {
+      const rootIndex = sequences.indexOf(rootSequence);
+      if (rootIndex > 0) {
+        // Make sure the root sequence is first in the list
+        sequences.splice(rootIndex, 1);
+        sequences.unshift(rootSequence);
       }
     }
     return sequences;

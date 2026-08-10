@@ -236,9 +236,6 @@ export class FtXmlMetaSerialization {
       const sequenceNameResolver = new MetaSerializationSequenceNameResolver();
       const redirectSequenceResolver = new MetaSerializationRedirectSequenceResolver(sequenceNameResolver);
 
-      const redirectNames = new Array<MetaSerializationRedirectSequenceResolver.Rec>(sequenceCount); // We need to collect redirect names first before we can resolve them, so we create records with redirect names and resolve after deserializing all sequences
-      const sequenceNameRecs = new Array<MetaSerializationSequenceNameResolver.Rec>(sequenceCount);
-
       for (let i = 0; i < sequenceCount; i++) {
         const seqObj = objSequences[i];
         const sequenceNameRec = this.deserializeSequence(seqObj, resolvedOrderedFieldList, redirectSequenceResolver, warnings);

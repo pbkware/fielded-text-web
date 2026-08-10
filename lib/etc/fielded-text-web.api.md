@@ -2623,6 +2623,8 @@ export class FtSerializationReader extends SerializationCore {
     get declared(): boolean;
     getField(idx: number): FtField;
     getFieldByName(name: string): FtField | undefined;
+    getFieldNullableValue(idx: number): FtField.Value | null;
+    getFieldNullableValueByName(name: string): FtField.Value | null;
     getFieldValue(idx: number): FtField.Value | null;
     getFieldValueByName(name: string): FtField.Value | null;
     // (undocumented)
