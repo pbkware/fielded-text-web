@@ -120,7 +120,7 @@ Use the `fielded-text-node` npm package to read and write files using node.
 1. there are no more records in the data, or
 1. {@link serialization/ft-serialization-reader!FtSerializationReader.autoNextTable autoNextTable} is false and the next record in the data is in a different table.
 
-By default, {@link serialization/ft-serialization-reader!FtSerializationReader.autoNextTable autoNextTable} is false, so `read()` will normally read to the end of the data.  The use of tables is further discussed in [Tables](./tables.md)
+By default, {@link serialization/ft-serialization-reader!FtSerializationReader.autoNextTable autoNextTable} is `false`, so `read()` will normally read to the end of the table (after which record fields can change). Note that data will only contain one table unless the Meta contains sequence redirects. The use of tables is further discussed in [Tables](./tables.md)
 
 Whenever `read()` is called, it will skip over any headers or comments in the data. The {@link serialization/ft-serialization-reader!FtSerializationReader.readHeader FtSerializationReader.readHeader()} method can be used to read heading information prior to reading and records. See [Reading Headings](#reading-headings) below for more information.
 

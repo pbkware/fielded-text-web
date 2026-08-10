@@ -4,7 +4,7 @@
 
 This library allows you to parse and generate CSV like text data in manner similar to reading and writing from/to databases. It does this by associating a schema (called Meta) with the text data.
 
-The schema supports a [wide variety](https://fieldedtext.org/introduction/capabilities/) of text data where lines consist of field values (not just CSV).  This includes data with lines that contain different fields depending on the value of key fields - where effectively the data is a database with multiple tables (each having records with different fields). Fielded Text is ideal for [reading](https://pbkware.github.io/fielded-text-web/Guides/Reading/) and writing [database](https://pbkware.github.io/fielded-text-web/Guides/Tables/) like text data.
+The schema supports a [wide variety](https://fieldedtext.org/introduction/capabilities/) of text data where lines consist of field values (not just CSV).  This includes data with lines that contain different fields depending on the value of key fields - where effectively the data is a database with multiple tables (each having records with different fields). Fielded Text is ideal for [reading](https://pbkware.github.io/fielded-text-web/Guides/Reading/) and writing [database](https://pbkware.github.io/fielded-text-web/Guides/Tables/) like text data with complex schemas.
 
 ## How it works
 
@@ -48,9 +48,9 @@ while (reader.read()) {
 npm install @pbkware/fielded-text-web
 ```
 
-## Breaking Changes
+## Changes
 
-See [Change Log](https://pbkware.github.io/fielded-text-web/Change_Log/) for any breaking changes.
+See [Change Log](https://pbkware.github.io/fielded-text-web/Change_Log/) for changes - including any breaking changes.
 
 ## More information
 
