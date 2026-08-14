@@ -1,5 +1,6 @@
 import { FtWriterSettings } from '../api/ft-writer-settings.js';
 import { FtFieldDefinition } from '../fields/definitions/ft-field-definition.js';
+// eslint-disable-next-line import-x/no-cycle
 import { FtField } from '../fields/instances/ft-field.js';
 import { FtXmlMetaSerialization } from '../meta-serialization/format/ft-xml-meta-serialization.js';
 import { FtMeta } from '../meta/ft-meta.js';
@@ -142,7 +143,7 @@ export class FtSerializationWriter extends SerializationCore {
    *
    * @throws FtTypeError if the value being set is not of the field's expected type.
    */
-  setFieldValue(idx: number, value: FtField.Value): void {
+  setFieldValue(idx: number, value: FtField.Value | null): void {
     this.fieldList.get(idx).nullableValue = value;
   }
 
@@ -154,7 +155,7 @@ export class FtSerializationWriter extends SerializationCore {
    *
    * @throws FtTypeError if the value being set is not of the field's expected type.
    */
-  setFieldValueByName(name: string, value: FtField.Value): void {
+  setFieldValueByName(name: string, value: FtField.Value | null): void {
     const field = this.fieldList.getByName(name);
     if (!field) {
       throw new Error(`Field not found: ${name}`);
@@ -267,7 +268,7 @@ export class FtSerializationWriter extends SerializationCore {
    *
    * @throws FtTypeError if any of the values being set is not of the corresponding field's expected type.
    */
-  setValues(values: FtField.Value[]): void {
+  setValues(values: (FtField.Value | null)[]): void {
     if (values.length > this.fieldCount) {
       throw new Error(`Values length ${values.length} exceeds field count ${this.fieldCount}`);
     }

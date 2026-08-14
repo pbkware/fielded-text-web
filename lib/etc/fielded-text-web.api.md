@@ -2621,12 +2621,6 @@ export class FtSerializationReader extends SerializationCore {
     set autoNextTable(value: boolean);
     close(): void;
     get declared(): boolean;
-    getField(idx: number): FtField;
-    getFieldByName(name: string): FtField | undefined;
-    getFieldNullableValue(idx: number): FtField.Value | null;
-    getFieldNullableValueByName(name: string): FtField.Value | null;
-    getFieldValue(idx: number): FtField.Value | null;
-    getFieldValueByName(name: string): FtField.Value | null;
     // (undocumented)
     protected getFileMetaAsText(fileMetaReference: string): FtSerializationReader.FileMetaAsTextResult | string;
     // (undocumented)
@@ -2698,14 +2692,14 @@ export class FtSerializationWriter extends SerializationCore {
     setBoolean(idx: number, value: boolean | null): void;
     setDateTime(idx: number, value: Date | null): void;
     setDecimal(idx: number, value: number | null): void;
-    setFieldValue(idx: number, value: FtField.Value): void;
-    setFieldValueByName(name: string, value: FtField.Value): void;
+    setFieldValue(idx: number, value: FtField.Value | null): void;
+    setFieldValueByName(name: string, value: FtField.Value | null): void;
     setFloat(idx: number, value: number | null): void;
     setInteger(idx: number, value: number | bigint | null): void;
     setNull(idx: number): void;
     setNullByName(name: string): void;
     setString(idx: number, value: string | null): void;
-    setValues(values: FtField.Value[]): void;
+    setValues(values: (FtField.Value | null)[]): void;
     write(): void;
     writeComment(comment: string, beforeCommentChars?: string): void;
     writeHeader(): void;

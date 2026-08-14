@@ -1,4 +1,3 @@
-import { FtField } from '../fields/instances/ft-field.js';
 import { FtMetaSerialization } from '../meta-serialization/ft-meta-serialization.js';
 import { FtMeta } from '../meta/ft-meta.js';
 import { FtLastLineEndedType } from '../types/enums/ft-last-line-ended-type.js';
@@ -394,60 +393,6 @@ export class FtSerializationReader extends SerializationCore {
     } finally {
       this.setSeeking(false);
     }
-  }
-
-  /**
-   * Get a field object by index.
-   */
-  getField(idx: number): FtField {
-    return this.fieldList.get(idx);
-  }
-
-  /**
-   * Get a field object by name.
-   */
-  getFieldByName(name: string): FtField | undefined {
-    return this.fieldList.getByName(name);
-  }
-
-  /**
-   * Get a field value by index.
-   * @throws FtFieldNullError if the field value is null.
-   */
-  getFieldValue(idx: number): FtField.Value | null {
-    return this.fieldList.get(idx).value;
-  }
-
-  /**
-   * Get a field value by index. Returns `null` if the field value is null.
-   */
-  getFieldNullableValue(idx: number): FtField.Value | null {
-    return this.fieldList.get(idx).nullableValue;
-  }
-
-  /**
-   * Get a field value by name.
-   * @throws FtFieldNullError if the field value is null.
-   * @throws Error if the field is not found.
-   */
-  getFieldValueByName(name: string): FtField.Value | null {
-    const field = this.fieldList.getByName(name);
-    if (!field) {
-      throw new Error(`Field not found: ${name}`);
-    }
-    return field.value;
-  }
-
-  /**
-   * Get a field value by name. Returns `null` if the field value is null.
-   * @throws Error if the field is not found.
-   */
-  getFieldNullableValueByName(name: string): FtField.Value | null {
-    const field = this.fieldList.getByName(name);
-    if (!field) {
-      throw new Error(`Field not found: ${name}`);
-    }
-    return field.nullableValue;
   }
 
   /**

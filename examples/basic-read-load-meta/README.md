@@ -41,7 +41,7 @@ Total records read: 4
 
 - **XML Metadata**: Standard format for defining fielded text structure
 - **XmlMetaSerializer**: Serializes and deserializes metadata to/from XML
-- **Field Ordinals**: Using `getOrdinal()` for efficient field access (faster than `getFieldByName()`)
+- **Field Ordinals**: Using `getFieldIndexByName()` for efficient field access (faster than `getFieldByName()`)
 - **Metadata Reusability**: XML metadata can be saved to files and reused
 - **Standards Compliance**: XML format follows FieldedText Standard v0.9
 - **FtReader**: High-level reader with `using` statement support

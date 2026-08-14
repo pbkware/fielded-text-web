@@ -45,13 +45,17 @@ console.log("Reading CSV data:");
 console.log("================\n");
 
 // Get field ordinals for faster access (compared to calling getFieldByName() for each record)
-const petNameFieldOrdinal = reader.getOrdinal(petNameFieldName);
-const ageFieldOrdinal = reader.getOrdinal(ageFieldName);
-const colorFieldOrdinal = reader.getOrdinal(colorFieldName);
-const dateReceivedFieldOrdinal = reader.getOrdinal(dateReceivedFieldName);
-const priceFieldOrdinal = reader.getOrdinal(priceFieldName);
-const needsWalkingFieldOrdinal = reader.getOrdinal(needsWalkingFieldName);
-const typeFieldOrdinal = reader.getOrdinal(typeFieldName);
+const petNameFieldOrdinal = reader.getFieldIndexByName(petNameFieldName)!;
+const ageFieldOrdinal = reader.getFieldIndexByName(ageFieldName)!;
+const colorFieldOrdinal = reader.getFieldIndexByName(colorFieldName)!;
+const dateReceivedFieldOrdinal = reader.getFieldIndexByName(
+  dateReceivedFieldName,
+)!;
+const priceFieldOrdinal = reader.getFieldIndexByName(priceFieldName)!;
+const needsWalkingFieldOrdinal = reader.getFieldIndexByName(
+  needsWalkingFieldName,
+)!;
+const typeFieldOrdinal = reader.getFieldIndexByName(typeFieldName)!;
 
 let recordNumber = 0;
 while (reader.read()) {

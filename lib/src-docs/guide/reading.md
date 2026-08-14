@@ -54,7 +54,7 @@ while (reader.read()) {
 
 ## The FtTextReader interface
 
-In the above Basic Reading example, we use {@link api/ft-reader!FtReader FtReader} to read the data file. FtReader understands the structure of a Fielded Text file however it sources the data through a separate text reader. A text reader is a class which implements the {@link serialization/ft-text-reader!FtTextReader FtTextReader} interface which reads one character at a time from the fielded text source.
+In the above Basic Reading example, we use {@link api/ft-reader!FtReader FtReader} to read the data file. FtReader understands the structure of a Fielded Text file however it sources the data through a separate text reader. A text reader is a class which implements the {@link serialization/text-reader/ft-text-reader!FtTextReader FtTextReader} interface which reads one character at a time from the fielded text source.
 
 ```typescript
 export interface FtTextReader {
@@ -66,7 +66,7 @@ export interface FtTextReader {
 }
 ```
 
-The library has a built-in {@link serialization/ft-text-reader!FtStringReader FtStringReader} class which implements FtTextReader for strings. Below is the above Basic Reading example expanded to explicitly create a `FtStringReader` which reads the CSV data and the FtReader using that `FtStringReader`.
+The library has a built-in {@link serialization/text-reader/ft-string-reader!FtStringReader FtStringReader} class which implements FtTextReader for strings. Below is the above Basic Reading example expanded to explicitly create a `FtStringReader` which reads the CSV data and the FtReader using that `FtStringReader`.
 
 ```typescript
 import { FtReader, FtStringReader, FtXmlMetaSerialization } from "@pbkware/fielded-text-web";
@@ -157,7 +157,7 @@ You can use the following {@link fields/instances/ft-field-list!FtFieldList FtFi
 
 - {@link serialization/ft-serialization-reader!FtSerializationReader.getField getField(idx: number)} - get field by index
 - {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldByName getFieldByName(name: string)} - get field by name
-- {@link serialization/ft-serialization-reader!FtSerializationReader.getOrdinal getOrdinal(name: string)} - get index of field by name
+- {@link serialization/ft-serialization-reader!FtSerializationReader.getFieldIndexByName getFieldIndexByName(name: string)} - get index of field by name
 
 ### Getting a field's value
 

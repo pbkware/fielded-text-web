@@ -77,32 +77,34 @@ function calculateRecordOrdinals(reader: FtReader): number[] {
   const recOrdinals = new Array<number>(maxFieldCount);
 
   // Read root sequence fields
-  const typeOrdinal = reader.getOrdinal(TypeFieldName);
+  const typeOrdinal = reader.getFieldIndexByName(TypeFieldName)!;
   recOrdinals[0] = typeOrdinal;
-  recOrdinals[1] = reader.getOrdinal(NameFieldName);
+  recOrdinals[1] = reader.getFieldIndexByName(NameFieldName)!;
 
   let fieldCount: number;
 
   // Type field determines which sequence is active
   const type = reader.fieldList.get(typeOrdinal).asBigInt;
   if (type === CatType) {
-    recOrdinals[2] = reader.getOrdinal(RunningSpeedFieldName);
+    recOrdinals[2] = reader.getFieldIndexByName(RunningSpeedFieldName)!;
     fieldCount = 3;
   } else if (type === DogType) {
-    recOrdinals[2] = reader.getOrdinal(WalkDistanceFieldName);
-    recOrdinals[3] = reader.getOrdinal(RunningSpeedFieldName);
-    recOrdinals[4] = reader.getOrdinal(TrainingFieldName);
+    recOrdinals[2] = reader.getFieldIndexByName(WalkDistanceFieldName)!;
+    recOrdinals[3] = reader.getFieldIndexByName(RunningSpeedFieldName)!;
+    recOrdinals[4] = reader.getFieldIndexByName(TrainingFieldName)!;
     const training = reader.fieldList.get(recOrdinals[4]).asBoolean;
     if (!training) {
       fieldCount = 5;
     } else {
-      recOrdinals[5] = reader.getOrdinal(TrainerFieldName);
-      recOrdinals[6] = reader.getOrdinal(SessionCostFieldName);
+      recOrdinals[5] = reader.getFieldIndexByName(TrainerFieldName)!;
+      recOrdinals[6] = reader.getFieldIndexByName(SessionCostFieldName)!;
       fieldCount = 7;
     }
   } else if (type === GoldFishType) {
-    recOrdinals[2] = reader.getOrdinal(ColorFieldName);
-    recOrdinals[3] = reader.getOrdinal(ChineseClassificationFieldName);
+    recOrdinals[2] = reader.getFieldIndexByName(ColorFieldName)!;
+    recOrdinals[3] = reader.getFieldIndexByName(
+      ChineseClassificationFieldName,
+    )!;
     fieldCount = 4;
   } else {
     fieldCount = 2;

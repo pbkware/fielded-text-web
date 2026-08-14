@@ -15,5 +15,13 @@ title: Change Log
   * Readonly accessor `FtField.loadedValueText` has been renamed to `FtField.valueText`.
   * `FtSerializationReader.getFieldValue()` and `FtSerializationReader.getFieldValueByName()` now throw an exception if a field's value is null. Use the new methods below for previous behaviour.
   * Add `FtSerializationReader.getFieldNullableValue()` and `FtSerializationReader.getFieldNullableValueByName()` which return `null` if a field's value is null.
+  * `SerializationCore.getValueType()` changed to `FtSerializationCore.getFieldValueType()`
+* The following functions have been moved from `FtSerializationReader` to `FtSerializationCore` so that they can also be used in `FtSerializationWriter`:
+  * `getFieldName()`
+  * `getFieldValue()`
+  * `isFieldNull()`
+  * `getFieldNullableValue()`
+  * `getFieldValueByName()`
+  * `getFieldNullableValueByName()`
 * Ensure that when deserializing Meta with sequences, one and one only is a root sequence.
 * Added `Reading` and `Tables` documentation.

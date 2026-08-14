@@ -33,7 +33,7 @@ For large files with many records, this performance difference adds up significa
 
 ## Key Concepts
 
-1. **getOrdinal(fieldName)**: Look up a field's index by name (once per table)
+1. **getFieldIndexByName(fieldName)**: Look up a field's index by name (once per table)
 2. **Ordinal Caching**: Calculate ordinals once, reuse for all records in a table
 3. **Table Boundaries**: Ordinals become invalid when table changes (new sequence structure)
 4. **nextResult()**: Move to next table and recalculate ordinals

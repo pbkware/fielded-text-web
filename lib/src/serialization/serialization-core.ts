@@ -227,36 +227,152 @@ export abstract class SerializationCore {
     return this._headingEndOfValueChar;
   }
 
-  // IDataReader-like interface
+  /**
+   * Number of fields in the current record.
+   *
+   * IDataReader member
+   */
   get fieldCount(): number {
     return this._fieldList.count;
   }
 
+  /**
+   * Number of sequences currently invoked (depth of sequence invokation stack).
+   *
+   * IDataReader member
+   */
   get depth(): number {
     return this._sequenceInvokationList.count;
   }
 
+  /**
+   * Whether the reader/writer is closed.
+   *
+   * IDataReader member
+   */
   abstract get isClosed(): boolean;
 
+  /**
+   * Name of the field at the given index.
+   * Alias for {@link getFieldName}.
+   *
+   * IDataReader member
+   */
   getName(idx: number): string {
     return this._fieldList.get(idx).name;
   }
 
+  /**
+   * Get a index of field in record by its name.
+   *
+   * IDataReader member
+   * @throws Error if the field is not found.
+   */
   getOrdinal(name: string): number {
+    const result = this.getFieldIndexByName(name);
+    if (result === undefined) {
+      throw new Error(`Field not found: ${name}`);
+    } else {
+      return result;
+    }
+  }
+
+  /**
+   * Whether the field value at the given index is null.
+   * Alias for {@link isFieldNull}.
+   *
+   * IDataReader member
+   */
+  isDBNull(idx: number): boolean {
+    return this.isFieldNull(idx);
+  }
+
+  /**
+   * Get a FtField object at index.
+   */
+  getField(idx: number): FtField {
+    return this._fieldList.get(idx);
+  }
+
+  /**
+   * Get a FtField object by name.
+   */
+  getFieldByName(name: string): FtField | undefined {
+    return this._fieldList.getByName(name);
+  }
+
+  /**
+   * Get a index of field in record by its name.
+   * @throws Error if the field is not found.
+   */
+  getFieldIndexByName(name: string): number | undefined {
     const result = this._fieldList.indexOfName(name);
     if (result >= 0) {
       return result;
     } else {
-      throw new Error(`Field not found: ${name}`);
+      return undefined;
     }
   }
 
-  getValueType(idx: number): string {
+  /**
+   * Get the name of the field at the given index.
+   */
+  getFieldName(idx: number): string {
+    return this._fieldList.get(idx).name;
+  }
+
+  /**
+   * Get a field value by index.
+   * @throws FtFieldNullError if the field value is null.
+   */
+  getFieldValue(idx: number): FtField.Value | null {
+    return this._fieldList.get(idx).value;
+  }
+
+  /**
+   * Whether the field value at the given index is null.
+   */
+  isFieldNull(idx: number): boolean {
+    return this._fieldList.get(idx).isNull();
+  }
+
+  /**
+   * Get the value type of the field at the given index.
+   */
+  getFieldValueType(idx: number): string {
     return this._fieldList.get(idx).valueType;
   }
 
-  isDBNull(idx: number): boolean {
-    return this._fieldList.get(idx).isNull();
+  /**
+   * Get a field value by index. Returns `null` if the field value is null.
+   */
+  getFieldNullableValue(idx: number): FtField.Value | null {
+    return this._fieldList.get(idx).nullableValue;
+  }
+
+  /**
+   * Get a field value by name.
+   * @throws FtFieldNullError if the field value is null.
+   * @throws Error if the field is not found.
+   */
+  getFieldValueByName(name: string): FtField.Value | null {
+    const field = this._fieldList.getByName(name);
+    if (!field) {
+      throw new Error(`Field not found: ${name}`);
+    }
+    return field.value;
+  }
+
+  /**
+   * Get a field value by name. Returns `null` if the field value is null.
+   * @throws Error if the field is not found.
+   */
+  getFieldNullableValueByName(name: string): FtField.Value | null {
+    const field = this._fieldList.getByName(name);
+    if (!field) {
+      throw new Error(`Field not found: ${name}`);
+    }
+    return field.nullableValue;
   }
 
   tryGetSubstitutionValue(token: string): { found: boolean; value: string } {
