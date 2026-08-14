@@ -5,7 +5,7 @@ import { FtSerializationError } from '../types/errors/ft-serialization-error.js'
 import { CharReader } from './char-reader.js';
 import { DelimitedFieldParser } from './delimited-field-parser.js';
 import { FixedWidthFieldParser } from './fixed-width-field-parser.js';
-import { SerializationCore } from './serialization-core.js';
+import { FtSerializationCore } from './ft-serialization-core.js';
 
 const State = {
   Out: 'Out',
@@ -23,7 +23,7 @@ type State = (typeof State)[keyof typeof State];
  * @internal
  */
 export class HeadingLineRecordParser {
-  private readonly _core: SerializationCore;
+  private readonly _core: FtSerializationCore;
   private readonly _charReader: CharReader;
   private readonly _headingLines: boolean;
 
@@ -38,7 +38,7 @@ export class HeadingLineRecordParser {
   private _startPosition = -1;
   private _ignoreExtraCharsStartPosition = -1;
 
-  constructor(core: SerializationCore, charReader: CharReader, forHeadingLines: boolean) {
+  constructor(core: FtSerializationCore, charReader: CharReader, forHeadingLines: boolean) {
     this._core = core;
     this._charReader = charReader;
     this._headingLines = forHeadingLines;

@@ -2548,6 +2548,184 @@ export class FtSerialization {
 }
 
 // @public
+export abstract class FtSerializationCore {
+    protected constructor();
+    // (undocumented)
+    get allowEndOfLineCharInQuotes(): boolean;
+    // (undocumented)
+    get allowIncompleteRecords(): boolean;
+    // (undocumented)
+    protected static readonly CarriageReturnChar = "\r";
+    // (undocumented)
+    protected static readonly CarriageReturnLineFeedString = "\r\n";
+    // (undocumented)
+    abstract close(): void;
+    // (undocumented)
+    get culture(): DotNetLocaleSettings;
+    // (undocumented)
+    get delimiterChar(): string;
+    get depth(): number;
+    // (undocumented)
+    get endOfLineAutoWriteType(): FtEndOfLineAutoWriteType;
+    // (undocumented)
+    get endOfLineChar(): string;
+    // (undocumented)
+    get endOfLineType(): FtEndOfLineType;
+    get fieldCount(): number;
+    // (undocumented)
+    get fieldDefinitionList(): FtFieldDefinitionList;
+    // (undocumented)
+    get fieldList(): FtFieldList;
+    // @internal (undocumented)
+    fireFieldHeadingReadReady(field: FtField, lineIndex: number): void;
+    // (undocumented)
+    protected fireFieldHeadingWriteReady(field: FtField, lineIndex: number): void;
+    // @internal (undocumented)
+    fireFieldValueReadReady(field: FtField, recordIndex: number): void;
+    // (undocumented)
+    protected fireFieldValueWriteReady(field: FtField, recordIndex: number): void;
+    // (undocumented)
+    protected fireHeadingLineFinished(lineIndex: number): void;
+    // (undocumented)
+    protected fireHeadingLineStarted(lineIndex: number): void;
+    // (undocumented)
+    protected fireRecordFinished(recordIndex: number): void;
+    // (undocumented)
+    protected fireRecordStarted(recordIndex: number): void;
+    // (undocumented)
+    protected fireSequenceRedirected(redirectingField: FtField, fieldsAffectedFromIndex: number): void;
+    getField(idx: number): FtField;
+    getFieldByName(name: string): FtField | undefined;
+    getFieldIndexByName(name: string): number | undefined;
+    getFieldName(idx: number): string;
+    getFieldNullableValue(idx: number): FtField.Value | null;
+    getFieldNullableValueByName(name: string): FtField.Value | null;
+    getFieldValue(idx: number): FtField.Value | null;
+    getFieldValueByName(name: string): FtField.Value | null;
+    getFieldValueType(idx: number): string;
+    getName(idx: number): string;
+    getOrdinal(name: string): number;
+    // (undocumented)
+    get headingAlwaysWriteOptionalQuote(): boolean;
+    // (undocumented)
+    get headingConstraint(): FtHeadingConstraint;
+    // (undocumented)
+    get headingEndOfValueChar(): string;
+    // (undocumented)
+    get headingLineCount(): number;
+    // (undocumented)
+    get headingPadAlignment(): FtPadAlignment;
+    // (undocumented)
+    get headingPadChar(): string;
+    // (undocumented)
+    get headingPadCharType(): FtPadCharType;
+    // (undocumented)
+    get headingQuotedType(): FtQuotedType;
+    // (undocumented)
+    get headingTruncateChar(): string;
+    // (undocumented)
+    get headingTruncateType(): FtTruncateType;
+    // (undocumented)
+    get headingWritePrefixSpace(): boolean;
+    // (undocumented)
+    get ignoreBlankLines(): boolean;
+    // (undocumented)
+    get ignoreExtraChars(): boolean;
+    // (undocumented)
+    protected internalLoadMeta(meta: FtMeta): void;
+    // @internal
+    invokeRootSequence(): void;
+    abstract get isClosed(): boolean;
+    isDBNull(idx: number): boolean;
+    isFieldNull(idx: number): boolean;
+    // (undocumented)
+    get lastLineEndedType(): FtLastLineEndedType;
+    // (undocumented)
+    get lineCommentChar(): string;
+    // (undocumented)
+    protected static readonly LineFeedChar = "\n";
+    loadMeta(meta: FtMeta): void;
+    // (undocumented)
+    get mainHeadingLineIndex(): number;
+    // (undocumented)
+    onFieldHeadingReadReady?: (args: FtFieldHeadingReadyEventArgs) => void;
+    // (undocumented)
+    onFieldHeadingWriteReady?: (args: FtFieldHeadingReadyEventArgs) => void;
+    // (undocumented)
+    onFieldValueReadReady?: (args: FtFieldValueReadyEventArgs) => void;
+    // (undocumented)
+    onFieldValueWriteReady?: (args: FtFieldValueReadyEventArgs) => void;
+    // (undocumented)
+    onHeadingLineFinished?: (args: FtHeadingLineFinishedEventArgs) => void;
+    // (undocumented)
+    onHeadingLineStarted?: (args: FtHeadingLineStartedEventArgs) => void;
+    // (undocumented)
+    onRecordFinished?: (args: FtRecordFinishedEventArgs) => void;
+    // (undocumented)
+    onRecordStarted?: (args: FtRecordStartedEventArgs) => void;
+    // (undocumented)
+    onSequenceRedirected?: (args: FtSequenceRedirectedEventArgs) => void;
+    // (undocumented)
+    static readonly PrefixSpaceChar = " ";
+    // (undocumented)
+    get previousRecordSequenceInvokationList(): FtSequenceInvokationList;
+    // (undocumented)
+    get quoteChar(): string;
+    // (undocumented)
+    get recordCount(): number;
+    // (undocumented)
+    protected _recordCount: number;
+    // (undocumented)
+    protected redirect(redirectingField: FtField, invokedSequence: FtSequence, invokationDelay: FtSequenceInvokationDelay): number;
+    protected reset(): void;
+    // (undocumented)
+    get rootFieldCount(): number;
+    // (undocumented)
+    get rootSequence(): FtSequence | undefined;
+    // (undocumented)
+    get rootSequenceInvokation(): FtSequenceInvokation | undefined;
+    // (undocumented)
+    get seeking(): boolean;
+    // (undocumented)
+    get sequenceInvokationList(): FtSequenceInvokationList;
+    // (undocumented)
+    get sequenceList(): FtSequenceList;
+    // (undocumented)
+    protected setLineCommentChar(aChar: string): void;
+    // (undocumented)
+    protected setSeeking(value: boolean): void;
+    // (undocumented)
+    protected static readonly Signature = "|!Fielded Text^|";
+    // (undocumented)
+    get stuffedEmbeddedQuotes(): boolean;
+    // (undocumented)
+    get substitutionChar(): string;
+    // (undocumented)
+    get substitutionList(): FtSubstitutionList;
+    // (undocumented)
+    get substitutionsEnabled(): boolean;
+    // (undocumented)
+    get tableCount(): number;
+    // (undocumented)
+    protected _tableCount: number;
+    // (undocumented)
+    tryGetSubstitutionValue(token: string): {
+        found: boolean;
+        value: string;
+    };
+    // (undocumented)
+    protected unredirect(unredirectingField: FtField): number;
+    // (undocumented)
+    protected static readonly VersionLabel = "Version";
+    // (undocumented)
+    static readonly VersionMajor = 1;
+    // (undocumented)
+    static readonly VersionMinor = 1;
+    // (undocumented)
+    protected static readonly VersionSeparator = ".";
+}
+
+// @public
 export class FtSerializationError extends Error {
     constructor(errorCode: FtSerializationErrorCode, fieldOrMessage: FtField | string | undefined, messageOrInner?: string | Error, innerException?: Error);
     // (undocumented)
@@ -2611,10 +2789,8 @@ export const FtSerializationErrorCode: {
 // @public (undocumented)
 export type FtSerializationErrorCode = (typeof FtSerializationErrorCode)[keyof typeof FtSerializationErrorCode];
 
-// Warning: (ae-forgotten-export) The symbol "SerializationCore" needs to be exported by the entry point index.d.ts
-//
 // @public
-export class FtSerializationReader extends SerializationCore {
+export class FtSerializationReader extends FtSerializationCore {
     constructor();
     get activeFieldIndex(): number;
     get autoNextTable(): boolean;
@@ -2679,7 +2855,7 @@ export namespace FtSerializationReader {
 }
 
 // @public
-export class FtSerializationWriter extends SerializationCore {
+export class FtSerializationWriter extends FtSerializationCore {
     constructor(meta: FtMeta);
     get baseWriter(): FtTextWriter | undefined;
     close(): void;

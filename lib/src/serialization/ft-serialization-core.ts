@@ -34,7 +34,7 @@ import { CharReader } from './char-reader.js';
  * Manages configuration, field lists, sequences, and events.
  * @public
  */
-export abstract class SerializationCore {
+export abstract class FtSerializationCore {
   static readonly VersionMajor = 1;
   static readonly VersionMinor = 1;
   static readonly PrefixSpaceChar = ' ';
@@ -732,11 +732,11 @@ export abstract class SerializationCore {
   private calculateAutoEndOfLineSubstitutionValue(): string {
     switch (this._endOfLineAutoWriteType) {
       case FtEndOfLineAutoWriteType.CrLf:
-        return SerializationCore.CarriageReturnLineFeedString;
+        return FtSerializationCore.CarriageReturnLineFeedString;
       case FtEndOfLineAutoWriteType.Cr:
-        return SerializationCore.CarriageReturnChar;
+        return FtSerializationCore.CarriageReturnChar;
       case FtEndOfLineAutoWriteType.Lf:
-        return SerializationCore.LineFeedChar;
+        return FtSerializationCore.LineFeedChar;
       case FtEndOfLineAutoWriteType.Local:
         return '\n';
       default:

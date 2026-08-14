@@ -2,6 +2,18 @@
 title: Tables
 ---
 
+# Tables
+
+This guide covers reading and writing fielded text data that contain tables using the FieldedText TypeScript library.
+
+## Table of Contents
+
+- [Tables in Fielded Text files](#tables-in-fielded-text-files)
+- [Sequences and Sequence Redirects](#sequences-and-sequence-redirects)
+- [Reading](#reading)
+- [Writing](#writing)
+- [Multiple Key/Redirect fields in a line](#multiple-keyredirect-fields-in-a-line)
+
 ## Tables in Fielded Text files
 
 CSV files and other types of fielded text files can hold multiple tables of records similarly to a database. Typically this is done by having a key field specify the table. For example, consider a database of pets with three tables for different types of pets:
@@ -237,7 +249,7 @@ function readGoldFishTable(reader: FtReader): FtReadRecordResult {
 
 Data can also be read using events. See the [read-events](../../../examples/read-events/README.md) example which demonstrates for data without any redirects (ie only one table).
 
-After {@link serialization/ft-serialization-reader!FtSerializationCore.onRecordStarted onRecordStarted} event has fired, the {@link serialization/ft-serialization-reader!FtSerializationCore.onFieldValueReadReady onFieldValueReadReady} events will fire in the same order as the fields in the line/record. If the record contains fields with redirects, you need to monitor the value of the redirecting field ("Type" in the above example). The subsequent fields supplied by the {@link serialization/ft-serialization-reader!FtSerializationCore.onFieldValueReadReady onFieldValueReadReady} event, will be according to the new sequence invoked (either after the redirecting field or after the current sequence).
+After {@link serialization/ft-serialization-core!FtSerializationCore.onRecordStarted onRecordStarted} event has fired, the {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueReadReady onFieldValueReadReady} events will fire in the same order as the fields in the line/record. If the record contains fields with redirects, you need to monitor the value of the redirecting field ("Type" in the above example). The subsequent fields supplied by the {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueReadReady onFieldValueReadReady} event, will be according to the new sequence invoked (either after the redirecting field or after the current sequence).
 
 ## Writing
 
@@ -360,11 +372,11 @@ Note that `writeCatTable()` and `writeDogTable()` use slightly different approac
 
 ### Write Events
 
-An alternative way to write data is to use events (mainly {@link serialization/ft-serialization-reader!FtSerializationCore.onRecordStarted onRecordStarted} and {@link serialization/ft-serialization-reader!FtSerializationCore.onFieldValueWriteReady onFieldValueWriteReady}). The [write-events](../../../examples/write-events/README.md) example demonstrates this for data without any redirects (ie only one table).
+An alternative way to write data is to use events (mainly {@link serialization/ft-serialization-core!FtSerializationCore.onRecordStarted onRecordStarted} and {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueWriteReady onFieldValueWriteReady}). The [write-events](../../../examples/write-events/README.md) example demonstrates this for data without any redirects (ie only one table).
 
-Using events when there is more than one sequence, works in a similar way. After the {@link serialization/ft-serialization-reader!FtSerializationCore.onRecordStarted onRecordStarted} event has fired, the {@link serialization/ft-serialization-reader!FtSerializationCore.onFieldValueWriteReady onFieldValueWriteReady} event will begin firing for the fields in the root sequence in the order of their index. If the handler sets the value of a field with redirects and invokes a new sequence, the event will then fire for all the fields in the invoked sequence (either after the current field or current sequence).  This will be repeated if any further redirects occur to other sequences.
+Using events when there is more than one sequence, works in a similar way. After the {@link serialization/ft-serialization-core!FtSerializationCore.onRecordStarted onRecordStarted} event has fired, the {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueWriteReady onFieldValueWriteReady} event will begin firing for the fields in the root sequence in the order of their index. If the handler sets the value of a field with redirects and invokes a new sequence, the event will then fire for all the fields in the invoked sequence (either after the current field or current sequence).  This will be repeated if any further redirects occur to other sequences.
 
-The advantage of using events is that the application does not need to track what fields are to be written when a redirect invokes a new sequence. The {@link serialization/ft-serialization-reader!FtSerializationCore.onFieldValueWriteReady onFieldValueWriteReady} simply sets the value of the field passed to it.
+The advantage of using events is that the application does not need to track what fields are to be written when a redirect invokes a new sequence. The {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueWriteReady onFieldValueWriteReady} simply sets the value of the field passed to it.
 
 ## Multiple Key/Redirect fields in a line
 

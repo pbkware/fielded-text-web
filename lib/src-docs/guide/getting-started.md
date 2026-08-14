@@ -253,6 +253,8 @@ See the [Meta data Guide](meta-data.md) for more XML format documentation.
 ### Getting Help
 
 - **[Meta Data](./meta-data.md)**: Introduction to Meta data
+- **[Reading](./reading.md)**: Reading Fielded Text data
+- **[Tables](./tables.md)**: Reading and writing Fielded Text data which contains multiple tables
 - **Examples**: Check examples folder for small source applications that demonstrate more advanced capabilities
 - **API Documentation**: Classes and modules under the top level module called API are the main ones used
 - **Standard**: Read [FieldedText Standard](https://fieldedtext.org/standard/) for detailed specifications

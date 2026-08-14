@@ -2,7 +2,7 @@ import { FtField } from '../fields/instances/ft-field.js';
 import { FtPadCharType } from '../types/enums/ft-pad-char-type.js';
 import { FtAssertError, FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
 import { CharReader } from './char-reader.js';
-import { SerializationCore } from './serialization-core.js';
+import { FtSerializationCore } from './ft-serialization-core.js';
 
 const State = {
   WaitingLeftEndOfValue: 'WaitingLeftEndOfValue',
@@ -24,7 +24,7 @@ type State = (typeof State)[keyof typeof State];
 export class FixedWidthFieldParser {
   private readonly _headings: boolean;
   private readonly _charReader: CharReader;
-  private readonly _core: SerializationCore;
+  private readonly _core: FtSerializationCore;
   private _textBuilder: string[] = [];
 
   private _state: State = State.NoMorePadding;
@@ -42,7 +42,7 @@ export class FixedWidthFieldParser {
   private _fieldPadChar = '';
   private _rightPaddingCharCount = 0;
 
-  constructor(core: SerializationCore, charReader: CharReader, forHeadings: boolean) {
+  constructor(core: FtSerializationCore, charReader: CharReader, forHeadings: boolean) {
     this._headings = forHeadings;
     this._charReader = charReader;
     this._core = core;

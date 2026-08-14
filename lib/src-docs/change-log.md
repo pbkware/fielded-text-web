@@ -16,6 +16,7 @@ title: Change Log
   * `FtSerializationReader.getFieldValue()` and `FtSerializationReader.getFieldValueByName()` now throw an exception if a field's value is null. Use the new methods below for previous behaviour.
   * Add `FtSerializationReader.getFieldNullableValue()` and `FtSerializationReader.getFieldNullableValueByName()` which return `null` if a field's value is null.
   * `SerializationCore.getValueType()` changed to `FtSerializationCore.getFieldValueType()`
+* Renamed `SerializationCore` to `FtSerializationCore` and exposed it in public API.
 * The following functions have been moved from `FtSerializationReader` to `FtSerializationCore` so that they can also be used in `FtSerializationWriter`:
   * `getFieldName()`
   * `getFieldValue()`

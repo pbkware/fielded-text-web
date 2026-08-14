@@ -17,14 +17,14 @@ import { FtSerializationErrorCode } from '../types/errors/ft-serialization-error
 import { FtSerializationError } from '../types/errors/ft-serialization-error.js';
 import { FtDeclaredParametersFormatter } from './formatting/ft-declared-parameters-formatter.js';
 import { FtDeclaredParameters } from './ft-declared-parameters.js';
+import { FtSerializationCore } from './ft-serialization-core.js';
 import { FtTextWriter } from './ft-text-writer.js';
-import { SerializationCore } from './serialization-core.js';
 
 /**
  * Writer for fielded text streams. Coordinates all writing logic.
  * @public
  */
-export class FtSerializationWriter extends SerializationCore {
+export class FtSerializationWriter extends FtSerializationCore {
   private static readonly DECLARATION_LINE2_BEFORE_COMMENT_CHARS = ' ';
   private static readonly EMBEDDED_META_BEFORE_COMMENT_CHARS = ' ';
 
@@ -355,15 +355,15 @@ export class FtSerializationWriter extends SerializationCore {
       case FtEndOfLineType.Char:
         return this.endOfLineChar;
       case FtEndOfLineType.CrLf:
-        return SerializationCore.CarriageReturnLineFeedString;
+        return FtSerializationCore.CarriageReturnLineFeedString;
       case FtEndOfLineType.Auto:
         switch (this.endOfLineAutoWriteType) {
           case FtEndOfLineAutoWriteType.CrLf:
-            return SerializationCore.CarriageReturnLineFeedString;
+            return FtSerializationCore.CarriageReturnLineFeedString;
           case FtEndOfLineAutoWriteType.Cr:
-            return SerializationCore.CarriageReturnChar;
+            return FtSerializationCore.CarriageReturnChar;
           case FtEndOfLineAutoWriteType.Lf:
-            return SerializationCore.LineFeedChar;
+            return FtSerializationCore.LineFeedChar;
           case FtEndOfLineAutoWriteType.Local:
             return '\n'; // Use platform default
           default:
@@ -406,8 +406,8 @@ export class FtSerializationWriter extends SerializationCore {
       switch (this.endOfLineType) {
         case FtEndOfLineType.Auto:
         case FtEndOfLineType.CrLf:
-          searchChars.push(SerializationCore.CarriageReturnChar);
-          searchChars.push(SerializationCore.LineFeedChar);
+          searchChars.push(FtSerializationCore.CarriageReturnChar);
+          searchChars.push(FtSerializationCore.LineFeedChar);
           break;
         case FtEndOfLineType.Char:
           searchChars.push(this.endOfLineChar);
@@ -446,12 +446,12 @@ export class FtSerializationWriter extends SerializationCore {
     }
 
     const parameters = new FtDeclaredParameters();
-    parameters.setVersion(SerializationCore.VersionMajor, SerializationCore.VersionMinor);
+    parameters.setVersion(FtSerializationCore.VersionMajor, FtSerializationCore.VersionMinor);
     const metaReferenceType = this._settings.metaReferenceType ?? FtWriterSettings.DEFAULT_META_REFERENCE_TYPE;
     const metaReference = this._settings.metaReference ?? FtWriterSettings.DEFAULT_META_REFERENCE;
     parameters.setMetaReference(metaReferenceType, metaReference);
 
-    this.writeComment(SerializationCore.Signature + ' ' + FtDeclaredParametersFormatter.toSignatureLineText(parameters), '');
+    this.writeComment(FtSerializationCore.Signature + ' ' + FtDeclaredParametersFormatter.toSignatureLineText(parameters), '');
     this.writeComment(FtDeclaredParametersFormatter.toLine2Text(parameters), FtSerializationWriter.DECLARATION_LINE2_BEFORE_COMMENT_CHARS);
   }
 
@@ -514,7 +514,7 @@ export class FtSerializationWriter extends SerializationCore {
       }
 
       if (field.headingWritePrefixSpace) {
-        this._writer?.write(SerializationCore.PrefixSpaceChar);
+        this._writer?.write(FtSerializationCore.PrefixSpaceChar);
       }
 
       if (fieldQuoted) {
@@ -595,7 +595,7 @@ export class FtSerializationWriter extends SerializationCore {
         }
 
         if (field.valueWritePrefixSpace) {
-          this._writer?.write(SerializationCore.PrefixSpaceChar);
+          this._writer?.write(FtSerializationCore.PrefixSpaceChar);
         }
 
         if (fieldQuoted) {

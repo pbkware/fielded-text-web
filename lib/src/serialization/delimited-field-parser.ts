@@ -1,7 +1,7 @@
 import { FtField } from '../fields/instances/ft-field.js';
 import { FtQuotedType } from '../types/enums/ft-quoted-type.js';
 import { CharReader } from './char-reader.js';
-import { SerializationCore } from './serialization-core.js';
+import { FtSerializationCore } from './ft-serialization-core.js';
 
 const QuotedState = {
   NeverOpen: 'NeverOpen',
@@ -23,7 +23,7 @@ type QuotedState = (typeof QuotedState)[keyof typeof QuotedState];
 export class DelimitedFieldParser {
   private readonly _headings: boolean;
   private readonly _charReader: CharReader;
-  private readonly _core: SerializationCore;
+  private readonly _core: FtSerializationCore;
   private _textBuilder: string[] = [];
 
   private _field: FtField | undefined = undefined;
@@ -39,7 +39,7 @@ export class DelimitedFieldParser {
   private _rawOffset = -1;
   private _rawLength = 0;
 
-  constructor(core: SerializationCore, charReader: CharReader, forHeadings: boolean) {
+  constructor(core: FtSerializationCore, charReader: CharReader, forHeadings: boolean) {
     this._headings = forHeadings;
     this._charReader = charReader;
     this._core = core;

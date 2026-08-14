@@ -12,16 +12,16 @@ import { CharReader } from './char-reader.js';
 import { DeclarationParser } from './declaration-parser.js';
 import { EmbeddedMetaParser } from './embedded-meta-parser.js';
 import { FtDeclaredParameters } from './ft-declared-parameters.js';
+import { FtSerializationCore } from './ft-serialization-core.js';
 import { HeadingLineRecordParser } from './heading-line-record-parser.js';
 import { LineEndedType, LineParser } from './line-parser.js';
-import { SerializationCore } from './serialization-core.js';
 import { FtTextReader } from './text-reader/ft-text-reader.js';
 
 /**
  * Reader for fielded text streams. Coordinates all parsing components.
  * @public
  */
-export class FtSerializationReader extends SerializationCore {
+export class FtSerializationReader extends FtSerializationCore {
   /**
    * Event fired when seeking through records.
    */

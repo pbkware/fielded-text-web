@@ -4,7 +4,7 @@ title: Reading
 
 # Reading Fielded Text Files
 
-This guide covers reading fielded text files using the FieldedText TypeScript library.
+This guide covers reading fielded text data using the FieldedText TypeScript library.
 
 ## Table of Contents
 

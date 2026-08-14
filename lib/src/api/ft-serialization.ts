@@ -5,8 +5,8 @@ import { FtSequenceInvokationList } from '../sequences/core/ft-sequence-invokati
 import { FtSequenceInvokation } from '../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceList } from '../sequences/core/ft-sequence-list.js';
 import { FtSequence } from '../sequences/core/ft-sequence.js';
+import { FtSerializationCore } from '../serialization/ft-serialization-core.js';
 import { FtTextWriter } from '../serialization/ft-text-writer.js';
-import { SerializationCore } from '../serialization/serialization-core.js';
 import { FtSubstitutionList } from '../substitutions/ft-substitution-list.js';
 import { FtFieldHeadingReadyEventArgs } from '../types/events/ft-field-heading-ready-event-args.js';
 import { FtFieldValueReadyEventArgs } from '../types/events/ft-field-value-ready-event-args.js';
@@ -36,9 +36,9 @@ export class FtAbortSerializationException extends Error {
  * @public
  */
 export class FtSerialization {
-  static readonly VERSION_MAJOR = SerializationCore.VersionMajor;
-  static readonly VERSION_MINOR = SerializationCore.VersionMinor;
-  static readonly PREFIX_SPACE_CHAR = SerializationCore.PrefixSpaceChar;
+  static readonly VERSION_MAJOR = FtSerializationCore.VersionMajor;
+  static readonly VERSION_MINOR = FtSerializationCore.VersionMinor;
+  static readonly PREFIX_SPACE_CHAR = FtSerializationCore.PrefixSpaceChar;
 
   // Event hooks
   onFieldHeadingReadReady: ((args: FtFieldHeadingReadyEventArgs) => void) | undefined = undefined;
@@ -52,7 +52,7 @@ export class FtSerialization {
   onSequenceRedirected: ((args: FtSequenceRedirectedEventArgs) => void) | undefined = undefined;
 
   private _meta: FtMeta;
-  private _core: SerializationCore | undefined = undefined;
+  private _core: FtSerializationCore | undefined = undefined;
 
   constructor(meta: FtMeta) {
     this._meta = meta;
@@ -155,7 +155,7 @@ export class FtSerialization {
     }
   }
 
-  private setCore(core: SerializationCore): void {
+  private setCore(core: FtSerializationCore): void {
     this._core = core;
 
     // Wire up event handlers

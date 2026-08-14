@@ -140,6 +140,9 @@ export { FtFieldTypeError as FtTypeError } from './types/errors/ft-field-type-er
 export { FtSerializationErrorCode } from './types/errors/ft-serialization-error-code.js';
 export { FtSerializationError } from './types/errors/ft-serialization-error.js';
 
+// Serialization core
+export { FtSerializationCore } from './serialization/ft-serialization-core.js';
+
 // Serialization reader
 export { FtDeclaredParameterRec, FtDeclaredParameters } from './serialization/ft-declared-parameters.js';
 export { FtSerializationReader } from './serialization/ft-serialization-reader.js';
