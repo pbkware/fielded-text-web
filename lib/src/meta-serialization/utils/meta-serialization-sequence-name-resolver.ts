@@ -49,7 +49,7 @@ export class MetaSerializationSequenceNameResolver {
       if (sequenceName === undefined) {
         warnings.push(`Sequence with undefined name: ${JSON.stringify(rec.sequence)}`);
       } else {
-        const existingRec = this._recs.find((r) => r.name === sequenceName);
+        const existingRec = this._recs.find((r, findIndex) => findIndex !== i && r.name === sequenceName);
         if (existingRec !== undefined) {
           warnings.push(`Duplicate sequence name: ${sequenceName}`);
         }

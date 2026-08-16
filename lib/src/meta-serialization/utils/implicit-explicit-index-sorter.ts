@@ -1,4 +1,8 @@
-export interface ImplicitExplicitIndexSortRec<T> {
+import { FtMetaField } from '../../meta/fields/ft-meta-field.js';
+import { FtMetaSequenceItem } from '../../meta/sequences/core/ft-meta-sequence-item.js';
+import { MetaSerializationRedirectSequenceResolver } from './meta-serialization-redirect-sequence-resolver.js';
+
+export interface ImplicitExplicitIndexSortRec<T extends FtMetaField | FtMetaSequenceItem | MetaSerializationRedirectSequenceResolver.Rec> {
   target: T;
   implicitIndex: number;
   explicitIndex: number;
@@ -7,7 +11,10 @@ export interface ImplicitExplicitIndexSortRec<T> {
 export namespace ImplicitExplicitIndexSortRec {
   export const INDEX_NOT_SET = -1;
 
-  export function compare(left: ImplicitExplicitIndexSortRec<unknown>, right: ImplicitExplicitIndexSortRec<unknown>): number {
+  export function compare<T extends FtMetaField | FtMetaSequenceItem | MetaSerializationRedirectSequenceResolver.Rec>(
+    left: ImplicitExplicitIndexSortRec<T>,
+    right: ImplicitExplicitIndexSortRec<T>,
+  ): number {
     const leftHasExplicit = left.explicitIndex !== INDEX_NOT_SET;
     const rightHasExplicit = right.explicitIndex !== INDEX_NOT_SET;
 
@@ -28,22 +35,21 @@ export namespace ImplicitExplicitIndexSortRec {
     return result;
   }
 
-  export function checkSortedArray(arr: ImplicitExplicitIndexSortRec<unknown>[], targetType: string, warnings: string[]): void {
-    let negativeWarned = false;
+  export function checkSortedArray<T extends FtMetaField | FtMetaSequenceItem | MetaSerializationRedirectSequenceResolver.Rec>(
+    arr: ImplicitExplicitIndexSortRec<T>[],
+    targetType: string,
+    warnings: string[],
+  ): void {
     let outOfBoundsWarned = false;
     let duplicateWarned = false;
 
     const count = arr.length;
     for (let i = 1; i < arr.length; i++) {
       const rec = arr[i];
-      if (rec.explicitIndex !== i) {
-        if (rec.explicitIndex < 0) {
-          if (!negativeWarned) {
-            warnings.push(`One or more negative explicit index: ${targetType}`);
-            negativeWarned = true;
-          }
-        } else {
-          if (rec.explicitIndex >= count) {
+      const explicitIndex = rec.explicitIndex;
+      if (explicitIndex >= 0) {
+        if (explicitIndex !== i) {
+          if (explicitIndex >= count) {
             if (!outOfBoundsWarned) {
               warnings.push(`One or more explicit index out of bounds: ${targetType}`);
               outOfBoundsWarned = true;
