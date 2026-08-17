@@ -1,0 +1,44 @@
+name: Publish Web Package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      Workspace: ./web
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24.x"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false # never use caching in release builds
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{ env.Workspace }}
+
+      - name: Test package
+        run: npm run test
+        working-directory: ${{ env.Workspace }}
+
+      - name: Build package
+        run: npm run dist
+        working-directory: ${{ env.Workspace }}
+
+      - name: Publish to npm
+        run: npm stage publish --provenance --access public
+        working-directory: ${{ env.Workspace }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
