@@ -32,7 +32,7 @@ export { FtSequenceRedirectType } from './types/enums/ft-sequence-redirect-type.
 // Utils
 export { FtCommaText } from './utils/ft-comma-text.js';
 export { FtInternalError } from './utils/ft-internal-error.js';
-export { FtResult } from './utils/ft-result.js';
+export { FtErr, FtOk, FtResult } from './utils/ft-result.js';
 
 // Core meta classes
 export { FtBooleanMetaField } from './meta/fields/ft-boolean-meta-field.js';

@@ -9,7 +9,9 @@ import { DotNetDateTimeStyles } from '@pbkware/dot-net-date-number-formatting';
 import { DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 import { DotNetNumberStyleFlags } from '@pbkware/dot-net-date-number-formatting';
 import { DotNetNumberStyles } from '@pbkware/dot-net-date-number-formatting';
-import { Result } from '@pbkware/js-utils';
+import { Err as FtErr } from '@pbkware/dot-net-date-number-formatting';
+import { Ok as FtOk } from '@pbkware/dot-net-date-number-formatting';
+import { Result as FtResult } from '@pbkware/dot-net-date-number-formatting';
 
 export { DotNetDateTimeStyleFlags }
 
@@ -199,6 +201,80 @@ export class FtCaseInsensitiveStringSequenceRedirect extends FtSequenceRedirect 
     static readonly TYPE: "CaseInsensitiveString";
     // (undocumented)
     get value(): string;
+}
+
+// @public (undocumented)
+export namespace FtCommaText {
+    const // (undocumented)
+    delimiterChar = ",";
+    const // (undocumented)
+    quoteChar = "\"";
+    const // (undocumented)
+    pairQuoteChar: string;
+    // (undocumented)
+    export class Error extends globalThis.Error {
+        constructor(message: string, errorId: ErrorId, extraInfo: string);
+        // (undocumented)
+        readonly errorId: ErrorId;
+        // (undocumented)
+        readonly extraInfo: string;
+    }
+    // (undocumented)
+    export type ErrorId = (typeof ErrorId)[keyof typeof ErrorId];
+    // (undocumented)
+    export interface ErrorIdPlusExtra<T extends ErrorId> {
+        // (undocumented)
+        readonly errorId: T;
+        // (undocumented)
+        readonly extraInfo: string;
+    }
+    // (undocumented)
+    export namespace ErrorIdPlusExtra {
+        // (undocumented)
+        export function toEnglish(errorIdPlusExtra: ErrorIdPlusExtra<ErrorId>): string;
+    }
+    // (undocumented)
+    export function errorIdToEnglish(errorId: ErrorId): "Unexpected char after quoted element" | "Quotes not closed in last element" | "Invalid integer string";
+    // (undocumented)
+    export function from2Values(value1: string, value2: string): string;
+    // (undocumented)
+    export function from3Values(value1: string, value2: string, value3: string): string;
+    // (undocumented)
+    export function from4Values(value1: string, value2: string, value3: string, value4: string): string;
+    // (undocumented)
+    export function fromIntegerArray(value: number[]): string;
+    // (undocumented)
+    export function fromStringArray(value: readonly string[]): string;
+    // (undocumented)
+    export function strictValidate(value: string): FtResult<boolean, ErrorIdPlusExtra<typeof ErrorId.QuotesNotClosedInLastElement | typeof ErrorId.UnexpectedCharAfterQuotedElement>>;
+    const // (undocumented)
+    ErrorId: {
+        readonly UnexpectedCharAfterQuotedElement: "UnexpectedCharAfterQuotedElement";
+        readonly QuotesNotClosedInLastElement: "QuotesNotClosedInLastElement";
+        readonly InvalidIntegerString: "InvalidIntegerString";
+    };
+    // (undocumented)
+    export interface StrictValidateResult {
+        // (undocumented)
+        errorText: string;
+        // (undocumented)
+        success: boolean;
+    }
+    // (undocumented)
+    export interface ToIntegerArrayResult {
+        // (undocumented)
+        array: number[];
+        // (undocumented)
+        errorText: string;
+        // (undocumented)
+        success: boolean;
+    }
+    // (undocumented)
+    export function toIntegerArrayWithResult(value: string): FtResult<number[], ErrorIdPlusExtra<typeof ErrorId.QuotesNotClosedInLastElement | typeof ErrorId.UnexpectedCharAfterQuotedElement | typeof ErrorId.InvalidIntegerString>>;
+    // (undocumented)
+    export function toStringArray(value: string): string[];
+    // (undocumented)
+    export function tryToStringArray(value: string, strict?: boolean): FtResult<string[], ErrorIdPlusExtra<typeof ErrorId.QuotesNotClosedInLastElement | typeof ErrorId.UnexpectedCharAfterQuotedElement>>;
 }
 
 // @public (undocumented)
@@ -471,7 +547,7 @@ export class FtDeclaredParameters {
     // Warning: (ae-forgotten-export) The symbol "Version" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    tryGetVersion(): Result<Version, boolean>;
+    tryGetVersion(): FtResult<Version, boolean>;
     // (undocumented)
     tryGetVersionRec(): {
         success: boolean;
@@ -505,6 +581,8 @@ export const FtEndOfLineType: {
 
 // @public (undocumented)
 export type FtEndOfLineType = (typeof FtEndOfLineType)[keyof typeof FtEndOfLineType];
+
+export { FtErr }
 
 // @public
 export class FtExactDateTimeMetaSequenceRedirect extends FtMetaSequenceRedirect {
@@ -1243,6 +1321,42 @@ export class FtIntegerMetaField extends FtGenericMetaField<bigint> {
     // (undocumented)
     get styles(): DotNetNumberStyles;
     set styles(value: DotNetNumberStyles);
+}
+
+// @public (undocumented)
+export abstract class FtInternalError extends Error {
+    constructor(code: string, message: string | undefined, errorType: string);
+    // (undocumented)
+    readonly code: string;
+}
+
+// @public (undocumented)
+export namespace FtInternalError {
+    const // (undocumented)
+    AssertErrorType = "FtAssert";
+    const // (undocumented)
+    UnreachableCaseErrorType = "FtUnreachableCase";
+    const // (undocumented)
+    ExtraFormatting: {
+        readonly Ignore: "Ignore";
+        readonly PrependWithColonSpace: "PrependWithColonSpace";
+        readonly PrependWithColonSpaceQuoteError: "PrependWithColonSpaceQuoteError";
+        readonly Postpend: "Postpend";
+        readonly PostpendColonSpace: "PostpendColonSpace";
+        readonly PostpendColonSpaceQuoted: "PostpendColonSpaceQuoted";
+    };
+    // (undocumented)
+    export function appendToErrorMessage(e: unknown, appendText: string): unknown;
+    // (undocumented)
+    export function createTypeIfNotError<E extends Error>(e: unknown, code: string, errorConstructor: new (code: string, message?: string) => E, extraMessage?: string, extraFormatting?: FtInternalError.ExtraFormatting): Error | E;
+    // (undocumented)
+    export type ExtraFormatting = (typeof ExtraFormatting)[keyof typeof ExtraFormatting];
+    // (undocumented)
+    export function formatExtra(existingMessage: string, extraMessage: string, extraFormatting: ExtraFormatting): string;
+    // (undocumented)
+    export function prependErrorMessage(e: unknown, prependText: string): unknown;
+    // (undocumented)
+    export function throwErrorTypeIfPromiseRejected<T>(promise: Promise<T>, code: string, errorConstructor: new (code: string, message?: string) => Error, extraMessage?: string, extraFormatting?: FtInternalError.ExtraFormatting): void;
 }
 
 // @public
@@ -2188,6 +2302,8 @@ export class FtNumberStylesMetaSerialization {
     static serialize(styles: DotNetNumberStyles, dataType: FtNumberDataType): string | undefined;
 }
 
+export { FtOk }
+
 // @public (undocumented)
 export const FtPadAlignment: {
     readonly Auto: "Auto";
@@ -2249,6 +2365,8 @@ export interface FtRecordStartedEventArgs {
     // (undocumented)
     recordIndex: number;
 }
+
+export { FtResult }
 
 // @public
 export class FtSequence {
@@ -2450,7 +2568,7 @@ export class FtSequenceRedirectFactory {
     // (undocumented)
     static registerConstructor(constructor: FtSequenceRedirectConstructor): void;
     // (undocumented)
-    static tryGetType(typeName: string): Result<FtSequenceRedirectType, boolean>;
+    static tryGetType(typeName: string): FtResult<FtSequenceRedirectType, boolean>;
     // (undocumented)
     static unregisterAllConstructors(): void;
     // (undocumented)
@@ -3076,8 +3194,6 @@ export namespace FtXmlMetaSerialization {
     // (undocumented)
     export function serialize(meta: FtMeta, options?: FtMetaSerializerOptions): string;
 }
-
-export { Result }
 
 // (No @packageDocumentation comment for this package)
 
