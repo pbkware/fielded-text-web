@@ -360,7 +360,7 @@
       "default": {
         "logLevel": "warning"
         // "addToApiReportFile": false
-      }
+      },
       // "tsdoc-link-tag-unescaped-text": {
       //   "logLevel": "warning",
       //   "addToApiReportFile": true
@@ -405,10 +405,10 @@
       //   "logLevel": "none",
       //   "addToApiReportFile": true
       // },
-      // "tsdoc-link-tag-destination-syntax": {
-      //   "logLevel": "none",
-      //   "addToApiReportFile": true
-      // },
+      "tsdoc-link-tag-destination-syntax": {
+        "logLevel": "none",
+        "addToApiReportFile": false
+      }
       // "tsdoc-param-tag-with-invalid-name": {
       //   "logLevel": "none",
       //   "addToApiReportFile": true

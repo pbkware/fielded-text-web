@@ -1,3 +1,4 @@
+/** @public */
 export abstract class FtInternalError extends Error {
   constructor(
     readonly code: string,
@@ -8,6 +9,7 @@ export abstract class FtInternalError extends Error {
   }
 }
 
+/** @public */
 export namespace FtInternalError {
   export const AssertErrorType = 'FtAssert';
   export const UnreachableCaseErrorType = 'FtUnreachableCase';
