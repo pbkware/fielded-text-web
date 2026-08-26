@@ -1,5 +1,5 @@
-import { parseIntStrict } from '@pbkware/js-utils';
 import { FtMetaDefaults } from '../../meta/ft-meta-defaults.js';
+import { parseIntStrict } from '../../utils/number-parse.js';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class DateTimeMetaSerialization {

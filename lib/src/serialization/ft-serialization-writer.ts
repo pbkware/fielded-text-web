@@ -12,12 +12,12 @@ import { FtPadAlignment } from '../types/enums/ft-pad-alignment.js';
 import { FtPadCharType } from '../types/enums/ft-pad-char-type.js';
 import { FtQuotedType } from '../types/enums/ft-quoted-type.js';
 import { FtTruncateType } from '../types/enums/ft-truncate-type.js';
-import { FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
-import { FtSerializationErrorCode } from '../types/errors/ft-serialization-error-code.js';
-import { FtSerializationError } from '../types/errors/ft-serialization-error.js';
+import { FtUnreachableCaseError } from '../utils/ft-internal-error.js';
 import { FtDeclaredParametersFormatter } from './formatting/ft-declared-parameters-formatter.js';
 import { FtDeclaredParameters } from './ft-declared-parameters.js';
 import { FtSerializationCore } from './ft-serialization-core.js';
+import { FtSerializationErrorCode } from './ft-serialization-error-code.js';
+import { FtSerializationError } from './ft-serialization-error.js';
 import { FtTextWriter } from './ft-text-writer.js';
 
 /**

@@ -1,6 +1,7 @@
-import { Err, isStringifiedInteger, Ok, Result } from '@pbkware/js-utils';
 import { FtMetaReferenceType } from '../types/enums/ft-meta-reference-type.js';
-import { FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
+import { FtUnreachableCaseError } from '../utils/ft-internal-error.js';
+import { FtErr, FtOk, FtResult } from '../utils/ft-result.js';
+import { isStringifiedInteger } from '../utils/number-parse.js';
 
 /**
  * Parameter record for declared parameters.
@@ -82,12 +83,12 @@ export class FtDeclaredParameters {
     this.add(FtDeclaredParameters.VERSION_PARAMETER_NAME, this.versionToText(major, minor, comment));
   }
 
-  tryGetVersion(): Result<Version, boolean> {
+  tryGetVersion(): FtResult<Version, boolean> {
     const idx = this.indexOfVersion();
     if (idx >= 0) {
       return this.parseVersionValue(this._list[idx].value);
     } else {
-      return new Err(false);
+      return new FtErr(false);
     }
   }
 
@@ -173,10 +174,10 @@ export class FtDeclaredParameters {
     }
   }
 
-  private parseVersionValue(text: string): Result<Version, boolean> {
+  private parseVersionValue(text: string): FtResult<Version, boolean> {
     const majorMinorSeparatorIdx = text.indexOf(FtDeclaredParameters.VERSION_PARTS_SEPARATOR);
     if (majorMinorSeparatorIdx <= 0 || majorMinorSeparatorIdx >= text.length - 1) {
-      return new Err(false);
+      return new FtErr(false);
     }
 
     let minorCommentSeparatorIdx = text.indexOf(FtDeclaredParameters.VERSION_PARTS_SEPARATOR, majorMinorSeparatorIdx + 1);
@@ -204,22 +205,22 @@ export class FtDeclaredParameters {
       return minorResult.createType();
     }
 
-    return new Ok({
+    return new FtOk({
       major: majorResult.value,
       minor: minorResult.value,
       comment,
     });
   }
 
-  private parseMajorMinorVersionText(text: string): Result<number, boolean> {
+  private parseMajorMinorVersionText(text: string): FtResult<number, boolean> {
     if (!isStringifiedInteger(text)) {
-      return new Err(false);
+      return new FtErr(false);
     } else {
       const result = parseInt(text, 10);
       if (Number.isNaN(result)) {
-        return new Err(false);
+        return new FtErr(false);
       } else {
-        return new Ok(result);
+        return new FtOk(result);
       }
     }
   }

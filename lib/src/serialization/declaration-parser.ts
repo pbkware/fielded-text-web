@@ -1,4 +1,4 @@
-import { FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
+import { FtUnreachableCaseError } from '../utils/ft-internal-error.js';
 import { CharReader } from './char-reader.js';
 import { FtDeclaredParameters } from './ft-declared-parameters.js';
 

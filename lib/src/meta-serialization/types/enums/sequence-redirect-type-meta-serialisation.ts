@@ -1,7 +1,7 @@
 import { FtMetaDefaults } from '../../../meta/ft-meta-defaults.js';
 import { FtDataType } from '../../../types/enums/ft-data-type.js';
 import { FtSequenceRedirectType } from '../../../types/enums/ft-sequence-redirect-type.js';
-import { FtUnreachableCaseError } from '../../../types/errors/ft-internal-error.js';
+import { FtUnreachableCaseError } from '../../../utils/ft-internal-error.js';
 
 export namespace SequenceRedirectTypeMetaSerialization {
   export const stringDefaultValue = FtMetaDefaults.StringField.SequenceRedirectType;

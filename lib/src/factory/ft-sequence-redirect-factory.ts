@@ -1,4 +1,3 @@
-import { Err, Ok, Result } from '@pbkware/js-utils';
 import { FtBooleanSequenceRedirect } from '../sequences/redirects/ft-boolean-sequence-redirect.js';
 import { FtCaseInsensitiveStringSequenceRedirect } from '../sequences/redirects/ft-case-insensitive-string-sequence-redirect.js';
 import { FtDateSequenceRedirect } from '../sequences/redirects/ft-date-sequence-redirect.js';
@@ -10,6 +9,7 @@ import { FtExactStringSequenceRedirect } from '../sequences/redirects/ft-exact-s
 import { FtNullSequenceRedirect } from '../sequences/redirects/ft-null-sequence-redirect.js';
 import { FtSequenceRedirect } from '../sequences/redirects/ft-sequence-redirect.js';
 import { FtSequenceRedirectType } from '../types/enums/ft-sequence-redirect-type.js';
+import { FtErr, FtOk, FtResult } from '../utils/ft-result.js';
 import { FtSequenceRedirectConstructor } from './ft-sequence-redirect-constructor.js';
 
 // Concrete constructor implementations
@@ -178,12 +178,12 @@ export class FtSequenceRedirectFactory {
     return constructor.sequenceRedirectTypeName;
   }
 
-  static tryGetType(typeName: string): Result<FtSequenceRedirectType, boolean> {
+  static tryGetType(typeName: string): FtResult<FtSequenceRedirectType, boolean> {
     const constructor = FtSequenceRedirectFactory.tryFindConstructorByName(typeName);
     if (constructor) {
-      return new Ok(constructor.sequenceRedirectType);
+      return new FtOk(constructor.sequenceRedirectType);
     }
-    return new Err(false);
+    return new FtErr(false);
   }
 
   private static tryFindConstructorByType(type: FtSequenceRedirectType): FtSequenceRedirectConstructor | undefined {

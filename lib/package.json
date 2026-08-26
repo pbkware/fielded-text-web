@@ -65,8 +65,7 @@
     "publish": "npm run publish:pre && npm publish --access=public && npm run publish:post"
   },
   "dependencies": {
-    "@pbkware/dot-net-date-number-formatting": "^0.3.0",
-    "@pbkware/js-utils": "^0.9.1",
+    "@pbkware/dot-net-date-number-formatting": "^0.3.1",
     "fast-xml-builder": "^1.2.0",
     "fast-xml-parser": "^5.8.0"
   },

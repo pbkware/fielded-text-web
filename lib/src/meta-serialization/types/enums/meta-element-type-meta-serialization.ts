@@ -1,18 +1,18 @@
-import { Err, Ok, Result } from '@pbkware/js-utils';
 import { FtMetaElementType } from '../../../types/enums/ft-meta-element-type.js';
+import { FtErr, FtOk, FtResult } from '../../../utils/ft-result.js';
 
 export namespace MetaElementTypeMetaSerialization {
   export function serialize(value: FtMetaElementType): string {
     return serializeMap[value];
   }
 
-  export function deserialize(value: string): Result<FtMetaElementType> {
+  export function deserialize(value: string): FtResult<FtMetaElementType> {
     const deserializedValue = deserializeMap[value.trim()];
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (deserializedValue === undefined) {
-      return new Err(`MetaElementType: Value: ${value}`);
+      return new FtErr(`MetaElementType: Value: ${value}`);
     } else {
-      return new Ok(deserializedValue);
+      return new FtOk(deserializedValue);
     }
   }
 }

@@ -1,4 +1,3 @@
-import { CommaText } from '@pbkware/js-utils';
 import XMLBuilder from 'fast-xml-builder';
 import { XMLParser } from 'fast-xml-parser';
 import { FtFieldFactory } from '../../factory/ft-field-factory.js';
@@ -27,7 +26,8 @@ import { FtNullMetaSequenceRedirect } from '../../meta/sequences/redirects/ft-nu
 import { FtMetaSubstitution } from '../../meta/substitutions/ft-meta-substitution-list.js';
 import { FtDataType } from '../../types/enums/ft-data-type.js';
 import { FtSequenceRedirectType } from '../../types/enums/ft-sequence-redirect-type.js';
-import { FtAssertError, FtUnreachableCaseError } from '../../types/errors/ft-internal-error.js';
+import { FtCommaText } from '../../utils/ft-comma-text.js';
+import { FtAssertError, FtUnreachableCaseError } from '../../utils/ft-internal-error.js';
 import { FtBooleanStylesMetaSerialization } from '../styles/ft-boolean-styles-meta-serialization.js';
 import { FtDateTimeStylesMetaSerialization } from '../styles/ft-date-time-styles-meta-serialization.js';
 import { FtNumberStylesMetaSerialization } from '../styles/ft-number-styles-meta-serialization.js';
@@ -293,7 +293,7 @@ export class FtXmlMetaSerialization {
       '@_HeadingTruncateType': TruncateTypeMetaSerialization.serialize(field.headingTruncateType, true, meta.headingTruncateType),
       '@_HeadingTruncateChar': CharMetaSerialization.serialize(field.headingTruncateChar, meta.headingTruncateChar),
       '@_HeadingEndOfValueChar': CharMetaSerialization.serialize(field.headingEndOfValueChar, meta.headingEndOfValueChar),
-      '@_Headings': fieldHeadings.length === 0 ? undefined : StringMetaSerialization.serialize(CommaText.fromStringArray(fieldHeadings)),
+      '@_Headings': fieldHeadings.length === 0 ? undefined : StringMetaSerialization.serialize(FtCommaText.fromStringArray(fieldHeadings)),
     };
 
     // Type-specific properties
@@ -595,7 +595,7 @@ export class FtXmlMetaSerialization {
     // Headings
     if (headingLineCount > 0) {
       const headingsCommaText = StringMetaSerialization.deserialize(obj['@_Headings'], '', warnings);
-      const headingsResult = CommaText.tryToStringArray(headingsCommaText, true);
+      const headingsResult = FtCommaText.tryToStringArray(headingsCommaText, true);
       if (headingsResult.isErr()) {
         warnings.push(`Headings: Invalid: Field ${field.name}: Value: "${headingsCommaText}"`);
       } else {

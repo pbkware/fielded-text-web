@@ -7,8 +7,6 @@ export {
   DotNetNumberStyles,
 } from '@pbkware/dot-net-date-number-formatting';
 
-export { Result } from '@pbkware/js-utils';
-
 // Enums
 export { FtBooleanStyles } from './types/enums/ft-boolean-styles.js';
 export { FtEndOfLineAutoWriteType } from './types/enums/ft-end-of-line-auto-write-type.js';
@@ -30,6 +28,11 @@ export { FtTruncateType } from './types/enums/ft-truncate-type.js';
 // Standard types with companion Info namespaces
 export { FtDataType } from './types/enums/ft-data-type.js';
 export { FtSequenceRedirectType } from './types/enums/ft-sequence-redirect-type.js';
+
+// Utils
+export { FtCommaText } from './utils/ft-comma-text.js';
+export { FtInternalError } from './utils/ft-internal-error.js';
+export { FtResult } from './utils/ft-result.js';
 
 // Core meta classes
 export { FtBooleanMetaField } from './meta/fields/ft-boolean-meta-field.js';
@@ -135,10 +138,10 @@ export { FtDateTimeStylesMetaSerialization } from './meta-serialization/styles/f
 export { FtNumberStylesMetaSerialization } from './meta-serialization/styles/ft-number-styles-meta-serialization.js';
 
 // Serialization errors and exceptions
-export { FtFieldNullError as FtNullError } from './types/errors/ft-field-null-error.js';
-export { FtFieldTypeError as FtTypeError } from './types/errors/ft-field-type-error.js';
-export { FtSerializationErrorCode } from './types/errors/ft-serialization-error-code.js';
-export { FtSerializationError } from './types/errors/ft-serialization-error.js';
+export { FtFieldNullError as FtNullError } from './fields/instances/errors/ft-field-null-error.js';
+export { FtFieldTypeError as FtTypeError } from './fields/instances/errors/ft-field-type-error.js';
+export { FtSerializationErrorCode } from './serialization/ft-serialization-error-code.js';
+export { FtSerializationError } from './serialization/ft-serialization-error.js';
 
 // Serialization core
 export { FtSerializationCore } from './serialization/ft-serialization-core.js';
@@ -164,28 +167,28 @@ export { FtWriter } from './api/ft-writer.js';
 /**
  * @public
  */
-export type { FtFieldHeadingReadyEventArgs } from './types/events/ft-field-heading-ready-event-args.js';
+export type { FtFieldHeadingReadyEventArgs } from './serialization/events/ft-field-heading-ready-event-args.js';
 /**
  * @public
  */
-export type { FtFieldValueReadyEventArgs } from './types/events/ft-field-value-ready-event-args.js';
+export type { FtFieldValueReadyEventArgs } from './serialization/events/ft-field-value-ready-event-args.js';
 /**
  * @public
  */
-export type { FtHeadingLineFinishedEventArgs } from './types/events/ft-heading-line-finished-event-args.js';
+export type { FtHeadingLineFinishedEventArgs } from './serialization/events/ft-heading-line-finished-event-args.js';
 /**
  * @public
  */
-export type { FtHeadingLineStartedEventArgs } from './types/events/ft-heading-line-started-event-args.js';
+export type { FtHeadingLineStartedEventArgs } from './serialization/events/ft-heading-line-started-event-args.js';
 /**
  * @public
  */
-export type { FtRecordFinishedEventArgs } from './types/events/ft-record-finished-event-args.js';
+export type { FtRecordFinishedEventArgs } from './serialization/events/ft-record-finished-event-args.js';
 /**
  * @public
  */
-export type { FtRecordStartedEventArgs } from './types/events/ft-record-started-event-args.js';
+export type { FtRecordStartedEventArgs } from './serialization/events/ft-record-started-event-args.js';
 /**
  * @public
  */
-export type { FtSequenceRedirectedEventArgs } from './types/events/ft-sequence-redirected-event-args.js';
+export type { FtSequenceRedirectedEventArgs } from './serialization/events/ft-sequence-redirected-event-args.js';

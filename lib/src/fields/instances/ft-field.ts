@@ -11,10 +11,10 @@ import { FtQuotedType } from '../../types/enums/ft-quoted-type.js';
 import { FtSequenceInvokationDelay } from '../../types/enums/ft-sequence-invokation-delay.js';
 import { FtSequenceRedirectType } from '../../types/enums/ft-sequence-redirect-type.js';
 import { FtTruncateType } from '../../types/enums/ft-truncate-type.js';
-import { FtFieldNullError } from '../../types/errors/ft-field-null-error.js';
-import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
-import { FtUnreachableCaseError } from '../../types/errors/ft-internal-error.js';
+import { FtUnreachableCaseError } from '../../utils/ft-internal-error.js';
 import { FtFieldDefinition } from '../definitions/ft-field-definition.js';
+import { FtFieldNullError } from './errors/ft-field-null-error.js';
+import { FtFieldTypeError } from './errors/ft-field-type-error.js';
 
 /**
  * Abstract base class for all field instances.

@@ -1,6 +1,6 @@
 import { FtField } from '../fields/instances/ft-field.js';
 import { FtPadCharType } from '../types/enums/ft-pad-char-type.js';
-import { FtAssertError, FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
+import { FtAssertError, FtUnreachableCaseError } from '../utils/ft-internal-error.js';
 import { CharReader } from './char-reader.js';
 import { FtSerializationCore } from './ft-serialization-core.js';
 

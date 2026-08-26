@@ -1,4 +1,4 @@
-import { FtField } from '../../fields/instances/ft-field.js';
+import { FtField } from '../fields/instances/ft-field.js';
 import { FtSerializationErrorCode } from './ft-serialization-error-code.js';
 
 /**

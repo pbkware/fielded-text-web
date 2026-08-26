@@ -1,5 +1,5 @@
-import { isDigitCharCode } from '@pbkware/js-utils';
-import { FtAssertError } from '../../types/errors/ft-internal-error.js';
+import { FtAssertError } from '../../utils/ft-internal-error.js';
+import { isDigitCharCode } from '../../utils/number-parse.js';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class FloatMetaSerialization {

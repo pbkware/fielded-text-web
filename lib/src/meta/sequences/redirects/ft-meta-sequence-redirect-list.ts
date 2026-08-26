@@ -1,7 +1,7 @@
 // Meta sequence redirect list - manages redirects for a sequence item
 
 import { FtSequenceRedirectType } from '../../../types/enums/ft-sequence-redirect-type.js';
-import { FtUnreachableCaseError } from '../../../types/errors/ft-internal-error.js';
+import { FtUnreachableCaseError } from '../../../utils/ft-internal-error.js';
 import type { FtMetaSequenceList } from '../core/ft-meta-sequence-list.js';
 import { FtBooleanMetaSequenceRedirect } from './ft-boolean-meta-sequence-redirect.js';
 import { FtCaseInsensitiveStringMetaSequenceRedirect } from './ft-case-insensitive-string-meta-sequence-redirect.js';

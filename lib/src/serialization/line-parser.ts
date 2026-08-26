@@ -1,5 +1,5 @@
 import { FtEndOfLineType } from '../types/enums/ft-end-of-line-type.js';
-import { FtAssertError, FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
+import { FtAssertError, FtUnreachableCaseError } from '../utils/ft-internal-error.js';
 import { CharReader } from './char-reader.js';
 
 const FtLineState = {

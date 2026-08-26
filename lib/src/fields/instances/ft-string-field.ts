@@ -1,8 +1,8 @@
 import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
 import { FtDataType } from '../../types/enums/ft-data-type.js';
-import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtStringFieldDefinition } from '../definitions/ft-string-field-definition.js';
+import { FtFieldTypeError } from './errors/ft-field-type-error.js';
 import { FtField } from './ft-field.js';
 import { FtGenericField } from './ft-generic-field.js';
 

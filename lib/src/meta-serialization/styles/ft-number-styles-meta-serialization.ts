@@ -1,7 +1,7 @@
 import { DotNetNumberStyles } from '@pbkware/dot-net-date-number-formatting';
 import { FtMetaDefaults } from '../../meta/ft-meta-defaults.js';
 import { FtDataType, FtNumberDataType } from '../../types/enums/ft-data-type.js';
-import { FtUnreachableCaseError } from '../../types/errors/ft-internal-error.js';
+import { FtUnreachableCaseError } from '../../utils/ft-internal-error.js';
 
 /** @public */
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class

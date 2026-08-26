@@ -1,11 +1,11 @@
 import { FtField } from '../fields/instances/ft-field.js';
-import { FtAssertError, FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
-import { FtSerializationErrorCode } from '../types/errors/ft-serialization-error-code.js';
-import { FtSerializationError } from '../types/errors/ft-serialization-error.js';
+import { FtAssertError, FtUnreachableCaseError } from '../utils/ft-internal-error.js';
 import { CharReader } from './char-reader.js';
 import { DelimitedFieldParser } from './delimited-field-parser.js';
 import { FixedWidthFieldParser } from './fixed-width-field-parser.js';
 import { FtSerializationCore } from './ft-serialization-core.js';
+import { FtSerializationErrorCode } from './ft-serialization-error-code.js';
+import { FtSerializationError } from './ft-serialization-error.js';
 
 const State = {
   Out: 'Out',

@@ -8,7 +8,7 @@ import { FtPadAlignment } from '../../types/enums/ft-pad-alignment.js';
 import { FtPadCharType } from '../../types/enums/ft-pad-char-type.js';
 import { FtQuotedType } from '../../types/enums/ft-quoted-type.js';
 import { FtTruncateType } from '../../types/enums/ft-truncate-type.js';
-import { FtUnreachableCaseError } from '../../types/errors/ft-internal-error.js';
+import { FtUnreachableCaseError } from '../../utils/ft-internal-error.js';
 
 const InternalError = {
   FtFieldFieldDefinition_LoadMeta_UnsupportedHeadingPadAlignment: 'FtFieldFieldDefinition_LoadMeta_UnsupportedHeadingPadAlignment',

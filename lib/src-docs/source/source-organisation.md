@@ -15,11 +15,11 @@ The source code is organized into a layered architecture with clear separation o
 ```
 src/
 ├── types/                        # Layer 1: Foundation types (no internal dependencies)
-│   ├── enums/                    # Enumeration types
-│   ├── errors/                   # Error and exception classes
-│   └── events/                   # Event argument interfaces
+│   └── enums/                    # Enumeration types
 │
-├── meta/                         # Layer 2: Build-time metadata model
+├── utils/                        # Layer 2: Utility classes and functions
+│
+├── meta/                         # Layer 3: Build-time metadata model
 │   ├── fields/                   # Meta field classes
 │   ├── sequences/                # Meta sequences and redirects
 │   │   ├── core/                 # Core meta sequence classes
@@ -28,33 +28,36 @@ src/
 │   ├── ft-meta-defaults.ts       # Metadata defaults
 │   └── ft-meta.ts                # Main metadata class
 │
-├── fields/                       # Layer 2: Runtime field model
+├── fields/                       # Layer 3: Runtime field model
 │   ├── definitions/              # Field definition classes
 │   └── instances/                # Field instance classes
+│       └── errors/               # Field errors
 │
-├── sequences/                    # Layer 2: Runtime sequence model
+├── sequences/                    # Layer 3: Runtime sequence model
 │   ├── core/                     # Core sequence classes
 │   └── redirects/                # Sequence redirect implementations
 │
-├── substitutions/                # Layer 2: Runtime substitutions
+├── substitutions/                # Layer 3: Runtime substitutions
 │
-├── serialization/                # Layer 3: Serialization infrastructure
+├── serialization/                # Layer 4: Serialization infrastructure
 │   └── formatting/               # Field formatters for output
+│   └── events/                   # Serialization Event argument interfaces
+│   └── text-reader/              # Text Readers
 │
-├── meta-serialization/           # Layer 3: Metadata serialization (XML/JSON)
+├── meta-serialization/           # Layer 4: Metadata serialization (XML/JSON)
 │   ├── format/                   # Format implementations and options
 │   ├── styles/                   # Date/number style serializers
 │   ├── types/                    # Meta serialization type mappers
 │   │   └── enums/                # Enum serialization helpers
 │   └── utils/                    # Shared meta-serialization utilities
 │
-├── api/                          # Layer 4: High-level public API
+├── api/                          # Layer 5: High-level public API
 │   ├── ft-reader.ts              # High-level reader
 │   ├── ft-writer.ts              # High-level writer
 │   ├── ft-writer-settings.ts     # Writer configuration
 │   └── ft-serialization.ts       # High-level serialization orchestrator
 │
-├── factory/                      # Layer 5: Object factories
+├── factory/                      # Layer 6: Object factories
 │
 └── index.ts                      # Main export file
 ```
@@ -66,13 +69,15 @@ The architecture follows a strict layered dependency model where each layer only
 ```
 Layer 1: types/
     ↓
-Layer 2: meta/, fields/, sequences/, substitutions/
+Layer 2: utils/
     ↓
-Layer 3: serialization/, meta-serialization/
+Layer 3: meta/, fields/, sequences/, substitutions/
     ↓
-Layer 4: api/
+Layer 4: serialization/, meta-serialization/
     ↓
-Layer 5: factory/
+Layer 5: api/
+    ↓
+Layer 6: factory/
 ```
 
 ## Layer Descriptions

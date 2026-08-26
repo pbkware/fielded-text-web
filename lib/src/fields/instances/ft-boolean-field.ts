@@ -2,8 +2,8 @@ import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokatio
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
 import { FtBooleanStyles } from '../../types/enums/ft-boolean-styles.js';
 import { FtDataType } from '../../types/enums/ft-data-type.js';
-import { FtFieldTypeError } from '../../types/errors/ft-field-type-error.js';
 import { FtBooleanFieldDefinition } from '../definitions/ft-boolean-field-definition.js';
+import { FtFieldTypeError } from './errors/ft-field-type-error.js';
 import { FtField } from './ft-field.js';
 import { FtGenericField } from './ft-generic-field.js';
 

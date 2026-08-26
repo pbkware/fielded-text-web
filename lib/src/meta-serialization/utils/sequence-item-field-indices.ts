@@ -1,7 +1,7 @@
-import { CommaText } from '@pbkware/js-utils';
 import { FtMetaFieldList } from '../../meta/fields/ft-meta-field-list.js';
 import { FtMetaField } from '../../meta/fields/ft-meta-field.js';
 import { FtMetaSequence } from '../../meta/sequences/core/ft-meta-sequence.js';
+import { FtCommaText } from '../../utils/ft-comma-text.js';
 import { IntegerFloatMetaSerialization } from '../types/integer-float-meta-serialization.js';
 
 export namespace SequenceItemFieldIndexSerialization {
@@ -27,7 +27,7 @@ export namespace SequenceItemFieldIndexSerialization {
     }
     fieldIndices.length = count; // Trim to actual count
 
-    const commaTextFieldIndices = count > 0 ? CommaText.fromIntegerArray(fieldIndices) : undefined;
+    const commaTextFieldIndices = count > 0 ? FtCommaText.fromIntegerArray(fieldIndices) : undefined;
 
     return {
       commaTextFieldIndices,

@@ -19,15 +19,15 @@ import { FtQuotedType } from '../types/enums/ft-quoted-type.js';
 import { FtSequenceInvokationDelay } from '../types/enums/ft-sequence-invokation-delay.js';
 import { FtSubstitutionType } from '../types/enums/ft-substitution-type.js';
 import { FtTruncateType } from '../types/enums/ft-truncate-type.js';
-import { FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
-import { FtFieldHeadingReadyEventArgs } from '../types/events/ft-field-heading-ready-event-args.js';
-import { FtFieldValueReadyEventArgs } from '../types/events/ft-field-value-ready-event-args.js';
-import { FtHeadingLineFinishedEventArgs } from '../types/events/ft-heading-line-finished-event-args.js';
-import { FtHeadingLineStartedEventArgs } from '../types/events/ft-heading-line-started-event-args.js';
-import { FtRecordFinishedEventArgs } from '../types/events/ft-record-finished-event-args.js';
-import { FtRecordStartedEventArgs } from '../types/events/ft-record-started-event-args.js';
-import { FtSequenceRedirectedEventArgs } from '../types/events/ft-sequence-redirected-event-args.js';
+import { FtUnreachableCaseError } from '../utils/ft-internal-error.js';
 import { CharReader } from './char-reader.js';
+import { FtFieldHeadingReadyEventArgs } from './events/ft-field-heading-ready-event-args.js';
+import { FtFieldValueReadyEventArgs } from './events/ft-field-value-ready-event-args.js';
+import { FtHeadingLineFinishedEventArgs } from './events/ft-heading-line-finished-event-args.js';
+import { FtHeadingLineStartedEventArgs } from './events/ft-heading-line-started-event-args.js';
+import { FtRecordFinishedEventArgs } from './events/ft-record-finished-event-args.js';
+import { FtRecordStartedEventArgs } from './events/ft-record-started-event-args.js';
+import { FtSequenceRedirectedEventArgs } from './events/ft-sequence-redirected-event-args.js';
 
 /**
  * Base class for serialization (reading/writing).

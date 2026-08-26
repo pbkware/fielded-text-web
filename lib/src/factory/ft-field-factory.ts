@@ -22,7 +22,7 @@ import { FtStringMetaField } from '../meta/fields/ft-string-meta-field.js';
 import { FtSequenceInvokation } from '../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../sequences/core/ft-sequence-item.js';
 import { FtDataType } from '../types/enums/ft-data-type.js';
-import { FtUnreachableCaseError } from '../types/errors/ft-internal-error.js';
+import { FtUnreachableCaseError } from '../utils/ft-internal-error.js';
 
 /**
  * Factory for creating field instances based on their definitions.

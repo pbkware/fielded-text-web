@@ -1,7 +1,7 @@
 import { FtSequenceInvokation } from '../../sequences/core/ft-sequence-invokation.js';
 import { FtSequenceItem } from '../../sequences/core/ft-sequence-item.js';
 import { FtSequenceRedirectType } from '../../types/enums/ft-sequence-redirect-type.js';
-import { FtAssertError } from '../../types/errors/ft-internal-error.js';
+import { FtAssertError } from '../../utils/ft-internal-error.js';
 import { FtGenericFieldDefinition } from '../definitions/ft-generic-field-definition.js';
 import { FtField } from './ft-field.js';
 
