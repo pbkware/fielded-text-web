@@ -118,7 +118,7 @@ After stepping into a new table using {@link serialization/ft-serialization-read
 
 It is possible to make {@link serialization/ft-serialization-reader!FtSerializationReader.read FtSerializationReader.read()} read to the end of data (ignoring tables) by setting {@link serialization/ft-serialization-reader!FtSerializationReader.autoNextTable autoNextTable} to `true`.  This can be useful in cases such as simply logging all records' fields' values to console using {@link fields/instances/ft-field!FtField.value FtField.value}.
 
-See [read-sequence](../../../examples/read-sequence/README.md) and [read-sequence-ordinal](../../../examples/read-sequence-ordinal/README.md) examples which demonstrate using {@link serialization/ft-serialization-reader!FtSerializationReader.read FtSerializationReader.read()}, {@link serialization/ft-serialization-reader!FtSerializationReader.nextTable FtSerializationReader.nextTable()} and {@link serialization/ft-serialization-reader!FtSerializationReader.autoNextTable autoNextTable} when reading data with key fields and sequences (ie contains multiple tables).
+See [read-sequence](../../../examples/web/read-sequence/README.md) and [read-sequence-ordinal](../../../examples/web/read-sequence-ordinal/README.md) examples which demonstrate using {@link serialization/ft-serialization-reader!FtSerializationReader.read FtSerializationReader.read()}, {@link serialization/ft-serialization-reader!FtSerializationReader.nextTable FtSerializationReader.nextTable()} and {@link serialization/ft-serialization-reader!FtSerializationReader.autoNextTable autoNextTable} when reading data with key fields and sequences (ie contains multiple tables).
 
 ### FtSerializationReader.readRecord()
 
@@ -247,7 +247,7 @@ function readGoldFishTable(reader: FtReader): FtReadRecordResult {
 
 ### Read Events
 
-Data can also be read using events. See the [read-events](../../../examples/read-events/README.md) example which demonstrates for data without any redirects (ie only one table).
+Data can also be read using events. See the [read-events](../../../examples/web/read-events/README.md) example which demonstrates for data without any redirects (ie only one table).
 
 After {@link serialization/ft-serialization-core!FtSerializationCore.onRecordStarted onRecordStarted} event has fired, the {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueReadReady onFieldValueReadReady} events will fire in the same order as the fields in the line/record. If the record contains fields with redirects, you need to monitor the value of the redirecting field ("Type" in the above example). The subsequent fields supplied by the {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueReadReady onFieldValueReadReady} event, will be according to the new sequence invoked (either after the redirecting field or after the current sequence).
 
@@ -255,7 +255,7 @@ After {@link serialization/ft-serialization-core!FtSerializationCore.onRecordSta
 
 ### FtSerializationWriter.write()
 
-The main way to create Fielded Text data is with {@link serialization/ft-serialization-writer!FtSerializationWriter.write FtSerializationWriter.write()}. As shown in the [basic-write](../../../examples/basic-write/README.md) example, when using {@link serialization/ft-serialization-writer!FtSerializationWriter FtSerializationWriter}, the fields are first set and then {@link serialization/ft-serialization-writer!FtSerializationWriter.write FtSerializationWriter.write()} is called. When there are no redirects, this is straight forward as all fields are available in their implicit (no sequences) or specified order (only root sequence).
+The main way to create Fielded Text data is with {@link serialization/ft-serialization-writer!FtSerializationWriter.write FtSerializationWriter.write()}. As shown in the [basic-write](../../../examples/web/basic-write/README.md) example, when using {@link serialization/ft-serialization-writer!FtSerializationWriter FtSerializationWriter}, the fields are first set and then {@link serialization/ft-serialization-writer!FtSerializationWriter.write FtSerializationWriter.write()} is called. When there are no redirects, this is straight forward as all fields are available in their implicit (no sequences) or specified order (only root sequence).
 
 When a line/record has redirects, initially only the fields in the root sequence are available. When the value of a field with sequence redirects is set, the fields in the invoked sequence are dynamically generated - possibly replacing existing fields.  So the key point when writing records with redirect fields is:
 
@@ -372,7 +372,7 @@ Note that `writeCatTable()` and `writeDogTable()` use slightly different approac
 
 ### Write Events
 
-An alternative way to write data is to use events (mainly {@link serialization/ft-serialization-core!FtSerializationCore.onRecordStarted onRecordStarted} and {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueWriteReady onFieldValueWriteReady}). The [write-events](../../../examples/write-events/README.md) example demonstrates this for data without any redirects (ie only one table).
+An alternative way to write data is to use events (mainly {@link serialization/ft-serialization-core!FtSerializationCore.onRecordStarted onRecordStarted} and {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueWriteReady onFieldValueWriteReady}). The [write-events](../../../examples/web/write-events/README.md) example demonstrates this for data without any redirects (ie only one table).
 
 Using events when there is more than one sequence, works in a similar way. After the {@link serialization/ft-serialization-core!FtSerializationCore.onRecordStarted onRecordStarted} event has fired, the {@link serialization/ft-serialization-core!FtSerializationCore.onFieldValueWriteReady onFieldValueWriteReady} event will begin firing for the fields in the root sequence in the order of their index. If the handler sets the value of a field with redirects and invokes a new sequence, the event will then fire for all the fields in the invoked sequence (either after the current field or current sequence).  This will be repeated if any further redirects occur to other sequences.
 

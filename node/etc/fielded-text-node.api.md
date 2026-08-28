@@ -2280,9 +2280,6 @@ export class FtNodeMetaSerialization extends FtMetaSerialization {
 }
 
 // @public (undocumented)
-export namespace FtNodeMetaSerialization { }
-
-// @public (undocumented)
 export class FtNodeXmlMetaSerialization extends FtXmlMetaSerialization {
     // (undocumented)
     deserializeFromFile(filePath: PathOrFileDescriptor, warnings?: string[], encoding?: BufferEncoding): FtMeta;

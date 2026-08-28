@@ -2,7 +2,7 @@
   "name": "examples",
   "private": true,
   "version": "0.1.0",
-  "description": "Examples for library in package @pbkware/fielded-text-web",
+  "description": "Examples for libraries in packages @pbkware/fielded-text-web and @pbkware/fielded-text-node",
   "license": "MIT",
   "author": {
     "name": "Paul Klink",

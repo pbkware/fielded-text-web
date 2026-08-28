@@ -6,9 +6,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  root: path.resolve(__dirname, 'docs'),
-  base: '/fielded-text-web/',
+  root: path.resolve(__dirname, 'dist'),
+  base: '/fielded-text-ts/',
   server: {
-    port: 3001,
+    port: 3010,
   },
 });

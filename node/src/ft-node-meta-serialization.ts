@@ -73,5 +73,3 @@ export class FtNodeMetaSerialization extends FtMetaSerialization {
     }
   }
 }
-
-export namespace FtNodeMetaSerialization {}

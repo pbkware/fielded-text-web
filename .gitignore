@@ -17,6 +17,7 @@ node/dist
 node/docs
 node/declaration
 node/temp
+docs/dist
 examples/test/index.ts
 /.env
 /.env.local

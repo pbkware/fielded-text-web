@@ -29,7 +29,7 @@ export default defineConfig(
     files: ['src/**/*.ts', 'examples/**/*.ts'],
     languageOptions: {
       parserOptions: {
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
         projectService: true,
       },
     },

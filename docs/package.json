@@ -1,0 +1,21 @@
+{
+  "name": "docs",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Documentation for libraries in packages @pbkware/fielded-text-web and @pbkware/fielded-text-node",
+  "license": "MIT",
+  "author": {
+    "name": "Paul Klink",
+    "email": "paul@klink.au",
+    "url": "https://paul.klink.au"
+  },
+  "scripts": {
+    "docs": "typedoc",
+    "docs:watch": "typedoc --watch",
+    "docs:serve": "vite --config ./vite.docs-dev.config.mjs --host"
+  },
+  "devDependencies": {
+    "typedoc": "^0.28.19",
+    "vite": "^8.0.16"
+  }
+}

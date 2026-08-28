@@ -202,7 +202,7 @@ In the above code snippet, if a field is null, then without including the `isNul
 
 #### Using asXXX accessors
 
-Fielded Text supports 6 different field {@link types/enums/ft-data-type!FtDataType data types}. For each data type, FtField has an asXXX accessor where XXX is the name of the data type. This accessor will return the field's value with the corresponding type. If the value is of a different type, a {@link types/errors/ft-field-type-error!FtFieldTypeError FtFieldTypeError} is thrown.
+Fielded Text supports 6 different field {@link types/enums/ft-data-type!FtDataType data types}. For each data type, FtField has an asXXX accessor where XXX is the name of the data type. This accessor will return the field's value with the corresponding type. If the value is of a different type, a {@link fields/instances/errors/ft-field-type-error!FtFieldTypeError FtFieldTypeError} is thrown.
 
 - String - {@link fields/instances/ft-field!FtField.asString asString}
 - Boolean - {@link fields/instances/ft-field!FtField.asBoolean asBoolean}
@@ -211,7 +211,7 @@ Fielded Text supports 6 different field {@link types/enums/ft-data-type!FtDataTy
 - Decimal - {@link fields/instances/ft-field!FtField.asDecimal asDecimal}
 - DateTime - {@link fields/instances/ft-field!FtField.asDateTime asDateTime}
 
-If a field's value is `null`, then a {@link types/errors/ft-field-null-error!FtFieldNullError FtFieldNullError} exception will be thrown.
+If a field's value is `null`, then a {@link fields/instances/errors/ft-field-null-error!FtFieldNullError FtFieldNullError} exception will be thrown.
 
 #### Using asNullableXXX accessors
 
