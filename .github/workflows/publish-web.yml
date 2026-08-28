@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish:
-    name: Publish to npm
+    name: Publish Web to npm
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,7 +38,7 @@ jobs:
         working-directory: ${{ env.Workspace }}
 
       - name: Publish to npm
-        run: npm stage publish --provenance --access public
+        run: npm publish --provenance
         working-directory: ${{ env.Workspace }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

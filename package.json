@@ -1,5 +1,5 @@
 {
-  "name": "@pbkware/fielded-text-web-workspace",
+  "name": "@pbkware/fielded-text-ts-workspace",
   "private": true,
   "description": "A parser/generator library based on Fielded Text.",
   "license": "MIT",
@@ -9,16 +9,16 @@
     "url": "https://paul.klink.au"
   },
   "workspaces": [
-    "lib",
+    "web",
     "examples"
   ],
   "scripts": {
-    "build": "npm run --workspace=lib build",
-    "dist": "npm run --workspace=lib dist",
-    "lint": "npm run --workspace=lib lint",
-    "test": "npm run --workspace=lib test",
+    "build": "npm run --workspace=web build",
+    "dist": "npm run --workspace=web dist",
+    "lint": "npm run --workspace=web lint",
+    "test": "npm run --workspace=web test",
     "clean": "npm run --workspaces --if-present clean",
-    "docs": "npm run --workspace=lib docs",
+    "docs": "npm run --workspace=web docs",
     "examples": "npm run --workspace=examples examples:all"
   }
 }
