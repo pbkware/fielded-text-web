@@ -1,0 +1,85 @@
+{
+  "name": "@pbkware/fielded-text-node",
+  "version": "0.1.0",
+  "description": "Adds Node.js file access capabilities for fielded text processing",
+  "author": {
+    "name": "Paul Klink",
+    "email": "paul@klink.au",
+    "url": "https://paul.klink.au"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "src/**/*.ts",
+    "src/**/*.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "homepage": "https://pbkware.github.io/fielded-text-node/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pbkware/fielded-text-node.git",
+    "directory": "lib"
+  },
+  "bugs": {
+    "url": "https://github.com/pbkware/fielded-text-node/issues"
+  },
+  "contributors": [
+    "Paul Klink (https://paul.klink.au)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "fielded",
+    "text",
+    "csv",
+    "delimited",
+    "parser",
+    "format",
+    "node"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "declaration": "tsc --emitDeclarationOnly",
+    "rollup": "npx api-extractor run --local --verbose",
+    "types": "npm run declaration && npm run rollup",
+    "api": "npm run build && npm run rollup",
+    "clean": "npx del-cli ./dist && npx del-cli ./declaration && npx del-cli ./temp",
+    "dist": "npm run clean && npm run api",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint",
+    "prettier": "npx prettier --write .",
+    "docs": "typedoc",
+    "docs:watch": "typedoc --watch",
+    "publish:pre": "cp ../README.md ./README.md && cp ../LICENSE ./LICENSE && npm run dist",
+    "publish:post": "rm ./README.md && rm ./LICENSE",
+    "publish": "npm run publish:pre && npm publish --access=public && npm run publish:post"
+  },
+  "dependencies": {
+    "@pbkware/fielded-text-web": "^0.1.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@microsoft/api-extractor": "^7.58.7",
+    "@types/node": "^25.6.1",
+    "del-cli": "^7.0.0",
+    "eslint": "^10.4.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import-x": "^4.16.2",
+    "prettier": "^3.8.3",
+    "typedoc": "^0.28.19",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.0",
+    "vitest": "^4.1.5"
+  }
+}

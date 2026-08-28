@@ -13,6 +13,10 @@ web/node_modules/.vite-temp/
 web/README.md
 web/LICENSE
 web/tests/compliance/FTStd0.9-non-compliance-report.md
+node/dist
+node/docs
+node/declaration
+node/temp
 examples/test/index.ts
 /.env
 /.env.local
