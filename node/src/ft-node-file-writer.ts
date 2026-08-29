@@ -11,7 +11,7 @@ class NodeFileTextWriter implements FtTextWriter {
   private _opened = false;
 
   constructor(
-    private readonly _filePath: string,
+    private readonly _filePath: fs.PathLike,
     private readonly _encoding: BufferEncoding,
     private readonly _append: boolean,
   ) {}
@@ -99,7 +99,7 @@ export class FtNodeFileWriter extends FtWriter {
    * @param encoding - The character encoding to use (default: 'utf-8')
    * @param settings - Optional writer settings
    */
-  constructor(filePath: string, meta: FtMeta, encoding: BufferEncoding = 'utf-8', settings?: FtWriterSettings) {
+  constructor(filePath: fs.PathLike, meta: FtMeta, encoding: BufferEncoding = 'utf-8', settings?: FtWriterSettings) {
     super(meta);
 
     // Create internal file writer

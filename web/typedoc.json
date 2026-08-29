@@ -16,15 +16,9 @@
   "projectDocuments": ["src-docs/guide/index.md", "src-docs/source/index.md"],
   "favicon": "src-docs/favicon.svg",
   "cleanOutputDir": true,
-  "githubPages": true,
   "hideGenerator": true,
   "searchInComments": true,
   "searchInDocuments": true,
   "hostedBaseUrl": "https://pbkware.github.io/fielded-text-ts/",
-  "useTsLinkResolution": true,
-  "navigationLinks": {
-    "GitHub": "https://github.com/pbkware/fielded-text-ts",
-    "NPM": "https://www.npmjs.com/package/@pbkware/fielded-text-web"
-    // "Sponsors": "https://pbkware.github.io/fielded-text-web/Overview/Sponsors/",
-  }
+  "useTsLinkResolution": true
 }

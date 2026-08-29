@@ -10,7 +10,7 @@
   "router": "structure-dir",
   "highlightLanguages": ["typescript", "xml", "bash", "json", "csv", "text"],
   "readme": "../README.md",
-  // "projectDocuments": ["overview.md"],
+  "projectDocuments": ["change-log.md"],
   "favicon": "../web/src-docs/favicon.svg",
   "cleanOutputDir": true,
   "githubPages": true,

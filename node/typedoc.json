@@ -12,17 +12,11 @@
   "excludeInternal": true,
   "router": "structure-dir",
   "highlightLanguages": ["typescript", "xml", "bash", "json", "csv", "text"],
-  "readme": "../README.md",
+  "readme": "./README.md",
+  "projectDocuments": ["src-docs/files.md"],
   "cleanOutputDir": true,
-  "githubPages": true,
   "hideGenerator": true,
   "searchInComments": true,
   "searchInDocuments": true,
-  "useTsLinkResolution": true,
-  "navigationLinks": {
-    "GitHub": "https://github.com/pbkware/fielded-text-ts",
-    "Web NPM": "https://www.npmjs.com/package/@pbkware/fielded-text-web",
-    "Node NPM": "https://www.npmjs.com/package/@pbkware/fielded-text-node"
-    // "Sponsors": "https://pbkware.github.io/fielded-text-web/Overview/Sponsors/",
-  }
+  "useTsLinkResolution": true
 }

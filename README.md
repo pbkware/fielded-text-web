@@ -1,19 +1,11 @@
 # Fielded Text TypeScript Library (for web)
 
-[![NPM version](https://img.shields.io/npm/v/@pbkware/fielded-text-web)](https://www.npmjs.com/package/@pbkware/fielded-text-web) [![License](https://img.shields.io/github/license/pbkware/fielded-text-web)](https://github.com/pbkware/fielded-text-web/blob/main/LICENSE)
+[![Web NPM version](https://img.shields.io/npm/v/@pbkware/fielded-text-web)](https://www.npmjs.com/package/@pbkware/fielded-text-web) [![Web License](https://img.shields.io/github/license/pbkware/fielded-text-web)](https://github.com/pbkware/fielded-text-web/blob/main/LICENSE)\
+[![Node NPM version](https://img.shields.io/npm/v/@pbkware/fielded-text-node)](https://www.npmjs.com/package/@pbkware/fielded-text-node) [![Node License](https://img.shields.io/github/license/pbkware/fielded-text-node)](https://github.com/pbkware/fielded-text-node/blob/main/LICENSE)
 
-This documentation covers 2 Fielded Text TypeScript libraries:
+This repository contains 2 libraries for reading (parsing) and writing (generating) text data whose lines consists of fields (eg. CSV, TSV and text data with fixed length fields).  They work by associating a schema (called Meta) with the text data which allows reading and writing text data in a manner similar to reading and writing from/to databases.
 
-- **[@pbkware/fielded-text-web](/fielded-text-ts/Web/)**\
-Only includes "Browser" run time. Use in "Browser" applications.
-- **[@pbkware/fielded-text-node](/fielded-text-ts/Node/)**\
-Includes "Node" run time. Use in "Node" applications.
-
-Note that if an application imports `@pbkware/fielded-text-node`, then it should NOT also import `@pbkware/fielded-text-web`! This is not necessary as `@pbkware/fielded-text-node` re-exports all types from `@pbkware/fielded-text-web`.
-
-This library allows you to parse and generate CSV like text data in manner similar to reading and writing from/to databases. It does this by associating a schema (called Meta) with the text data.
-
-The schema supports a [wide variety](https://fieldedtext.org/introduction/capabilities/) of text data where lines consist of field values (not just CSV).  This includes data with lines that contain different fields depending on the value of key fields - where effectively the data is a database with multiple tables (each having records with different fields).
+The schema supports a [wide variety](https://fieldedtext.org/introduction/capabilities/) of field formatting and structure in text data.  This includes data with lines that contain different fields depending on the value of key fields - where effectively the data is a database with multiple tables (each having records with different fields).
 
 **Fielded Text is ideal for [reading](https://pbkware.github.io/fielded-text-web/Guides/Reading/) and writing database like text data with complex schemas containing multiple [tables](https://pbkware.github.io/fielded-text-web/Guides/Tables/)**.
 
@@ -53,15 +45,19 @@ while (reader.read()) {
 }
 ```
 
-## Installation
+## Browser and Node library
 
-```bash
-npm install @pbkware/fielded-text-web
-```
+There are 2  separate libraries for browser and node environments:
+
+- **[@pbkware/fielded-text-web](https://pbkware.github.io/fielded-text-ts/Web/)**\
+Only includes "Browser" run time. Use in "Browser" applications.
+- **[@pbkware/fielded-text-node](https://pbkware.github.io/fielded-text-ts/Node/)**\
+Includes "Node" run time. Use in "Node" applications.\
+*Note that you should NOT import `@pbkware/fielded-text-web` if `@pbkware/fielded-text-node` is imported!* This is not necessary as `@pbkware/fielded-text-node` re-exports all types from `@pbkware/fielded-text-web`.
 
 ## Changes
 
-See [Change Log](https://pbkware.github.io/fielded-text-web/Change_Log/) for changes - including any breaking changes.
+See [Change Log](https://pbkware.github.io/fielded-text-ts/Change_Log/) for changes - including any breaking changes.
 
 ## More information
 

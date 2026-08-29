@@ -1,7 +1,7 @@
 {
   "name": "@pbkware/fielded-text-node",
   "version": "0.1.0",
-  "description": "Adds Node.js file access capabilities for fielded text processing",
+  "description": "A reader and writer TypeScript library for text files/data with fields, based on Fielded Text. Node.js compatible.",
   "author": {
     "name": "Paul Klink",
     "email": "paul@klink.au",
@@ -25,14 +25,14 @@
     "README.md",
     "LICENSE"
   ],
-  "homepage": "https://pbkware.github.io/fielded-text-node/",
+  "homepage": "https://pbkware.github.io/fielded-text-ts/node/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pbkware/fielded-text-node.git",
-    "directory": "lib"
+    "directory": "node"
   },
   "bugs": {
-    "url": "https://github.com/pbkware/fielded-text-node/issues"
+    "url": "https://github.com/pbkware/fielded-text-ts/issues"
   },
   "contributors": [
     "Paul Klink (https://paul.klink.au)"

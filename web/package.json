@@ -1,7 +1,7 @@
 {
   "name": "@pbkware/fielded-text-web",
   "version": "0.1.2",
-  "description": "A parser/generator library based on Fielded Text.",
+  "description": "A reader and writer TypeScript library for text data with fields, based on Fielded Text. Browser compatible.",
   "type": "module",
   "sideEffects": false,
   "engines": {
@@ -20,11 +20,14 @@
     "README.md",
     "LICENSE"
   ],
-  "homepage": "https://pbkware.github.io/fielded-text-web/",
+  "homepage": "https://pbkware.github.io/fielded-text-ts/web/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pbkware/fielded-text-web.git",
-    "directory": "lib"
+    "url": "git+https://github.com/pbkware/fielded-text-ts.git",
+    "directory": "web"
+  },
+  "bugs": {
+    "url": "https://github.com/pbkware/fielded-text-ts/issues"
   },
   "contributors": [
     "Paul Klink (https://paul.klink.au)"

@@ -7,7 +7,7 @@ import { StringDecoder } from 'string_decoder';
  * Handles synchronous file reading with configurable encoding.
  */
 class NodeFileTextReader implements FtTextReader {
-  private _filePath: string;
+  private _filePath: fs.PathLike;
   private _encoding: BufferEncoding;
   private _fd: number | null = null;
   private _filePosition = 0;
@@ -19,7 +19,7 @@ class NodeFileTextReader implements FtTextReader {
   private readonly _chunkSize = 16 * 1024; // 16KB chunks
   private _decoder: StringDecoder | null = null;
 
-  constructor(filePath: string, encoding: BufferEncoding) {
+  constructor(filePath: fs.PathLike, encoding: BufferEncoding) {
     this._filePath = filePath;
     this._encoding = encoding;
   }
@@ -144,7 +144,12 @@ export class FtNodeFileReader extends FtReader {
    * @param encoding - The character encoding to use (default: 'utf-8')
    * @param immediatelyReadHeader - Whether to automatically read header lines (default: true)
    */
-  constructor(filePath: string, metaOrEncoding: FtMeta | BufferEncoding = 'utf-8', encoding: BufferEncoding = 'utf-8', immediatelyReadHeader = true) {
+  constructor(
+    filePath: fs.PathLike,
+    metaOrEncoding: FtMeta | BufferEncoding = 'utf-8',
+    encoding: BufferEncoding = 'utf-8',
+    immediatelyReadHeader = true,
+  ) {
     let meta: FtMeta | undefined;
     let metaEncoding: BufferEncoding;
     if (typeof metaOrEncoding === 'string') {
