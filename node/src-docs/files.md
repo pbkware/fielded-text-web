@@ -40,6 +40,8 @@ For both reading and writing, the 3rd parameter (`encoding`) specifies the encod
 
 ## FtNodeMetaSerialization & FtNodeXmlMetaSerialization
 
+The following methods are added to [FtMetaSerialization](/fielded-text-ts/Web/meta-serialization/ft-meta-serialization/FtMetaSerialization-1/) & [FtXmlMetaSerialization](/fielded-text-ts/Web/meta-serialization/format/ft-xml-meta-serialization/FtXmlMetaSerialization-1/) which enable reading and writing of Meta to/from files.
+
 ```ts
 serializeToFile(
     meta: FtMeta,
@@ -56,5 +58,7 @@ deserializeFromFile(
     format?: FtMetaSerializationFormat, // not included in FtNodeXmlMetaSerialization as always `XML`
 ): FtMeta
 ```
+
+The `encoding` parameter specifies the encoding of the data in the file. If not present or undefined, it defaults to `utf-8`.
 
 ## Examples

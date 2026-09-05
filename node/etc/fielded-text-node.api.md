@@ -9,6 +9,7 @@ import { DotNetDateTimeStyles } from '@pbkware/dot-net-date-number-formatting';
 import { DotNetLocaleSettings } from '@pbkware/dot-net-date-number-formatting';
 import { DotNetNumberStyleFlags } from '@pbkware/dot-net-date-number-formatting';
 import { DotNetNumberStyles } from '@pbkware/dot-net-date-number-formatting';
+import * as fs from 'fs';
 import { Err as FtErr } from '@pbkware/dot-net-date-number-formatting';
 import { Ok as FtOk } from '@pbkware/dot-net-date-number-formatting';
 import { Result as FtResult } from '@pbkware/dot-net-date-number-formatting';
@@ -2263,14 +2264,14 @@ export class FtMetaSubstitutionList {
 
 // @public
 export class FtNodeFileReader extends FtReader {
-    constructor(filePath: string, metaOrEncoding?: FtMeta | BufferEncoding, encoding?: BufferEncoding, immediatelyReadHeader?: boolean);
+    constructor(filePath: fs.PathLike, metaOrEncoding?: FtMeta | BufferEncoding, encoding?: BufferEncoding, immediatelyReadHeader?: boolean);
     // (undocumented)
     protected getFileMetaAsText(fileMetaReference: string): string;
 }
 
 // @public
 export class FtNodeFileWriter extends FtWriter {
-    constructor(filePath: string, meta: FtMeta, encoding?: BufferEncoding, settings?: FtWriterSettings);
+    constructor(filePath: fs.PathLike, meta: FtMeta, encoding?: BufferEncoding, settings?: FtWriterSettings);
 }
 
 // @public
@@ -2279,12 +2280,22 @@ export class FtNodeMetaSerialization extends FtMetaSerialization {
     serializeToFile(meta: FtMeta, filePath: PathOrFileDescriptor, options?: FtMetaSerializerOptions, encoding?: BufferEncoding, format?: FtMetaSerializationFormat): void;
 }
 
-// @public (undocumented)
+// @public
+export namespace FtNodeMetaSerialization {
+    export function deserializeFromFile(filePath: PathOrFileDescriptor, warnings?: string[], encoding?: BufferEncoding, format?: FtMetaSerializationFormat): FtMeta;
+    export function serializeToFile(meta: FtMeta, filePath: PathOrFileDescriptor, options?: FtMetaSerializerOptions, encoding?: BufferEncoding, format?: FtMetaSerializationFormat): void;
+}
+
+// @public
 export class FtNodeXmlMetaSerialization extends FtXmlMetaSerialization {
-    // (undocumented)
     deserializeFromFile(filePath: PathOrFileDescriptor, warnings?: string[], encoding?: BufferEncoding): FtMeta;
-    // (undocumented)
     serializeToFile(meta: FtMeta, filePath: PathOrFileDescriptor, options?: FtMetaSerializerOptions, encoding?: BufferEncoding): void;
+}
+
+// @public
+export namespace FtNodeXmlMetaSerialization {
+    export function deserializeFromFile(filePath: PathOrFileDescriptor, warnings?: string[], encoding?: BufferEncoding): FtMeta;
+    export function serializeToFile(meta: FtMeta, filePath: PathOrFileDescriptor, options?: FtMetaSerializerOptions, encoding?: BufferEncoding): void;
 }
 
 // @public

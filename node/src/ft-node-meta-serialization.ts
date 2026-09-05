@@ -9,8 +9,11 @@ import { PathOrFileDescriptor, readFileSync, writeFileSync } from 'node:fs';
 export class FtNodeMetaSerialization extends FtMetaSerialization {
   /**
    * Deserialize an FtMeta object from a file path (Node.js only).
-   * @param filePath - The path to the meta file
-   * @param format - The format of the file (default: auto-detect from extension)
+   * The format is detected from the file extension when `format` is not provided.
+   * @param filePath - The path or file descriptor of the meta file.
+   * @param warnings - An optional array to receive deserialization warnings.
+   * @param encoding - The encoding of the file. Defaults to `utf-8`.
+   * @param format - The format of the file. Defaults to the format detected from the file extension.
    * @returns The deserialized FtMeta object
    */
   deserializeFromFile(
@@ -19,9 +22,6 @@ export class FtNodeMetaSerialization extends FtMetaSerialization {
     encoding: BufferEncoding = 'utf-8',
     format?: FtMetaSerializationFormat,
   ): FtMeta {
-    // Dynamically import Node.js fs module
-    // const { readFile } = await import("node:fs/promises");
-
     // Auto-detect format from extension if not specified
     let actualFormat: FtMetaSerializationFormat;
     if (format !== undefined) {
@@ -36,10 +36,12 @@ export class FtNodeMetaSerialization extends FtMetaSerialization {
 
   /**
    * Serialize an FtMeta object to a file (Node.js only).
-   * @param meta - The FtMeta object to serialize
-   * @param filePath - The output file path
-   * @param options - Optional serialization options
-   * @param format - The output format (default: auto-detect from extension)
+   * The format is detected from the file extension when `format` is not provided.
+   * @param meta - The FtMeta object to serialize.
+   * @param filePath - The output path or file descriptor.
+   * @param options - Optional serialization options.
+   * @param encoding - The encoding of the file. Defaults to `utf-8`.
+   * @param format - The output format. Defaults to the format detected from the file extension.
    */
   serializeToFile(
     meta: FtMeta,
@@ -71,5 +73,51 @@ export class FtNodeMetaSerialization extends FtMetaSerialization {
     } else {
       return FtMetaSerializationFormat.XML;
     }
+  }
+}
+
+/**
+ * Convenience functions for serializing and deserializing {@link FtMeta} objects to and from files.
+ * Supports the XML and JSON formats handled by {@link FtMetaSerialization}.
+ * @public
+ */
+export namespace FtNodeMetaSerialization {
+  /**
+   * Deserialize an {@link FtMeta} object from a file.
+   * The format is detected from the file extension when `format` is not provided.
+   * @param filePath - The path or file descriptor of the meta file.
+   * @param warnings - An optional array to receive deserialization warnings.
+   * @param encoding - The encoding of the file. Defaults to `utf-8`.
+   * @param format - The format of the file. Defaults to the format detected from the file extension.
+   * @returns The deserialized meta object.
+   */
+  export function deserializeFromFile(
+    filePath: PathOrFileDescriptor,
+    warnings?: string[],
+    encoding: BufferEncoding = 'utf-8',
+    format?: FtMetaSerializationFormat,
+  ): FtMeta {
+    const serialization = new FtNodeMetaSerialization();
+    return serialization.deserializeFromFile(filePath, warnings, encoding, format);
+  }
+
+  /**
+   * Serialize an {@link FtMeta} object to a file.
+   * The format is detected from the file extension when `format` is not provided.
+   * @param meta - The meta object to serialize.
+   * @param filePath - The output path or file descriptor.
+   * @param options - Optional serialization options.
+   * @param encoding - The encoding of the file. Defaults to `utf-8`.
+   * @param format - The output format. Defaults to the format detected from the file extension.
+   */
+  export function serializeToFile(
+    meta: FtMeta,
+    filePath: PathOrFileDescriptor,
+    options?: FtMetaSerializerOptions,
+    encoding: BufferEncoding = 'utf-8',
+    format?: FtMetaSerializationFormat,
+  ): void {
+    const serialization = new FtNodeMetaSerialization();
+    return serialization.serializeToFile(meta, filePath, options, encoding, format);
   }
 }
