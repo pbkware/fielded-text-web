@@ -66,7 +66,7 @@ src/
 
 The architecture follows a strict layered dependency model where each layer only depends on layers below it:
 
-```
+```text
 Layer 1: types/
     ↓
 Layer 2: utils/
@@ -87,12 +87,12 @@ Layer 6: factory/
 Contains all fundamental types with no internal dependencies. This layer includes:
 
 - **`enums/`**: All enumeration types (FtBooleanStyles, FtEndOfLineType, FtPadAlignment, etc.)
-- **`errors/`**: Exception and error classes (FtSerializationError, FtSerializationException)
-- **`events/`**: Event argument interfaces for field/record/sequence events
 
-Note: standard conceptual types such as `FtDataType` and `FtSequenceRedirectType` are now defined within `types/enums/` rather than a separate `types/standard/` folder.
+### Layer 2: Utilities (`utils/`)
 
-### Layer 2: Core Domain Models
+Classes and functions used across library.
+
+### Layer 3: Core Domain Models
 
 The core business logic split into parallel subsystems:
 
@@ -115,7 +115,7 @@ The core business logic split into parallel subsystems:
 
 - **`substitutions/`**: Runtime substitution model
 
-### Layer 3: Serialization Infrastructure
+### Layer 4: Serialization Infrastructure
 
 Handles reading and writing of fielded text:
 
@@ -129,7 +129,7 @@ Handles reading and writing of fielded text:
   - `types/`: Meta serialization type adapters and enum mappings
   - `utils/`: Utility helpers shared across serializers
 
-### Layer 4: High-Level API (`api/`)
+### Layer 5: High-Level API (`api/`)
 
 User-facing API classes:
 
@@ -138,7 +138,7 @@ User-facing API classes:
 - `FtWriterSettings`: Writer configuration
 - `FtSerialization` (plus `FtAbortSerializationException`): High-level serialization orchestrator and control flow
 
-### Layer 5: Factories (`factory/`)
+### Layer 6: Factories (`factory/`)
 
 Factory classes for creating instances across all layers:
 
