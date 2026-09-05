@@ -3,12 +3,12 @@
 
 import {
   FtMetaReferenceType,
+  FtNodeFileWriter,
   FtNodeXmlMetaSerialization,
-  FtSerializationWriter,
-  FtStringWriter,
   FtWriterSettings,
 } from "@pbkware/fielded-text-node";
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -17,7 +17,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Name of file containing Meta
-const metaFileName = "basic-example-meta.ftm";
+const metaFileName = "meta.ftm";
+// Name of file to be written
+const outputFileName = "node-declared-example.csv";
 const metaFilePath = path.join(__dirname, metaFileName);
 
 // Define field names
@@ -30,10 +32,16 @@ const NeedsWalkingFieldName = "NeedsWalking";
 const TypeFieldName = "Type";
 
 // Load meta from file
-const metaXml = fs.readFileSync(metaFilePath, "utf-8");
 const meta = FtNodeXmlMetaSerialization.deserializeFromFile(metaFilePath);
-meta.lineCommentChar = "!"; // Change from default to !
 meta.headingLineCount = 0; // Change to 0 as we do not want any heading lines in this example
+
+// Create output file path in temp directory
+const tmpDir = os.tmpdir();
+const fieldedTextTmpDir = path.join(tmpDir, "fielded-text/examples");
+const outputPath = path.join(fieldedTextTmpDir, outputFileName);
+
+// Ensure the directory exists
+fs.mkdirSync(fieldedTextTmpDir, { recursive: true });
 
 // Create FtWriterSettings to flag we want Declared file written
 const settings: FtWriterSettings = {
@@ -42,9 +50,7 @@ const settings: FtWriterSettings = {
 };
 
 // Create writer
-const writer = new FtSerializationWriter(meta);
-const stringWriter = new FtStringWriter();
-writer.open(stringWriter, settings);
+const writer = new FtNodeFileWriter(outputPath, meta, undefined, settings);
 
 console.log("Writing declared fielded text:");
 console.log("==============================\n");
@@ -73,10 +79,7 @@ console.log("Wrote record 2: Charlie (Fish)");
 
 writer.close();
 
-// Display the generated output
-console.log("\nGenerated declared fielded text:");
-console.log("=================================");
-console.log(stringWriter.toString());
+console.log(`\nOutput written to: ${outputPath}`);
 
 console.log("\nNotice the !|!Fielded Text^| signature at the top!");
 console.log(

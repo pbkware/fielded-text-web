@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FieldedText HeadingLineCount="2">
+<FieldedText LineCommentChar="#">
   <Field Name="PetName" />
   <Field DataType="Float" Name="Age" />
   <Field Name="Color" />

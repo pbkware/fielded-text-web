@@ -4,7 +4,7 @@
 
 import {
   FtNodeFileWriter,
-  FtXmlMetaSerialization,
+  FtNodeXmlMetaSerialization,
 } from "@pbkware/fielded-text-node";
 import * as fs from "node:fs";
 import * as os from "node:os";
@@ -16,9 +16,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Name of file containing Meta
-const metaFileName = "BasicExampleMeta.ftm";
+const metaFileName = "meta.ftm";
 // Name of file to be written
-const csvFileName = "BasicExample.csv";
+const csvFileName = "node-basic-example.csv";
 
 // Define FieldNames
 const PetNameFieldName = "PetName";
@@ -31,9 +31,7 @@ const TypeFieldName = "Type";
 
 // Load meta from file
 const metaFilePath = path.join(__dirname, metaFileName);
-const metaXml = fs.readFileSync(metaFilePath, "utf-8");
-const meta = FtXmlMetaSerialization.deserialize(metaXml);
-meta.headingLineCount = 0; // Is set to 2 in meta file. Change to 0 as we do not want any heading lines in this example
+const meta = FtNodeXmlMetaSerialization.deserializeFromFile(metaFilePath);
 
 // Create output file path in temp directory
 const tmpDir = os.tmpdir();
@@ -44,9 +42,7 @@ const outputPath = path.join(fieldedTextTmpDir, csvFileName);
 fs.mkdirSync(fieldedTextTmpDir, { recursive: true });
 
 // Create writer - single class instantiation!
-const writer = new FtNodeFileWriter(outputPath, meta, "utf-8", {
-  declared: true,
-});
+const writer = new FtNodeFileWriter(outputPath, meta);
 
 console.log("Writing pet data:");
 console.log("=================\n");
