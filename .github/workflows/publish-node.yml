@@ -1,4 +1,4 @@
-name: Publish Web Package
+name: Publish Node Package
 
 on:
   release:
@@ -13,7 +13,7 @@ jobs:
       contents: read
       id-token: write
     env:
-      Workspace: ./web
+      Workspace: ./node
     steps:
       - name: Checkout code
         uses: actions/checkout@v7

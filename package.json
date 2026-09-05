@@ -15,12 +15,7 @@
     "examples"
   ],
   "scripts": {
-    "build": "npm run --workspace=web build",
-    "dist": "npm run --workspace=web dist",
-    "lint": "npm run --workspace=web lint",
-    "test": "npm run --workspace=web test",
-    "clean": "npm run --workspaces --if-present clean",
-    "docs": "npm run --workspace=web docs",
+    "docs": "npm run --workspace=docs docs",
     "examples": "npm run --workspace=examples examples:all"
   }
 }

@@ -1,4 +1,4 @@
-import { FtDataType, FtMeta, FtQuotedType, FtStringMetaField } from '@pbkware/fielded-text-ts';
+import { FtDataType, FtMeta, FtQuotedType, FtStringMetaField } from '@pbkware/fielded-text-web';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
@@ -113,10 +113,10 @@ describe('Node.js File I/O', () => {
       const writer = new FtNodeFileWriter(testFilePath, meta);
       writer.setFieldValueByName('Text', 'test');
       writer.write();
-      writer[Symbol.dispose]();
+      writer.close();
 
       // Should not throw when disposed again
-      expect(() => writer[Symbol.dispose]()).not.toThrow();
+      expect(() => writer.close()).not.toThrow();
 
       // Verify file was written
       expect(fs.existsSync(testFilePath)).toBe(true);

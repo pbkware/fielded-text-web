@@ -17,6 +17,9 @@ node/dist
 node/docs
 node/declaration
 node/temp
+node/node_modules/.vite/deps/
+node/node_modules/.vite/vitest/
+node/node_modules/.vite-temp/
 docs/dist
 examples/test/index.ts
 /.env
