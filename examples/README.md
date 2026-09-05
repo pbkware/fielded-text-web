@@ -222,7 +222,7 @@ After exploring these examples, check out:
 - The main [README](../README.md) for project overview
 
 ## Contributing Examples
-
+ LineCommentChar="#"
 Have a useful example to share? Contributions are welcome! Please ensure:
 
 - Code is well-commented and follows existing style

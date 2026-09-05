@@ -60,5 +60,3 @@ deserializeFromFile(
 ```
 
 The `encoding` parameter specifies the encoding of the data in the file. If not present or undefined, it defaults to `utf-8`.
-
-## Examples

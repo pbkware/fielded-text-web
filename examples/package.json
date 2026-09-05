@@ -16,7 +16,7 @@
     "events": "npm run read-events && npm run write-events",
     "sequences": "npm run build-meta-with-sequences && npm run read-sequence && npm run read-sequence-ordinal && npm run write-sequence && npm run write-sequence-events && npm run sequences-with-readback",
     "output": "npm run write-declared && npm run write-headings && npm run write-comments",
-    "node": "npm run node-basic-write && npm run node-write-declared",
+    "node": "npm run node-basic-read && npm run node-basic-write && npm run node-write-declared",
     "basic-read-build-meta": "tsx web/basic-read-build-meta/index.ts",
     "basic-read-load-meta": "tsx web/basic-read-load-meta/index.ts",
     "basic-write": "tsx web/basic-write/index.ts",
@@ -32,6 +32,7 @@
     "write-headings": "tsx web/write-headings/index.ts",
     "write-sequence": "tsx web/write-sequence/index.ts",
     "write-sequence-events": "tsx web/write-sequence-events/index.ts",
+    "node-basic-read": "tsx node/basic-read/index.ts",
     "node-basic-write": "tsx node/basic-write/index.ts",
     "node-write-declared": "tsx node/write-declared/index.ts",
     "test": "tsx test/index.ts"

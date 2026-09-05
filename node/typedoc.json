@@ -13,10 +13,17 @@
   "router": "structure-dir",
   "highlightLanguages": ["typescript", "xml", "bash", "json", "csv", "text"],
   "readme": "./README.md",
-  "projectDocuments": ["src-docs/files.md"],
+  "projectDocuments": ["src-docs/files.md", "src-docs/examples.md"],
   "cleanOutputDir": true,
   "hideGenerator": true,
   "searchInComments": true,
   "searchInDocuments": true,
-  "useTsLinkResolution": true
+  "useTsLinkResolution": true,
+  "externalSymbolLinkMappings": {
+    "@pbkware/fielded-text-web": {
+      "FtMeta": "#",
+      "FtMetaSerialization": "#",
+      "FtXmlMetaSerialization": "#"
+    }
+  }
 }

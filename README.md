@@ -61,11 +61,14 @@ See [Change Log](https://pbkware.github.io/fielded-text-ts/Change_Log/) for chan
 
 ## More information
 
-- **[Guides](https://pbkware.github.io/fielded-text-web/Guides/)**
-  - [Getting Started](https://pbkware.github.io/fielded-text-web/Guides/Getting_Started/)
-  - [Meta data](https://pbkware.github.io/fielded-text-web/Guides/Meta_data/)
-  - [Reading](https://pbkware.github.io/fielded-text-web/Guides/Reading/)
-  - [Tables](https://pbkware.github.io/fielded-text-web/Guides/Tables/)
-- **[Examples](https://pbkware.github.io/fielded-text-web/Guides/Examples/)** - Small examples that demonstrate various capabilities
+- **[Guides](https://pbkware.github.io/fielded-text-ts/Web/Guides/)**
+  - [Getting Started](https://pbkware.github.io/fielded-text-ts/Web/Guides/Getting_Started/)
+  - [Meta data](https://pbkware.github.io/fielded-text-ts/Web/Guides/Meta_data/)
+  - [Reading](https://pbkware.github.io/fielded-text-ts/Web/Guides/Reading/)
+  - [Tables](https://pbkware.github.io/fielded-text-ts/Web/Guides/Tables/)
+- **[Files](https://pbkware.github.io/fielded-text-ts/node/Files/)**
+- **Examples** - Small examples that demonstrate various capabilities
+  - [Web](https://pbkware.github.io/fielded-text-ts/Web/Guides/Examples/)
+  - [Node](https://pbkware.github.io/fielded-text-ts/Node/Examples)
 - **[Fielded Text Website](https://fieldedtext.org/)** - Overview of Fielded Text standard
 - **[Fielded Text Standard](https://fieldedtext.org/standard/)** - The official specification (v0.9)

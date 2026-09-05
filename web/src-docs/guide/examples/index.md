@@ -20,7 +20,7 @@ children:
 
 # Examples
 
-The examples directory in the source repository contains practical demonstrations:
+The `web` examples directory in the source repository contains practical demonstrations demonstrating usage:
 
 | Example                                                                               | Description                                     |
 | ------------------------------------------------------------------------------------- | ----------------------------------------------- |
