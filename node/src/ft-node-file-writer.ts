@@ -92,6 +92,8 @@ class NodeFileTextWriter implements FtTextWriter {
  * @public
  */
 export class FtNodeFileWriter extends FtWriter {
+  private readonly _fileWriter: NodeFileTextWriter;
+
   /**
    * Creates a new FtNodeFileWriter that writes to a file.
    * @param filePath - The path to the file to write
@@ -103,8 +105,23 @@ export class FtNodeFileWriter extends FtWriter {
     super(meta);
 
     // Create internal file writer
-    const fileWriter: FtTextWriter = new NodeFileTextWriter(filePath, encoding, false);
+    this._fileWriter = new NodeFileTextWriter(filePath, encoding, false);
 
-    this.open(fileWriter, settings);
+    this.open(this._fileWriter, settings);
+  }
+
+  /**
+   * Closes the writer, flushing and releasing the underlying file handle.
+   */
+  override close(): void {
+    super.close();
+    this._fileWriter[Symbol.dispose]();
+  }
+
+  /**
+   * Enables use with the `using` declaration for automatic resource cleanup.
+   */
+  [Symbol.dispose](): void {
+    this.close();
   }
 }

@@ -136,6 +136,7 @@ class NodeFileTextReader implements FtTextReader {
  * @public
  */
 export class FtNodeFileReader extends FtReader {
+  private readonly _fileReader: NodeFileTextReader;
   private _metaEncoding: BufferEncoding;
   /**
    * Creates a new FtNodeFileReader that reads from a file.
@@ -164,9 +165,24 @@ export class FtNodeFileReader extends FtReader {
     this._metaEncoding = metaEncoding;
 
     // Create internal file reader
-    const fileReader: FtTextReader = new NodeFileTextReader(filePath, encoding);
+    this._fileReader = new NodeFileTextReader(filePath, encoding);
 
-    this.open(fileReader, immediatelyReadHeader);
+    this.open(this._fileReader, immediatelyReadHeader);
+  }
+
+  /**
+   * Closes the reader, releasing the underlying file handle.
+   */
+  override close(): void {
+    super.close();
+    this._fileReader[Symbol.dispose]();
+  }
+
+  /**
+   * Enables use with the `using` declaration for automatic resource cleanup.
+   */
+  [Symbol.dispose](): void {
+    this.close();
   }
 
   protected override getFileMetaAsText(fileMetaReference: string): string {

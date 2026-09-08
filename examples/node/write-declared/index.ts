@@ -50,7 +50,7 @@ const settings: FtWriterSettings = {
 };
 
 // Create writer
-const writer = new FtNodeFileWriter(outputPath, meta, undefined, settings);
+using writer = new FtNodeFileWriter(outputPath, meta, undefined, settings);
 
 console.log("Writing declared fielded text:");
 console.log("==============================\n");
@@ -76,8 +76,6 @@ writer.setFieldValueByName(NeedsWalkingFieldName, false);
 writer.setFieldValueByName(TypeFieldName, "Fish");
 writer.write();
 console.log("Wrote record 2: Charlie (Fish)");
-
-writer.close();
 
 console.log(`\nOutput written to: ${outputPath}`);
 

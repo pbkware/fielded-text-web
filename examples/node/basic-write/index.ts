@@ -42,7 +42,7 @@ const outputPath = path.join(fieldedTextTmpDir, csvFileName);
 fs.mkdirSync(fieldedTextTmpDir, { recursive: true });
 
 // Create writer - single class instantiation!
-const writer = new FtNodeFileWriter(outputPath, meta);
+using writer = new FtNodeFileWriter(outputPath, meta);
 
 console.log("Writing pet data:");
 console.log("=================\n");
@@ -68,8 +68,6 @@ writer.setFieldValueByName(NeedsWalkingFieldName, false);
 writer.setFieldValueByName(TypeFieldName, "Fish");
 writer.write();
 console.log("Record 2: Charlie (Fish)");
-
-writer.close();
 
 // Read and display the generated CSV
 const csvContent = fs.readFileSync(outputPath, "utf-8");

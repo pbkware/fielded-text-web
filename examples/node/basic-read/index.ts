@@ -33,8 +33,8 @@ const meta = FtNodeXmlMetaSerialization.deserializeFromFile(metaFilePath);
 
 console.log(`Loaded metadata with ${meta.fieldList.count} fields\n`);
 
-// Create reader and read CSV
-const reader = new FtNodeFileReader(csvFilePath, meta);
+// Create reader and read CSV (automatically closed when it goes out of scope)
+using reader = new FtNodeFileReader(csvFilePath, meta);
 
 console.log("Reading CSV data:");
 console.log("================\n");
@@ -70,8 +70,6 @@ while (reader.read()) {
     `${recordNumber}: ${petName}, ${age} years, ${color}, received ${dateReceived.toLocaleDateString()}, $${price}, walks: ${needsWalking}, ${type}`,
   );
 }
-
-reader.close();
 
 console.log(`\nTotal records read: ${recordNumber}`);
 console.log(`Input read from: ${csvFilePath}`);

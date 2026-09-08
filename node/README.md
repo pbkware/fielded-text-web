@@ -37,13 +37,11 @@ Jane Smith,25
 ### TypeScript parser app
 
 ```typescript
-import { FtReader, FtXmlMetaSerialization } from "@pbkware/fielded-text-web";
+import { FtNodeFileReader, FtNodeXmlMetaSerialization } from "@pbkware/fielded-text-node";
 
 // Load meta data from XML
-const metaReader = new FtXmlMetaSerialization();
-const meta = metaReader.deserialize(xmlMeta);
-
-const reader = new FtReader(meta, csvData);
+const meta = FtNodeXmlMetaSerialization.deserializeFromFile(xmlMeta);
+using reader = new FtNodeFileReader(csvFilePath, meta);
 
 // Read and log the data
 while (reader.read()) {

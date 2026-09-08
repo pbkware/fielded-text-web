@@ -2264,14 +2264,18 @@ export class FtMetaSubstitutionList {
 
 // @public
 export class FtNodeFileReader extends FtReader {
+    [Symbol.dispose](): void;
     constructor(filePath: fs.PathLike, metaOrEncoding?: FtMeta | BufferEncoding, encoding?: BufferEncoding, immediatelyReadHeader?: boolean);
+    close(): void;
     // (undocumented)
     protected getFileMetaAsText(fileMetaReference: string): string;
 }
 
 // @public
 export class FtNodeFileWriter extends FtWriter {
+    [Symbol.dispose](): void;
     constructor(filePath: fs.PathLike, meta: FtMeta, encoding?: BufferEncoding, settings?: FtWriterSettings);
+    close(): void;
 }
 
 // @public
