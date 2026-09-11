@@ -17,7 +17,7 @@ This guide will help you get started with the FieldedText TypeScript library, fr
 ## Installation
 
 ```bash
-npm install fielded-text-web
+npm install @pbkware/fielded-text-web
 ```
 
 ## Basic Concepts

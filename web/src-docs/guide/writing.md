@@ -25,7 +25,7 @@ This guide covers writing fielded text files using the FieldedText TypeScript li
 The basic pattern for writing fielded text:
 
 ```typescript
-import { SerializationWriter, FtMeta } from 'fielded-text-web';
+import { SerializationWriter, FtMeta } from '@pbkware/fielded-text-web';
 
 // 1. Create metadata
 const meta = buildMetadata(); // See Metadata Guide
@@ -131,7 +131,7 @@ console.log(output);
 For Node.js file system access:
 
 ```typescript
-import { FtNodeWriter } from 'fielded-text-web';
+import { FtNodeWriter } from '@pbkware/fielded-text-web';
 import { createWriteStream } from 'node:fs';
 
 const fileStream = createWriteStream('output.csv', { encoding: 'utf8' });
@@ -159,7 +159,7 @@ writer.close();
 For very large files, flush periodically:
 
 ```typescript
-import { FtNodeWriter } from 'fielded-text-web';
+import { FtNodeWriter } from '@pbkware/fielded-text-web';
 import { createWriteStream } from 'node:fs';
 
 const fileStream = createWriteStream('huge-output.csv', {
@@ -340,7 +340,7 @@ writer.write();
 **Declared output** adds a header identifying the file as FieldedText:
 
 ```typescript
-import { FtWriterSettings, FtMetaReferenceType } from 'fielded-text-web';
+import { FtWriterSettings, FtMetaReferenceType } from '@pbkware/fielded-text-web';
 
 const settings: FtWriterSettings = {
   declared: true;
@@ -585,7 +585,7 @@ for (const data of dataSource) {
 Putting it all together:
 
 ```typescript
-import { FtNodeWriter, FtMeta, FtDataType } from 'fielded-text-web';
+import { FtNodeWriter, FtMeta, FtDataType } from '@pbkware/fielded-text-web';
 import { createWriteStream } from 'node:fs';
 
 // Build metadata

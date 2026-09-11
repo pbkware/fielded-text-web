@@ -176,7 +176,7 @@ await serializationWriter.write();
 For Node.js streams, use adapter classes:
 
 ```typescript
-import { FtNodeReader, FtNodeWriter } from 'fielded-text-web';
+import { FtNodeReader, FtNodeWriter } from '@pbkware/fielded-text-web';
 import { createReadStream, createWriteStream } from 'node:fs';
 
 // Reading
@@ -434,7 +434,7 @@ Factories allow library users to extend or replace default types:
 ### Example: Custom Field Type
 
 ```typescript
-import { MetaFactory, FtMeta } from 'fielded-text-web';
+import { MetaFactory, FtMeta } from '@pbkware/fielded-text-web';
 
 class MyCustomMeta extends FtMeta {
   customProperty: string = '';
