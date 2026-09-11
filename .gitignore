@@ -20,8 +20,11 @@ node/temp
 node/node_modules/.vite/deps/
 node/node_modules/.vite/vitest/
 node/node_modules/.vite-temp/
-docs/dist
 examples/test/index.ts
+docs/dist
+docs/node_modules/.vite/deps/
+docs/node_modules/.vite/vitest/
+docs/node_modules/.vite-temp/
 /.env
 /.env.local
 /.env.development
