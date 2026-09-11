@@ -1,11 +1,11 @@
 {
   "name": "@pbkware/fielded-text-web",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A reader and writer TypeScript library for text data with fields, based on Fielded Text. Browser compatible.",
   "type": "module",
   "sideEffects": false,
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   },
   "exports": {
     ".": {
